@@ -101,24 +101,24 @@
   .tag-floral { background: rgba(150,100,150,0.08); border-color: rgba(150,100,150,0.25); color: #6A3A6A; }
   .desc { font-family: 'Noto Sans KR', sans-serif; font-size: 12.5px; color: var(--text-mid); line-height: 1.75; margin-bottom: 16px; word-break: keep-all; font-weight: 300; }
   .meters { display: flex; flex-direction: column; gap: 8px; }
-  .meter-row { display: flex; align-items: center; gap: 10px; }
-  .meter-label { font-family: 'Noto Sans KR', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 0.03em; color: var(--text-light); width: 38px; flex-shrink: 0; }
-  .meter-track { flex: 1; height: 4px; background: var(--beige); border-radius: 2px; overflow: hidden; }
+  .meter-row { display: flex; align-items: center; gap: 6px; flex-wrap: nowrap; min-width: 0; }
+  .meter-label { font-family: 'Noto Sans KR', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 0.03em; color: var(--text-light); width: 28px; min-width: 28px; flex-shrink: 0; }
+  .meter-track { flex: 1; min-width: 0; height: 4px; background: var(--beige); border-radius: 2px; overflow: hidden; }
   .meter-fill { height: 100%; border-radius: 2px; }
   .fill-strength { background: linear-gradient(90deg, var(--mocha), var(--espresso)); }
   .fill-acidity { background: linear-gradient(90deg, #B8860B, #C8A96E); }
   .meter-val { font-size: 11px; font-weight: 600; color: var(--text-mid); width: 28px; text-align: right; flex-shrink: 0; }
   .origin-unknown { font-family: 'Noto Sans KR', sans-serif; font-size: 11px; color: var(--text-light); font-style: italic; background: var(--beige); padding: 2px 8px; border-radius: 4px; }
   .acidity-label { display: inline-block; font-size: 10px; font-weight: 600; padding: 1px 6px; border-radius: 3px; letter-spacing: 0.04em; }
-  .acidity-high { background: rgba(180,140,30,0.15); color: #7A5A10; }
+  .acidity-high { color: #7A5A10; }
 
-  .acidity-label { display: inline-block; font-family: 'Noto Sans KR', sans-serif; font-size: 10px; font-weight: 600; padding: 1px 6px; border-radius: 3px; letter-spacing: 0.03em; }
-  .meter-val { font-family: 'Noto Sans KR', sans-serif; font-size: 11px; font-weight: 600; color: var(--text-mid); width: 28px; text-align: right; flex-shrink: 0; }
+  .acidity-label { font-family: 'Noto Sans KR', sans-serif; font-size: 10px; font-weight: 600; white-space: nowrap; display: inline-flex; align-items: center; justify-content: center; padding: 0; border-radius: 4px; background: var(--beige); width: 40px; min-width: 40px; height: 22px; }
+  .meter-val { font-family: 'Noto Sans KR', sans-serif; font-size: 11px; font-weight: 600; color: var(--text-mid); flex-shrink: 0; white-space: nowrap; text-align: center; width: 40px; min-width: 40px; }
   .section-note { font-family: 'Noto Sans KR', sans-serif; font-size: 12px; color: var(--text-light); margin-bottom: 24px; padding: 10px 14px; background: rgba(200,169,110,0.08); border-left: 3px solid var(--gold); border-radius: 0 4px 4px 0; line-height: 1.7; word-break: keep-all; }
   .no-results { font-family: 'Noto Sans KR', sans-serif; text-align: center; padding: 60px 20px; color: var(--text-light); font-style: italic; display: none; }
 
   .acidity-mid { background: rgba(107,58,42,0.1); color: #5A2E18; }
-  .acidity-low { background: rgba(28,15,10,0.07); color: #4A2C1A; }
+  .acidity-low { color: #4A2C1A; }
 
   .footer { background: var(--espresso); text-align: center; padding: 32px 40px; font-family: 'Noto Sans KR', sans-serif; font-size: 12px; color: rgba(245,237,217,0.35); letter-spacing: 0.03em; }
   .footer strong { color: var(--gold); font-weight: 600; }
