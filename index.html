@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>바샤커피 원두 가이드</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --espresso: #1C0F0A;
+    --mocha: #6B3A2A;
+    --gold: #C8A96E;
+    --gold-light: #D4B97E;
+    --cream: #F5EDD9;
+    --beige: #EDE0C8;
+    --beige-mid: #E0CCAA;
+    --text-dark: #1C0F0A;
+    --text-mid: #4A2C1A;
+    --text-light: #8A6A50;
+    --white: #FFFDF8;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--cream); color: var(--text-dark); min-height: 100vh; font-weight: 400; }
+
+  /* HERO */
+  .hero { background: var(--espresso); padding: 72px 40px 60px; text-align: center; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; top: -60px; left: 50%; transform: translateX(-50%); width: 500px; height: 500px; background: radial-gradient(circle, rgba(200,169,110,0.12) 0%, transparent 70%); pointer-events: none; }
+  .hero-eyebrow { font-family: 'Noto Sans KR', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.25em; color: var(--gold); text-transform: uppercase; margin-bottom: 20px; }
+  .hero h1 { font-family: 'Gowun Batang', serif; font-size: clamp(34px, 5vw, 58px); font-weight: 700; color: var(--cream); line-height: 1.2; margin-bottom: 16px; letter-spacing: -0.01em; }
+  .hero h1 em { font-style: italic; color: var(--gold); }
+  .hero-sub { font-family: 'Noto Sans KR', sans-serif; font-size: 14px; color: rgba(245,237,217,0.6); font-weight: 300; letter-spacing: 0.02em; max-width: 480px; margin: 0 auto 40px; line-height: 1.8; word-break: keep-all; }
+  .hero-stats { display: flex; justify-content: center; gap: 48px; flex-wrap: wrap; }
+  .stat-num { font-family: 'Gowun Batang', serif; font-size: 28px; font-weight: 700; color: var(--gold); display: block; }
+  .stat-label { font-size: 11px; color: rgba(245,237,217,0.5); letter-spacing: 0.12em; text-transform: uppercase; display: block; margin-top: 2px; }
+
+  /* FILTER */
+  .filter-bar { background: var(--espresso); border-top: 1px solid rgba(200,169,110,0.15); padding: 0 40px; display: flex; gap: 0; overflow-x: auto; scrollbar-width: none; position: sticky; top: 0; z-index: 100; }
+  .filter-bar::-webkit-scrollbar { display: none; }
+  .filter-btn { font-family: 'Noto Sans KR', sans-serif; font-size: 12px; font-weight: 500; letter-spacing: 0.06em; color: rgba(245,237,217,0.45); background: none; border: none; border-bottom: 2px solid transparent; padding: 18px 20px; cursor: pointer; white-space: nowrap; transition: color 0.2s, border-color 0.2s; }
+  .filter-btn:hover { color: var(--gold-light); }
+  .filter-btn.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+  /* SEARCH */
+  .search-wrap { padding: 32px 40px 8px; max-width: 1200px; margin: 0 auto; }
+  .search-box { position: relative; max-width: 360px; }
+  .search-box input { width: 100%; background: var(--white); border: 1.5px solid var(--beige-mid); border-radius: 6px; padding: 10px 16px 10px 40px; font-family: 'Noto Sans KR', sans-serif; font-size: 13px; color: var(--text-dark); outline: none; transition: border-color 0.2s; }
+  .search-box input:focus { border-color: var(--gold); }
+  .search-box input::placeholder { color: var(--text-light); }
+  .search-icon { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); color: var(--text-light); font-size: 14px; pointer-events: none; }
+
+  /* SECTION */
+  .section { max-width: 1200px; margin: 0 auto; padding: 20px 40px 60px; }
+  .section-title { font-family: 'Gowun Batang', serif; font-size: 22px; font-weight: 700; color: var(--mocha); margin-bottom: 8px; display: flex; align-items: center; gap: 12px; letter-spacing: -0.01em; }
+  .section-title::after { content: ''; flex: 1; height: 1px; background: linear-gradient(to right, var(--beige-mid), transparent); }
+  .section-note { font-size: 12px; color: var(--text-light); margin-bottom: 24px; padding: 10px 14px; background: rgba(200,169,110,0.08); border-left: 3px solid var(--gold); border-radius: 0 4px 4px 0; line-height: 1.6; }
+
+  /* GRID */
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); gap: 18px; }
+
+  /* CARD */
+  .card { background: var(--white); border: 1.5px solid var(--beige); border-radius: 12px; overflow: hidden; transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s; position: relative; }
+  .card:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(28,15,10,0.1); border-color: var(--gold); }
+  .card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--gold), var(--mocha)); opacity: 0; transition: opacity 0.2s; z-index: 1; }
+  .card:hover::before { opacity: 1; }
+
+  /* CARD IMAGE */
+  .card-img-wrap { position: relative; width: 100%; height: 180px; background: linear-gradient(135deg, #2A1810 0%, #3D1F10 50%, #1C0F0A 100%); overflow: hidden; flex-shrink: 0; }
+  .card-img-wrap img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; transition: opacity 0.3s, transform 0.4s; opacity: 0; }
+  .card-img-wrap img.loaded { opacity: 1; }
+  .card-img-wrap img.errored { display: none; }
+  .card-img-wrap:hover img.loaded { transform: scale(1.04); }
+  .card-img-placeholder { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; }
+  .card-img-placeholder.hidden { display: none; }
+  .placeholder-icon { font-size: 40px; opacity: 0.35; }
+  .placeholder-name { font-family: 'Cormorant Garamond', serif; font-size: 13px; font-style: italic; color: rgba(245,237,217,0.4); text-align: center; padding: 0 16px; line-height: 1.4; }
+  .card-img-overlay { position: absolute; bottom: 0; left: 0; right: 0; height: 60px; background: linear-gradient(to top, rgba(28,15,10,0.6), transparent); }
+
+  /* CARD BODY */
+  .card-body { padding: 18px 20px 16px; }
+  .card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+  .card-name { font-family: 'Gowun Batang', serif; font-size: 16px; font-weight: 700; color: var(--text-dark); line-height: 1.35; letter-spacing: -0.01em; }
+  .card-name-en { font-family: 'Cormorant Garamond', serif; font-size: 12.5px; color: var(--text-light); font-weight: 400; font-style: italic; display: block; margin-top: 1px; letter-spacing: 0.02em; }
+  .roast-badge { font-family: 'Noto Sans KR', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 0.04em; padding: 3px 8px; border-radius: 20px; white-space: nowrap; flex-shrink: 0; margin-left: 8px; }
+  .roast-light { background: rgba(200,169,110,0.15); color: #8A6A35; }
+  .roast-medium { background: rgba(107,58,42,0.12); color: #6B3A2A; }
+  .roast-medium-dark { background: rgba(28,15,10,0.12); color: #3A1E0F; }
+  .origin-row { display: flex; align-items: center; gap: 6px; margin-bottom: 12px; }
+  .origin-flag { font-size: 16px; line-height: 1; }
+  .origin-text { font-family: 'Noto Sans KR', sans-serif; font-size: 12px; color: var(--text-mid); font-weight: 600; }
+  .origin-detail { font-family: 'Noto Sans KR', sans-serif; font-size: 11px; color: var(--text-light); font-weight: 300; }
+  .flavor-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 14px; }
+  .tag { font-family: 'Noto Sans KR', sans-serif; font-size: 10.5px; font-weight: 500; padding: 3px 9px; border-radius: 20px; border: 1px solid; letter-spacing: 0.01em; }
+  .tag-chocolate { background: rgba(107,58,42,0.08); border-color: rgba(107,58,42,0.25); color: #5A2E18; }
+  .tag-fruity { background: rgba(180,80,50,0.08); border-color: rgba(180,80,50,0.25); color: #8B3A20; }
+  .tag-nutty { background: rgba(140,110,60,0.1); border-color: rgba(140,110,60,0.3); color: #705A20; }
+  .tag-malty { background: rgba(200,160,80,0.1); border-color: rgba(200,160,80,0.3); color: #7A5E20; }
+  .tag-spice { background: rgba(160,80,40,0.08); border-color: rgba(160,80,40,0.25); color: #7A3818; }
+  .tag-citrus { background: rgba(180,150,30,0.08); border-color: rgba(180,150,30,0.25); color: #6A5510; }
+  .tag-floral { background: rgba(150,100,150,0.08); border-color: rgba(150,100,150,0.25); color: #6A3A6A; }
+  .desc { font-family: 'Noto Sans KR', sans-serif; font-size: 12.5px; color: var(--text-mid); line-height: 1.75; margin-bottom: 16px; word-break: keep-all; font-weight: 300; }
+  .meters { display: flex; flex-direction: column; gap: 8px; }
+  .meter-row { display: flex; align-items: center; gap: 10px; }
+  .meter-label { font-family: 'Noto Sans KR', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 0.03em; color: var(--text-light); width: 38px; flex-shrink: 0; }
+  .meter-track { flex: 1; height: 4px; background: var(--beige); border-radius: 2px; overflow: hidden; }
+  .meter-fill { height: 100%; border-radius: 2px; }
+  .fill-strength { background: linear-gradient(90deg, var(--mocha), var(--espresso)); }
+  .fill-acidity { background: linear-gradient(90deg, #B8860B, #C8A96E); }
+  .meter-val { font-size: 11px; font-weight: 600; color: var(--text-mid); width: 28px; text-align: right; flex-shrink: 0; }
+  .origin-unknown { font-family: 'Noto Sans KR', sans-serif; font-size: 11px; color: var(--text-light); font-style: italic; background: var(--beige); padding: 2px 8px; border-radius: 4px; }
+  .acidity-label { display: inline-block; font-size: 10px; font-weight: 600; padding: 1px 6px; border-radius: 3px; letter-spacing: 0.04em; }
+  .acidity-high { background: rgba(180,140,30,0.15); color: #7A5A10; }
+
+  .acidity-label { display: inline-block; font-family: 'Noto Sans KR', sans-serif; font-size: 10px; font-weight: 600; padding: 1px 6px; border-radius: 3px; letter-spacing: 0.03em; }
+  .meter-val { font-family: 'Noto Sans KR', sans-serif; font-size: 11px; font-weight: 600; color: var(--text-mid); width: 28px; text-align: right; flex-shrink: 0; }
+  .section-note { font-family: 'Noto Sans KR', sans-serif; font-size: 12px; color: var(--text-light); margin-bottom: 24px; padding: 10px 14px; background: rgba(200,169,110,0.08); border-left: 3px solid var(--gold); border-radius: 0 4px 4px 0; line-height: 1.7; word-break: keep-all; }
+  .no-results { font-family: 'Noto Sans KR', sans-serif; text-align: center; padding: 60px 20px; color: var(--text-light); font-style: italic; display: none; }
+
+  .acidity-mid { background: rgba(107,58,42,0.1); color: #5A2E18; }
+  .acidity-low { background: rgba(28,15,10,0.07); color: #4A2C1A; }
+
+  .footer { background: var(--espresso); text-align: center; padding: 32px 40px; font-family: 'Noto Sans KR', sans-serif; font-size: 12px; color: rgba(245,237,217,0.35); letter-spacing: 0.03em; }
+  .footer strong { color: var(--gold); font-weight: 600; }
+  .no-results { text-align: center; padding: 60px 20px; color: var(--text-light); font-style: italic; display: none; }
+
+  @media (max-width: 600px) {
+    .hero { padding: 48px 20px 40px; }
+    .filter-bar { padding: 0 20px; }
+    .search-wrap, .section { padding-left: 20px; padding-right: 20px; }
+    .hero-stats { gap: 28px; }
+    .grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-eyebrow">Bacha Coffee · 원두 가이드</div>
+  <h1>세계의 커피를<br><em>한 잔에 담다</em></h1>
+  <p class="hero-sub">35개국 100% 아라비카 원두, 원산지·플레이버·산미를 한눈에 비교해 나에게 맞는 커피를 찾아보세요.</p>
+  <div class="hero-stats">
+    <div class="stat"><span class="stat-num">43</span><span class="stat-label">종류</span></div>
+    <div class="stat"><span class="stat-num">35</span><span class="stat-label">생산국</span></div>
+    <div class="stat"><span class="stat-num">100%</span><span class="stat-label">아라비카</span></div>
+  </div>
+</header>
+
+<nav class="filter-bar" id="filterBar">
+  <button class="filter-btn active" data-cat="all">전체</button>
+  <button class="filter-btn" data-cat="single">싱글 오리진</button>
+  <button class="filter-btn" data-cat="flavoured">파인 플레이버</button>
+  <button class="filter-btn" data-cat="decaf">디카페인</button>
+  <button class="filter-btn" data-cat="wb">홀빈 (WB)</button>
+  <button class="filter-btn" data-acidity="high">산미 높음</button>
+  <button class="filter-btn" data-acidity="mid">산미 중간</button>
+  <button class="filter-btn" data-acidity="low">산미 낮음</button>
+</nav>
+
+<div class="search-wrap">
+  <div class="search-box">
+    <span class="search-icon">🔍</span>
+    <input type="text" id="searchInput" placeholder="커피 이름, 원산지, 플레이버 검색…">
+  </div>
+</div>
+
+<main class="section" id="mainContent">
+
+<!-- ══════════════════════════════════════
+     SINGLE ORIGIN
+══════════════════════════════════════ -->
+<h2 class="section-title">🌍 싱글 오리진</h2>
+<div class="grid">
+
+  <div class="card" data-cat="single" data-acidity="mid" data-search="시다모 마운틴 sidamo mountain 에티오피아 ethiopia 스파이시 코코아 꽃향">
+    <div class="card-img-wrap">
+      <img data-src="https://bachacoffee.com/images/default-source/loose-coffee/coffee-icons/single-origin/bacha-single-origin-sidamo-mountain-830x525.tmb-bc00000001.png?Culture=en" alt="시다모 마운틴" loading="lazy">
+      <div class="card-img-placeholder"><div class="placeholder-icon">☕</div><div class="placeholder-name">Sidamo Mountain</div></div>
+      <div class="card-img-overlay"></div>
+    </div>
+    <div class="card-body">
+      <div class="card-header"><div><span class="card-name">시다모 마운틴 <span class="card-name-en">Sidamo Mountain</span></span></div><span class="roast-badge roast-medium-dark">미디엄 다크</span></div>
+      <div class="origin-row"><span class="origin-flag">🇪🇹</span><span class="origin-text">에티오피아</span><span class="origin-detail">— 시다모 고원 남부 · 워시드</span></div>
+      <div class="flavor-tags"><span class="tag tag-spice">스파이시</span><span class="tag tag-chocolate">코코아</span><span class="tag tag-floral">꽃향</span></div>
+      <p class="desc">에티오피아 남부 고원 소규모 농장의 워시드 수확물. 향긋한 스파이시 향에 크랙 코코아빈 노트, 놀랍도록 복합적인 꽃향기가 더해진 희귀 커피.</p>
+      <div class="meters">
+        <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:60%"></div></div><span class="meter-val">3/5</span></div>
+        <div class="meter-row"><span class="meter-label">산미</span><div class="meter-track"><div class="meter-fill fill-acidity" style="width:50%"></div></div><span class="meter-val acidity-label acidity-mid">중간</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="single" data-acidity="high" data-search="마운트 케냐 mount kenya 케냐 kenya 베리 초콜릿 과일">
+    <div class="card-img-wrap">
+      <img data-src="https://bachacoffee.com/images/default-source/loose-coffee/coffee-icons/single-origin/bacha-single-origin-mount-kenya-830x525.tmb-bc00000001.png?Culture=en" alt="마운트 케냐" loading="lazy">
+      <div class="card-img-placeholder"><div class="placeholder-icon">☕</div><div class="placeholder-name">Mount Kenya</div></div>
+      <div class="card-img-overlay"></div>
+    </div>
+    <div class="card-body">
+      <div class="card-header"><div><span class="card-name">마운트 케냐 <span class="card-name-en">Mount Kenya</span></span></div><span class="roast-badge roast-medium-dark">미디엄 다크</span></div>
+      <div class="origin-row"><span class="origin-flag">🇰🇪</span><span class="origin-text">케냐</span><span class="origin-detail">— 키암부 고원 · 해발 1,500~2,100m</span></div>
+      <div class="flavor-tags"><span class="tag tag-fruity">베리류</span><span class="tag tag-chocolate">밀크초콜릿</span><span class="tag tag-fruity">과일향</span></div>
+      <p class="desc">키암부 남부 고원의 정수. 과일향 아로마와 밀크초콜릿 힌트, 케냐 특유의 밝고 생동감 있는 베리류 산미와 풀바디가 특징.</p>
+      <div class="meters">
+        <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:60%"></div></div><span class="meter-val">3/5</span></div>
+        <div class="meter-row"><span class="meter-label">산미</span><div class="meter-track"><div class="meter-fill fill-acidity" style="width:80%"></div></div><span class="meter-val acidity-label acidity-high">높음</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="single" data-acidity="low" data-search="라고아 lagoa 브라질 brazil 초콜릿 헤이즐넛 토피">
+    <div class="card-img-wrap">
+      <img data-src="https://bachacoffee.com/images/default-source/loose-coffee/coffee-icons/single-origin/bacha-single-origin-lagoa-830x525.tmb-bc00000001.png?Culture=en" alt="라고아" loading="lazy">
+      <div class="card-img-placeholder"><div class="placeholder-icon">☕</div><div class="placeholder-name">Lagoa</div></div>
+      <div class="card-img-overlay"></div>
+    </div>
+    <div class="card-body">
+      <div class="card-header"><div><span class="card-name">라고아 <span class="card-name-en">Lagoa</span></span></div><span class="roast-badge roast-light">미디엄 라이트</span></div>
+      <div class="origin-row"><span class="origin-flag">🇧🇷</span><span class="origin-text">브라질</span><span class="origin-detail">— 캄포 다스 베르텐치스 · 950~1,200m</span></div>
+      <div class="flavor-tags"><span class="tag tag-chocolate">다크초콜릿</span><span class="tag tag-nutty">헤이즐넛</span><span class="tag tag-malty">토피</span></div>
+      <p class="desc">재규어·늑대가 공존하는 오래된 농장에서 손으로만 수확. 식을수록 진해지는 다크초콜릿 향과 토피, 크랙 헤이즐넛 노트.</p>
+      <div class="meters">
+        <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:20%"></div></div><span class="meter-val">1/5</span></div>
+        <div class="meter-row"><span class="meter-label">산미</span><div class="meter-track"><div class="meter-fill fill-acidity" style="width:18%"></div></div><span class="meter-val acidity-label acidity-low">낮음</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="single" data-acidity="mid" data-search="막달레나 magdalena 콜롬비아 colombia 과일 산미">
+    <div class="card-img-wrap">
+      <img data-src="https://bachacoffee.com/images/default-source/loose-coffee/coffee-icons/single-origin/bacha-single-origin-magdalena-830x525.tmb-bc00000001.png?Culture=en" alt="막달레나" loading="lazy">
+      <div class="card-img-placeholder"><div class="placeholder-icon">☕</div><div class="placeholder-name">Magdalena</div></div>
+      <div class="card-img-overlay"></div>
+    </div>
+    <div class="card-body">
+      <div class="card-header"><div><span class="card-name">막달레나 <span class="card-name-en">Magdalena</span></span></div><span class="roast-badge roast-medium">미디엄</span></div>
+      <div class="origin-row"><span class="origin-flag">🇨🇴</span><span class="origin-text">콜롬비아</span><span class="origin-detail">— 우일라(Huila) 고원 · 냉산수 워시드</span></div>
+      <div class="flavor-tags"><span class="tag tag-fruity">과일향</span><span class="tag tag-malty">균형감</span></div>
+      <p class="desc">네바도 델 우일라 화산 자락, 나무 그늘 아래서 자란 원두. 냉산수 습식 가공으로 깔끔한 산미와 과일 오버톤이 균형을 이룬 커피.</p>
+      <div class="meters">
+        <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:40%"></div></div><span class="meter-val">2/5</span></div>
+        <div class="meter-row"><span class="meter-label">산미</span><div class="meter-track"><div class="meter-fill fill-acidity" style="width:48%"></div></div><span class="meter-val acidity-label acidity-mid">중간</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="single" data-acidity="high" data-search="그랜드 모카 마타리 grand moka matari 예멘 yemen 살구 초콜릿 대추">
+    <div class="card-img-wrap">
+      <img data-src="https://bachacoffee.com/images/default-source/loose-coffee/coffee-icons/single-origin/bacha-single-origin-grand-moka-matari-830x525.tmb-bc00000001.png?Culture=en" alt="그랜드 모카 마타리" loading="lazy">
+      <div class="card-img-placeholder"><div class="placeholder-icon">☕</div><div class="placeholder-name">Grand Moka Matari</div></div>
+      <div class="card-img-overlay"></div>
+    </div>
+    <div class="card-body">
+      <div class="card-header"><div><span class="card-name">그랜드 모카 마타리 <span class="card-name-en">Grand Moka Matari</span></span></div><span class="roast-badge roast-medium-dark">미디엄 다크</span></div>
+      <div class="origin-row"><span class="origin-flag">🇾🇪</span><span class="origin-text">예멘</span><span class="origin-detail">— 전통 건식(드라이) 가공</span></div>
+      <div class="flavor-tags"><span class="tag tag-fruity">살구</span><span class="tag tag-chocolate">다크초콜릿</span><span class="tag tag-malty">대추야자</span><span class="tag tag-spice">캐러멜</span></div>
+      <p class="desc">땅 지붕 위에서 건조된 예멘의 희귀 수확물. 밝은 산미와 풀바디, 살구·다크초콜릿·대추의 달콤함, 캐러멜·스파이스 여운이 인상적.</p>
+      <div class="meters">
+        <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:50%"></div></div><span class="meter-val">2.5/5</span></div>
+        <div class="meter-row"><span class="meter-label">산미</span><div class="meter-track"><div class="meter-fill fill-acidity" style="width:72%"></div></div><span class="meter-val acidity-label acidity-high">높음</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="single" data-acidity="mid" data-search="시에라 마드레 sierra madre 과테말라 guatemala 코코아 복합">
+    <div class="card-img-wrap">
+      <img data-src="https://bachacoffee.com/images/default-source/loose-coffee/coffee-icons/single-origin/bacha-single-origin-sierra-madre-830x525.tmb-bc00000001.png?Culture=en" alt="시에라 마드레" loading="lazy">
+      <div class="card-img-placeholder"><div class="placeholder-icon">☕</div><div class="placeholder-name">Sierra Madre</div></div>
+      <div class="card-img-overlay"></div>
+    </div>
+    <div class="card-body">
+      <div class="card-header"><div><span class="card-name">시에라 마드레 <span class="card-name-en">Sierra Madre</span></span></div><span class="roast-badge roast-medium">미디엄</span></div>
+      <div class="origin-row"><span class="origin-flag">🇬🇹</span><span class="origin-text">과테말라</span><span class="origin-detail">— 시에라 마드레 화산성 토양</span></div>
+      <div class="flavor-tags"><span class="tag tag-chocolate">코코아</span><span class="tag tag-fruity">과일향</span></div>
+      <p class="desc">풍요로운 화산 토양이 키운 과테말라 최고급 커피. 풍부하고 복합적인 아로마와 코코아 노트가 은은하게 남는 커피.</p>
+      <div class="meters">
+        <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:40%"></div></div><span class="meter-val">2/5</span></div>
+        <div class="meter-row"><span class="meter-label">산미</span><div class="meter-track"><div class="meter-fill fill-acidity" style="width:45%"></div></div><span class="meter-val acidity-label acidity-mid">중간</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="single" data-acidity="high" data-search="나란조 마운틴 naranjo mountain 코스타리카 costa rica 시트러스 몰티 견과">
+    <div class="card-img-wrap">
+      <img data-src="https://bachacoffee.com/images/default-source/loose-coffee/coffee-icons/single-origin/bacha-single-origin-naranjo-mountain-830x525.tmb-bc00000001.png?Culture=en" alt="나란조 마운틴" loading="lazy">
+      <div class="card-img-placeholder"><div class="placeholder-icon">☕</div><div class="placeholder-name">Naranjo Mountain</div></div>
+      <div class="card-img-overlay"></div>
+    </div>
+    <div class="card-body">
+      <div class="card-header"><div><span class="card-name">나란조 마운틴 <span class="card-name-en">Naranjo Mountain</span></span></div><span class="roast-badge roast-medium">미디엄</span></div>
+      <div class="origin-row"><span class="origin-flag">🇨🇷</span><span class="origin-text">코스타리카</span><span class="origin-detail">— 나란호 고원 · 1,200~1,700m</span></div>
+      <div class="flavor-tags"><span class="tag tag-malty">몰티</span><span class="tag tag-nutty">견과류</span><span class="tag tag-citrus">시트러스</span></div>
+      <p class="desc">영양이 풍부한 토양의 농장에서 완숙된 체리만 핸드픽. 섬세한 몰티함과 견과 오버톤, 밝은 시트러스 여운이 상쾌한 커피.</p>
+      <div class="meters">
+        <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:40%"></div></div><span class="meter-val">2/5</span></div>
+        <div class="meter-row"><span class="meter-label">산미</span><div class="meter-track"><div class="meter-fill fill-acidity" style="width:68%"></div></div><span class="meter-val acidity-label acidity-high">높음</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="single" data-acidity="mid" data-search="투르키노 turquino 쿠바 cuba 스파이시 밸런스">
+    <div class="card-img-wrap">
+      <img data-src="https://bachacoffee.com/images/default-source/loose-coffee/coffee-icons/single-origin/bacha-single-origin-turquino-830x525.tmb-bc00000001.png?Culture=en" alt="투르키노" loading="lazy">
+      <div class="card-img-placeholder"><div class="placeholder-icon">☕</div><div class="placeholder-name">Turquino</div></div>
+      <div class="card-img-overlay"></div>
+    </div>
+    <div class="card-body">
+      <div class="card-header"><div><span class="card-name">투르키노 <span class="card-name-en">Turquino</span></span></div><span class="roast-badge roast-medium-dark">미디엄 다크</span></div>
+      <div class="origin-row"><span class="origin-flag">🇨🇺</span><span class="origin-text">쿠바</span><span class="origin-detail">— 시에라 마에스트라 · 400~800m</span></div>
+      <div class="flavor-tags"><span class="tag tag-spice">스파이시</span><span class="tag tag-malty">밸런스</span></div>
+      <p class="desc">독특한 밤색 원두를 지닌 쿠바 최고 커피. 밸런스 좋은 스파이시함과 섬세한 산미, 오래 남는 긴 여운이 특징.</p>
+      <div class="meters">
+        <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:30%"></div></div><span class="meter-val">1.5/5</span></div>
+        <div class="meter-row"><span class="meter-label">산미</span><div class="meter-track"><div class="meter-fill fill-acidity" style="width:42%"></div></div><span class="meter-val acidity-label acidity-mid">중간</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="single" data-acidity="low" data-search="몬순시크릿 monsoon secret 인도 india 말라바르 허브 과일 풀바디">
+    <div class="card-img-wrap">
+      <img data-src="https://bachacoffee.com/images/default-source/loose-coffee/coffee-icons/single-origin/bacha-single-origin-monsoon-secret-830x525.tmb-bc00000001.png?Culture=en" alt="몬순시크릿" loading="lazy">
+      <div class="card-img-placeholder"><div class="placeholder-icon">☕</div><div class="placeholder-name">Monsoon Secret</div></div>
+      <div class="card-img-overlay"></div>
+    </div>
+    <div class="card-body">
+      <div class="card-header"><div><span class="card-name">몬순시크릿 <span class="card-name-en">Monsoon Secret</span></span></div><span class="roast-badge roast-medium-dark">미디엄 다크</span></div>
+      <div class="origin-row"><span class="origin-flag">🇮🇳</span><span class="origin-text">인도</span><span class="origin-detail">— 말라바르(Malabar) · 900~1,500m · 몬순 가공</span></div>
+      <div class="flavor-tags"><span class="tag tag-fruity">과일향</span><span class="tag tag-malty">허브</span><span class="tag tag-spice">풀바디</span></div>
+      <p class="desc">몬순 바람에 노출되는 특수 가공으로 산미가 크게 줄고 바디감이 극대화. 달콤한 향과 섬세한 허브·과일 풍미의 묵직한 한 잔.</p>
+      <div class="meters">
+        <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:60%"></div></div><span class="meter-val">3/5</span></div>
+        <div class="meter-row"><span class="meter-label">산미</span><div class="meter-track"><div class="meter-fill fill-acidity" style="width:15%"></div></div><span class="meter-val acidity-label acidity-low">낮음</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="single" data-acidity="high" data-search="산크리스토발 san cristobal 에콰도르 ecuador 갈라파고스 초콜릿 탄지">
+    <div class="card-img-wrap">
+      <img data-src="https://bachacoffee.com/images/default-source/loose-coffee/coffee-icons/single-origin/bacha-single-origin-san-cristobal-830x525.tmb-bc00000001.png?Culture=en" alt="산크리스토발" loading="lazy">
+      <div class="card-img-placeholder"><div class="placeholder-icon">☕</div><div class="placeholder-name">San Cristóbal</div></div>
+      <div class="card-img-overlay"></div>
+    </div>
+    <div class="card-body">
+      <div class="card-header"><div><span class="card-name">산크리스토발 <span class="card-name-en">San Cristóbal</span></span></div><span class="roast-badge roast-medium-dark">미디엄 다크</span></div>
+      <div class="origin-row"><span class="origin-flag">🇪🇨</span><span class="origin-text">에콰도르</span><span class="origin-detail">— 갈라파고스 제도 · 화산토 · 무농약</span></div>
+      <div class="flavor-tags"><span class="tag tag-citrus">탄지함</span><span class="tag tag-chocolate">초콜릿</span></div>
+      <p class="desc">세계에서 단 하나뿐인 갈라파고스 원두. 열대 기후·젊은 화산토·무농약의 삼박자가 만든 상큼한 탄지함과 섬세한 초콜릿 힌트.</p>
+      <div class="meters">
+        <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:40%"></div></div><span class="meter-val">2/5</span></div>
+        <div class="meter-row"><span class="meter-label">산미</span><div class="meter-track"><div class="meter-fill fill-acidity" style="width:75%"></div></div><span class="meter-val acidity-label acidity-high">높음</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="single" data-acidity="low" data-search="마운트 에베레스트 mount everest 네팔 nepal 견과류 카투라">
+    <div class="card-img-wrap">
+      <img data-src="https://bachacoffee.com/images/default-source/loose-coffee/coffee-icons/single-origin/bacha-single-origin-mount-everest-830x525.tmb-bc00000001.png?Culture=en" alt="마운트 에베레스트" loading="lazy">
+      <div class="card-img-placeholder"><div class="placeholder-icon">☕</div><div class="placeholder-name">Mount Everest</div></div>
+      <div class="card-img-overlay"></div>
+    </div>
+    <div class="card-body">
+      <div class="card-header"><div><span class="card-name">마운트 에베레스트 <span class="card-name-en">Mount Everest</span></span></div><span class="roast-badge roast-medium-dark">미디엄 다크</span></div>
+      <div class="origin-row"><span class="origin-flag">🇳🇵</span><span class="origin-text">네팔</span><span class="origin-detail">— 히말라야 산기슭 · 카투라(Caturra) 품종</span></div>
+      <div class="flavor-tags"><span class="tag tag-nutty">견과류</span><span class="tag tag-malty">깊은 풍미</span></div>
+      <p class="desc">히말라야 산기슭 토양의 에센스를 흡수한 카투라 품종. 다른 곳에서는 구할 수 없는 독특한 깊이와 다양성의 풍미.</p>
+      <div class="meters">
+        <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:40%"></div></div><span class="meter-val">2/5</span></div>
+        <div class="meter-row"><span class="meter-label">산미</span><div class="meter-track"><div class="meter-fill fill-acidity" style="width:25%"></div></div><span class="meter-val acidity-label acidity-low">낮음</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="single" data-acidity="mid" data-search="시그리 주얼 sigri jewel 파푸아뉴기니 papua new guinea 다크초콜릿 당밀">
+    <div class="card-img-wrap">
+      <img data-src="https://bachacoffee.com/images/default-source/loose-coffee/coffee-icons/single-origin/bacha-single-origin-sigri-jewel-830x525.tmb-bc00000001.png?Culture=en" alt="시그리 주얼" loading="lazy">
+      <div class="card-img-placeholder"><div class="placeholder-icon">☕</div><div class="placeholder-name">Sigri Jewel</div></div>
+      <div class="card-img-overlay"></div>
+    </div>
+    <div class="card-body">
+      <div class="card-header"><div><span class="card-name">시그리 주얼 <span class="card-name-en">Sigri Jewel</span></span></div><span class="roast-badge roast-medium-dark">미디엄 다크</span></div>
+      <div class="origin-row"><span class="origin-flag">🇵🇬</span><span class="origin-text">파푸아뉴기니</span><span class="origin-detail">— 와기(Wahgi) 밸리 · Arusha·Typica 품종</span></div>
+      <div class="flavor-tags"><span class="tag tag-chocolate">다크초콜릿</span><span class="tag tag-malty">당밀</span></div>
+      <p class="desc">완숙한 레드 펄 베리만 핸드픽한 희귀 품종. 진하고 강렬한 다크초콜릿과 당밀(molasses)의 깊고 묵직한 맛.</p>
+      <div class="meters">
+        <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:50%"></div></div><span class="meter-val">2.5/5</span></div>
+        <div class="meter-row"><span class="meter-label">산미</span><div class="meter-track"><div class="meter-fill fill-acidity" style="width:35%"></div></div><span class="meter-val acidity-label acidity-mid">중간</span></div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /grid single -->
+
+<!-- ══════════════════════════════════════
+     FINE FLAVOURED
+══════════════════════════════════════ -->
+<h2 class="section-title" style="margin-top:48px">🍵 파인 플레이버</h2>
+<div class="section-note">⚠️ 바샤커피는 <strong>밀라노 모닝(우간다)</strong>을 제외한 파인 플레이버 제품의 베이스 원두 산지를 공식적으로 비공개로 유지합니다.</div>
+<div class="grid">
+
+  <div class="card" data-cat="flavoured" data-acidity="low" data-search="밀라노 모닝 milano morning 우간다 uganda 초콜릿 브리오슈 몰티 메이플">
+    <div class="card-img-wrap">
+      <img data-src="https://bachacoffee.com/images/default-source/loose-coffee/coffee-icons/fine-flavoured/bacha-fine-flavoured-milano-morning-830x525.tmb-bc00000001.png?Culture=en" alt="밀라노 모닝" loading="lazy">
+      <div class="card-img-placeholder"><div class="placeholder-icon">🍫</div><div class="placeholder-name">Milano Morning</div></div>
+      <div class="card-img-overlay"></div>
+    </div>
+    <div class="card-body">
+      <div class="card-header"><div><span class="card-name">밀라노 모닝 <span class="card-name-en">Milano Morning</span></span></div><span class="roast-badge roast-medium">미디엄</span></div>
+      <div class="origin-row"><span class="origin-flag">🇺🇬</span><span class="origin-text">우간다</span><span class="origin-detail">— 싱글 오리진 97% + 천연 메이플 향료 3% ✅</span></div>
+      <div class="flavor-tags"><span class="tag tag-chocolate">쌉싸름한 초콜릿</span><span class="tag tag-malty">브리오슈</span><span class="tag tag-nutty">몰티</span></div>
+      <p class="desc">이탈리아 밀라노 아침의 에너지를 담은 커피. 우간다 아라비카 97%에 천연 메이플 향료 3%로 가향. 쌉싸름한 초콜릿과 달콤한 브리오슈 노트.</p>
+      <div class="meters">
+        <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:40%"></div></div><span class="meter-val">2/5</span></div>
+        <div class="meter-row"><span class="meter-label">산미</span><div class="meter-track"><div class="meter-fill fill-acidity" style="width:18%"></div></div><span class="meter-val acidity-label acidity-low">낮음</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="flavoured" data-acidity="mid" data-search="아이러브파리 i love paris 베리 너트 과일">
+    <div class="card-img-wrap">
+      <img data-src="https://bachacoffee.com/images/default-source/loose-coffee/coffee-icons/fine-flavoured/bacha-fine-flavoured-i-love-paris-830x525.tmb-bc00000001.png?Culture=en" alt="아이러브파리" loading="lazy">
+      <div class="card-img-placeholder"><div class="placeholder-icon">🫐</div><div class="placeholder-name">I Love Paris</div></div>
+      <div class="card-img-overlay"></div>
+    </div>
+    <div class="card-body">
+      <div class="card-header"><div><span class="card-name">아이러브파리 <span class="card-name-en">I Love Paris</span></span></div><span class="roast-badge roast-medium">미디엄</span></div>
+      <div class="origin-row"><span class="origin-unknown">베이스 원두 산지 비공개</span></div>
+      <div class="flavor-tags"><span class="tag tag-fruity">포레스트 베리</span><span class="tag tag-nutty">와일드 너트</span></div>
+      <p class="desc">빛의 도시 파리의 여름 햇살. 포레스트 베리와 와일드 너트가 연인의 포옹처럼 어우러지는, 파리 거리를 거니는 듯한 한 잔.</p>
+      <div class="meters">
+        <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:40%"></div></div><span class="meter-val">2/5</span></div>
+        <div class="meter-row"><span class="meter-label">산미</span><div class="meter-track"><div class="meter-fill fill-acidity" style="width:42%"></div></div><span class="meter-val acidity-label acidity-mid">중간</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="flavoured" data-acidity="low" data-search="캐러멜로 모닝 caramelo morning 캐러멜 몰티 크리미">
+    <div class="card-img-wrap">
+      <img data-src="https://bachacoffee.com/images/default-source/loose-coffee/coffee-icons/fine-flavoured/bacha-fine-flavoured-caramelo-morning-830x525.tmb-bc00000001.png?Culture=en" alt="캐러멜로 모닝" loading="lazy">
+      <div class="card-img-placeholder"><div class="placeholder-icon">🍮</div><div class="placeholder-name">Caramelo Morning</div></div>
+      <div class="card-img-overlay"></div>
+    </div>
+    <div class="card-body">
+      <div class="card-header"><div><span class="card-name">캐러멜로 모닝 <span class="card-name-en">Caramelo Morning</span></span></div><span class="roast-badge roast-medium">미디엄</span></div>
+      <div class="origin-row"><span class="origin-unknown">베이스 원두 산지 비공개</span></div>
+      <div class="flavor-tags"><span class="tag tag-malty">캐러멜</span><span class="tag tag-malty">몰티</span></div>
+      <p class="desc">최고급 아라비카를 부드럽게 로스팅해 자연스러운 몰티 노트와 달콤한 캐러멜을 이끌어낸 아침용 커피.</p>
+      <div class="meters">
+        <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:40%"></div></div><span class="meter-val">2/5</span></div>
+        <div class="meter-row"><span class="meter-label">산미</span><div class="meter-track"><div class="meter-fill fill-acidity" style="width:15%"></div></div><span class="meter-val acidity-label acidity-low">낮음</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="flavoured" data-acidity="mid" data-search="세빌 오렌지 seville orange 오렌지 코코아 시트러스 초콜릿">
+    <div class="card-img-wrap">
+      <img data-src="https://bachacoffee.com/images/default-source/loose-coffee/coffee-icons/fine-flavoured/bacha-fine-flavoured-seville-orange-830x525.tmb-bc00000001.png?Culture=en" alt="세빌 오렌지" loading="lazy">
+      <div class="card-img-placeholder"><div class="placeholder-icon">🍊</div><div class="placeholder-name">Seville Orange</div></div>
+      <div class="card-img-overlay"></div>
+    </div>
+    <div class="card-body">
+      <div class="card-header"><div><span class="card-name">세빌 오렌지 <span class="card-name-en">Seville Orange</span></span></div><span class="roast-badge roast-medium">미디엄</span></div>
+      <div class="origin-row"><span class="origin-unknown">베이스 원두 산지 비공개</span></div>
+      <div class="flavor-tags"><span class="tag tag-chocolate">코코아</span><span class="tag tag-citrus">오렌지 제스트</span><span class="tag tag-chocolate">초콜릿</span></div>
+      <p class="desc">시트러스의 산미와 초콜릿의 달콤함이 완벽하게 결합. 크랙 코코아의 바디감에 세빌 오렌지의 생기있는 제스트가 더해진 오후의 커피.</p>
+      <div class="meters">
+        <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:20%"></div></div><span class="meter-val">1/5</span></div>
+        <div class="meter-row"><span class="meter-label">산미</span><div class="meter-track"><div class="meter-fill fill-acidity" style="width:50%"></div></div><span class="meter-val acidity-label acidity-mid">중간</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="flavoured" data-acidity="low" data-search="스위트 멕시코 sweet mexico 바닐라 스파이스">
+    <div class="card-img-wrap">
+      <img data-src="https://bachacoffee.com/images/default-source/loose-coffee/coffee-icons/fine-flavoured/bacha-fine-flavoured-sweet-mexico-830x525.tmb-bc00000001.png?Culture=en" alt="스위트 멕시코" loading="lazy">
+      <div class="card-img-placeholder"><div class="placeholder-icon">🌿</div><div class="placeholder-name">Sweet Mexico</div></div>
+      <div class="card-img-overlay"></div>
+    </div>
+    <div class="card-body">
+      <div class="card-header"><div><span class="card-name">스위트 멕시코 <span class="card-name-en">Sweet Mexico</span></span></div><span class="roast-badge roast-medium">미디엄</span></div>
+      <div class="origin-row"><span class="origin-unknown">베이스 원두 산지 비공개 (천연 바닐라빈 가향)</span></div>
+      <div class="flavor-tags"><span class="tag tag-malty">바닐라</span><span class="tag tag-spice">스파이스</span></div>
+      <p class="desc">희귀 바닐라빈의 섬세한 향이 아라비카와 어우러진 부드러운 커피. 식사 후나 오후에, 크림이나 우유와 함께하면 최고.</p>
+      <div class="meters">
+        <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:30%"></div></div><span class="meter-val">1.5/5</span></div>
+        <div class="meter-row"><span class="meter-label">산미</span><div class="meter-track"><div class="meter-fill fill-acidity" style="width:12%"></div></div><span class="meter-val acidity-label acidity-low">낮음</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="flavoured" data-acidity="low" data-search="톨테카 초콜릿 tolteca chocolate 코코아 달콤">
+    <div class="card-img-wrap">
+      <img data-src="https://bachacoffee.com/images/default-source/loose-coffee/coffee-icons/fine-flavoured/bacha-fine-flavoured-tolteca-chocolate-830x525.tmb-bc00000001.png?Culture=en" alt="톨테카 초콜릿" loading="lazy">
+      <div class="card-img-placeholder"><div class="placeholder-icon">🍫</div><div class="placeholder-name">Tolteca Chocolate</div></div>
+      <div class="card-img-overlay"></div>
+    </div>
+    <div class="card-body">
+      <div class="card-header"><div><span class="card-name">톨테카 초콜릿 <span class="card-name-en">Tolteca Chocolate</span></span></div><span class="roast-badge roast-medium">미디엄</span></div>
+      <div class="origin-row"><span class="origin-unknown">베이스 원두 산지 비공개</span></div>
+      <div class="flavor-tags"><span class="tag tag-chocolate">진한 코코아</span><span class="tag tag-chocolate">초콜릿</span></div>
+      <p class="desc">열정적인 카카오의 향조로 가득하고 따뜻한, 완전한 한 잔. 달콤한 기억을 남기는 오후의 작은 기쁨.</p>
+      <div class="meters">
+        <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:40%"></div></div><span class="meter-val">2/5</span></div>
+        <div class="meter-row"><span class="meter-label">산미</span><div class="meter-track"><div class="meter-fill fill-acidity" style="width:10%"></div></div><span class="meter-val acidity-label acidity-low">낮음</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="flavoured" data-acidity="mid" data-search="1910 딸기 크림 과일 프루티">
+    <div class="card-img-wrap">
+      <img data-src="https://bachacoffee.com/images/default-source/loose-coffee/coffee-icons/fine-flavoured/bacha-fine-flavoured-1910-830x525.tmb-bc00000001.png?Culture=en" alt="1910" loading="lazy">
+      <div class="card-img-placeholder"><div class="placeholder-icon">🍓</div><div class="placeholder-name">1910</div></div>
+      <div class="card-img-overlay"></div>
+    </div>
+    <div class="card-body">
+      <div class="card-header"><div><span class="card-name">1910 <span class="card-name-en">1910</span></span></div><span class="roast-badge roast-medium">미디엄</span></div>
+      <div class="origin-row"><span class="origin-unknown">베이스 원두 산지 비공개</span></div>
+      <div class="flavor-tags"><span class="tag tag-fruity">야생 딸기</span><span class="tag tag-malty">헤비 크림</span></div>
+      <p class="desc">마라케시 다르 엘 바샤 궁전 1910년을 기념하는 시그니처 커피. 갓 딴 야생 딸기와 진한 크림을 연상시키는 여름 소풍 같은 한 잔.</p>
+      <div class="meters">
+        <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:30%"></div></div><span class="meter-val">1.5/5</span></div>
+        <div class="meter-row"><span class="meter-label">산미</span><div class="meter-track"><div class="meter-fill fill-acidity" style="width:40%"></div></div><span class="meter-val acidity-label acidity-mid">중간</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="flavoured" data-acidity="mid" data-search="블루다뉴브 blue danube 베리 밀크초콜릿 산미">
+    <div class="card-img-wrap">
+      <img data-src="https://bachacoffee.com/images/default-source/loose-coffee/coffee-icons/fine-flavoured/bacha-fine-flavoured-blue-danube-830x525.tmb-bc00000001.png?Culture=en" alt="블루다뉴브" loading="lazy">
+      <div class="card-img-placeholder"><div class="placeholder-icon">🫐</div><div class="placeholder-name">Blue Danube</div></div>
+      <div class="card-img-overlay"></div>
+    </div>
+    <div class="card-body">
+      <div class="card-header"><div><span class="card-name">블루다뉴브 <span class="card-name-en">Blue Danube</span></span></div><span class="roast-badge roast-medium">미디엄</span></div>
+      <div class="origin-row"><span class="origin-unknown">베이스 원두 산지 비공개</span></div>
+      <div class="flavor-tags"><span class="tag tag-fruity">포레스트 베리</span><span class="tag tag-chocolate">밀크초콜릿</span></div>
+      <p class="desc">포레스트 베리의 물결이 밀크초콜릿의 부드러움과 균형을 이루고, 산뜻한 산미로 마무리. 샹티이 크림과 함께하면 완벽.</p>
+      <div class="meters">
+        <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:40%"></div></div><span class="meter-val">2/5</span></div>
+        <div class="meter-row"><span class="meter-label">산미</span><div class="meter-track"><div class="meter-fill fill-acidity" style="width:52%"></div></div><span class="meter-val acidity-label acidity-mid">중간</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="flavoured" data-acidity="mid" data-search="싱가포르 모닝 singapore morning 초콜릿 스파이스 시트러스">
+    <div class="card-img-wrap">
+      <img data-src="https://bachacoffee.com/images/default-source/loose-coffee/coffee-icons/fine-flavoured/bacha-fine-flavoured-singapore-morning-830x525.tmb-bc00000001.png?Culture=en" alt="싱가포르 모닝" loading="lazy">
+      <div class="card-img-placeholder"><div class="placeholder-icon">🌅</div><div class="placeholder-name">Singapore Morning</div></div>
+      <div class="card-img-overlay"></div>
+    </div>
+    <div class="card-body">
+      <div class="card-header"><div><span class="card-name">싱가포르 모닝 <span class="card-name-en">Singapore Morning</span></span></div><span class="roast-badge roast-medium">미디엄</span></div>
+      <div class="origin-row"><span class="origin-unknown">베이스 원두 산지 비공개</span></div>
+      <div class="flavor-tags"><span class="tag tag-chocolate">초콜릿</span><span class="tag tag-spice">스파이스</span><span class="tag tag-citrus">시트러스</span></div>
+      <p class="desc">뻐꾸기 아침 울음과 함께 싱가포르가 깨어나는 순간. 초콜릿·스파이스·시트러스 산미의 달콤하고 복합적인 '재생의 커피'.</p>
+      <div class="meters">
+        <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:40%"></div></div><span class="meter-val">2/5</span></div>
+        <div class="meter-row"><span class="meter-label">산미</span><div class="meter-track"><div class="meter-fill fill-acidity" style="width:50%"></div></div><span class="meter-val acidity-label acidity-mid">중간</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="flavoured" data-acidity="low" data-search="매직 이스탄불 magic istanbul 허니콤 그린 아몬드 몰티">
+    <div class="card-img-wrap">
+      <img data-src="https://bachacoffee.com/images/default-source/loose-coffee/coffee-icons/fine-flavoured/bacha-fine-flavoured-magic-istanbul-830x525.tmb-bc00000001.png?Culture=en" alt="매직 이스탄불" loading="lazy">
+      <div class="card-img-placeholder"><div class="placeholder-icon">🕌</div><div class="placeholder-name">Magic Istanbul</div></div>
+      <div class="card-img-overlay"></div>
+    </div>
+    <div class="card-body">
+      <div class="card-header"><div><span class="card-name">매직 이스탄불 <span class="card-name-en">Magic Istanbul</span></span></div><span class="roast-badge roast-medium">미디엄</span></div>
+      <div class="origin-row"><span class="origin-unknown">베이스 원두 산지 비공개</span></div>
+      <div class="flavor-tags"><span class="tag tag-malty">허니콤</span><span class="tag tag-nutty">그린 아몬드</span></div>
+      <p class="desc">신선한 허니콤의 달콤함과 그린 아몬드의 균형이 당신을 이스탄불로 데려가는 감각의 여정. 강도는 높지만 산미는 낮은 독특한 커피.</p>
+      <div class="meters">
+        <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:60%"></div></div><span class="meter-val">3/5</span></div>
+        <div class="meter-row"><span class="meter-label">산미</span><div class="meter-track"><div class="meter-fill fill-acidity" style="width:12%"></div></div><span class="meter-val acidity-label acidity-low">낮음</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="flavoured" data-acidity="low" data-search="벌스데이 위시 birthday wish 초콜릿 버터스카치 달콤">
+    <div class="card-img-wrap">
+      <img data-src="https://bachacoffee.com/images/default-source/loose-coffee/coffee-icons/fine-flavoured/bacha-fine-flavoured-birthday-wish-830x525.tmb-bc00000001.png?Culture=en" alt="벌스데이 위시" loading="lazy">
+      <div class="card-img-placeholder"><div class="placeholder-icon">🎂</div><div class="placeholder-name">Birthday Wish</div></div>
+      <div class="card-img-overlay"></div>
+    </div>
+    <div class="card-body">
+      <div class="card-header"><div><span class="card-name">벌스데이 위시 <span class="card-name-en">Birthday Wish</span></span></div><span class="roast-badge roast-medium">미디엄</span></div>
+      <div class="origin-row"><span class="origin-unknown">베이스 원두 산지 비공개</span></div>
+      <div class="flavor-tags"><span class="tag tag-chocolate">초콜릿</span><span class="tag tag-malty">버터스카치</span></div>
+      <p class="desc">진한 초콜릿과 버터스카치로 가득 찬 축하의 한 잔. 케이크나 쿠키와 함께 즐기기에 완벽. 모든 소원이 이루어지길!</p>
+      <div class="meters">
+        <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:40%"></div></div><span class="meter-val">2/5</span></div>
+        <div class="meter-row"><span class="meter-label">산미</span><div class="meter-track"><div class="meter-fill fill-acidity" style="width:10%"></div></div><span class="meter-val acidity-label acidity-low">낮음</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="flavoured" data-acidity="low" data-search="마로키시모 marocchissimo 스파이스 건조과일 견과류 모로코">
+    <div class="card-img-wrap">
+      <img data-src="https://bachacoffee.com/images/default-source/loose-coffee/coffee-icons/fine-flavoured/bacha-fine-flavoured-marocchissimo-830x525.tmb-bc00000001.png?Culture=en" alt="마로키시모" loading="lazy">
+      <div class="card-img-placeholder"><div class="placeholder-icon">🏺</div><div class="placeholder-name">Marocchissimo!</div></div>
+      <div class="card-img-overlay"></div>
+    </div>
+    <div class="card-body">
+      <div class="card-header"><div><span class="card-name">마로키시모 <span class="card-name-en">Marocchissimo!</span></span></div><span class="roast-badge roast-medium">미디엄</span></div>
+      <div class="origin-row"><span class="origin-unknown">베이스 원두 산지 비공개</span></div>
+      <div class="flavor-tags"><span class="tag tag-spice">스파이스</span><span class="tag tag-fruity">건조 과일</span><span class="tag tag-nutty">견과류</span></div>
+      <p class="desc">화가의 팔레트처럼 색채롭고, 향신료와 건조 과일·견과류의 향이 압도하는 모로코의 정수. 밤처럼 어두운 잔 속의 빛과 생명.</p>
+      <div class="meters">
+        <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:40%"></div></div><span class="meter-val">2/5</span></div>
+        <div class="meter-row"><span class="meter-label">산미</span><div class="meter-track"><div class="meter-fill fill-acidity" style="width:10%"></div></div><span class="meter-val acidity-label acidity-low">낮음</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="flavoured" data-acidity="low" data-search="모로칸 사하라 moroccan sahara 코코넛 카라멜 초콜릿">
+    <div class="card-img-wrap">
+      <img data-src="https://bachacoffee.com/images/default-source/loose-coffee/coffee-icons/fine-flavoured/bacha-fine-flavoured-moroccan-sahara-830x525.tmb-bc00000001.png?Culture=en" alt="모로칸 사하라" loading="lazy">
+      <div class="card-img-placeholder"><div class="placeholder-icon">🏜️</div><div class="placeholder-name">Moroccan Sahara</div></div>
+      <div class="card-img-overlay"></div>
+    </div>
+    <div class="card-body">
+      <div class="card-header"><div><span class="card-name">모로칸 사하라 <span class="card-name-en">Moroccan Sahara</span></span></div><span class="roast-badge roast-medium">미디엄</span></div>
+      <div class="origin-row"><span class="origin-unknown">베이스 원두 산지 비공개</span></div>
+      <div class="flavor-tags"><span class="tag tag-malty">코코넛</span><span class="tag tag-malty">카라멜 너트</span><span class="tag tag-chocolate">핫 초콜릿</span></div>
+      <p class="desc">타오르는 모래 언덕이 차가운 바다 물결을 향해 달려가는 모로코 사하라의 정경. 코코넛·카라멜라이즈드 너트·핫 초콜릿 향.</p>
+      <div class="meters">
+        <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:40%"></div></div><span class="meter-val">—</span></div>
+        <div class="meter-row"><span class="meter-label">산미</span><div class="meter-track"><div class="meter-fill fill-acidity" style="width:10%"></div></div><span class="meter-val acidity-label acidity-low">낮음</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="flavoured" data-acidity="low" data-search="킹 오브 아프리카 king of africa 헤이즐넛 카카오 코코넛 바나나 아프리카">
+    <div class="card-img-wrap">
+      <img data-src="https://bachacoffee.com/images/default-source/loose-coffee/coffee-icons/fine-flavoured/bacha-fine-flavoured-king-of-africa-830x525.tmb-bc00000001.png?Culture=en" alt="킹 오브 아프리카" loading="lazy">
+      <div class="card-img-placeholder"><div class="placeholder-icon">🦁</div><div class="placeholder-name">King of Africa</div></div>
+      <div class="card-img-overlay"></div>
+    </div>
+    <div class="card-body">
+      <div class="card-header"><div><span class="card-name">킹 오브 아프리카 <span class="card-name-en">King of Africa</span></span></div><span class="roast-badge roast-medium">미디엄</span></div>
+      <div class="origin-row"><span class="origin-unknown">베이스 원두 산지 비공개 (아프리카 복수 산지 블렌드)</span></div>
+      <div class="flavor-tags"><span class="tag tag-nutty">와일드 헤이즐넛</span><span class="tag tag-chocolate">크랙 카카오</span><span class="tag tag-malty">허니드 바나나</span></div>
+      <p class="desc">아프리카 저지대 평원과 고원의 수확물을 블렌딩. 와일드 헤이즐넛·크랙 카카오·코코넛·허니드 바나나로 아프리카 대륙의 다양한 지형을 맛으로 표현.</p>
+      <div class="meters">
+        <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:40%"></div></div><span class="meter-val">—</span></div>
+        <div class="meter-row"><span class="meter-label">산미</span><div class="meter-track"><div class="meter-fill fill-acidity" style="width:10%"></div></div><span class="meter-val acidity-label acidity-low">낮음</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="flavoured" data-acidity="mid" data-search="마라케시 모닝 marrakech morning 시나몬 아몬드 자두 체리">
+    <div class="card-img-wrap">
+      <img data-src="https://bachacoffee.com/images/default-source/loose-coffee/coffee-icons/fine-flavoured/bacha-fine-flavoured-marrakech-morning-830x525.tmb-bc00000001.png?Culture=en" alt="마라케시 모닝" loading="lazy">
+      <div class="card-img-placeholder"><div class="placeholder-icon">🌙</div><div class="placeholder-name">Marrakech Morning</div></div>
+      <div class="card-img-overlay"></div>
+    </div>
+    <div class="card-body">
+      <div class="card-header"><div><span class="card-name">마라케시 모닝 <span class="card-name-en">Marrakech Morning</span></span></div><span class="roast-badge roast-medium">미디엄</span></div>
+      <div class="origin-row"><span class="origin-unknown">베이스 원두 산지 비공개</span></div>
+      <div class="flavor-tags"><span class="tag tag-spice">시나몬</span><span class="tag tag-nutty">그린 아몬드</span><span class="tag tag-fruity">자두·체리</span></div>
+      <p class="desc">붉은 진흙 메디나의 좁은 골목, 달콤한 시나몬과 그린 아몬드 향이 실린 산들바람. 자두·와일드 체리의 탄지함이 마라케시 아침을 깨운다.</p>
+      <div class="meters">
+        <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:40%"></div></div><span class="meter-val">2/5</span></div>
+        <div class="meter-row"><span class="meter-label">산미</span><div class="meter-track"><div class="meter-fill fill-acidity" style="width:38%"></div></div><span class="meter-val acidity-label acidity-mid">중간</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="flavoured" data-acidity="low" data-search="해피잔두야 happy gianduja 헤이즐넛 이탈리아 달콤">
+    <div class="card-img-wrap">
+      <img data-src="https://bachacoffee.com/images/default-source/loose-coffee/coffee-icons/fine-flavoured/bacha-fine-flavoured-happy-gianduja-830x525.tmb-bc00000001.png?Culture=en" alt="해피잔두야" loading="lazy">
+      <div class="card-img-placeholder"><div class="placeholder-icon">🌰</div><div class="placeholder-name">Happy Gianduja</div></div>
+      <div class="card-img-overlay"></div>
+    </div>
+    <div class="card-body">
+      <div class="card-header"><div><span class="card-name">해피잔두야 <span class="card-name-en">Happy Gianduja</span></span></div><span class="roast-badge roast-medium">미디엄</span></div>
+      <div class="origin-row"><span class="origin-unknown">베이스 원두 산지 비공개</span></div>
+      <div class="flavor-tags"><span class="tag tag-nutty">이탈리안 헤이즐넛</span><span class="tag tag-malty">달콤함</span></div>
+      <p class="desc">따뜻하고 섬세하게 이탈리안 헤이즐넛(잔두야). 식사를 아름답게 마무리하기에 완벽한 순수한 기쁨의 한 잔.</p>
+      <div class="meters">
+        <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:40%"></div></div><span class="meter-val">—</span></div>
+        <div class="meter-row"><span class="meter-label">산미</span><div class="meter-track"><div class="meter-fill fill-acidity" style="width:10%"></div></div><span class="meter-val acidity-label acidity-low">낮음</span></div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /grid flavoured -->
+
+<!-- ══════════════════════════════════════
+     DECAF
+══════════════════════════════════════ -->
+<h2 class="section-title" style="margin-top:48px">☕ 디카페인 <small style="font-size:13px;font-weight:400;font-family:Inter,sans-serif;color:var(--text-light)">— 전 제품 천연 CO₂ 공법</small></h2>
+<div class="grid">
+
+  <div class="card" data-cat="decaf" data-acidity="mid" data-search="예가체프 디카페인 yirgacheffe decaffeinated 에티오피아 ethiopia 블루베리 레몬 몰티">
+    <div class="card-img-wrap">
+      <img data-src="https://bachacoffee.com/images/default-source/loose-coffee/coffee-icons/single-origin/bacha-single-origin-yirgacheffe-decaffeinated-830x525.tmb-bc00000001.png?Culture=en" alt="예가체프 디카페인" loading="lazy">
+      <div class="card-img-placeholder"><div class="placeholder-icon">🍃</div><div class="placeholder-name">Yirgacheffe Decaf</div></div>
+      <div class="card-img-overlay"></div>
+    </div>
+    <div class="card-body">
+      <div class="card-header"><div><span class="card-name">예가체프 디카페인 <span class="card-name-en">Yirgacheffe Decaffeinated</span></span></div><span class="roast-badge roast-medium-dark">미디엄 다크</span></div>
+      <div class="origin-row"><span class="origin-flag">🇪🇹</span><span class="origin-text">에티오피아</span><span class="origin-detail">— 예가체프 싱글 오리진 ✅</span></div>
+      <div class="flavor-tags"><span class="tag tag-fruity">블루베리</span><span class="tag tag-citrus">레몬 산미</span><span class="tag tag-malty">몰티</span></div>
+      <p class="desc">건초와 블루베리의 놀라운 아로마. 은은한 레몬 산미와 지속되는 몰티 풍미가 복합적으로 어우러지는 카페인 없는 예가체프.</p>
+      <div class="meters">
+        <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:60%"></div></div><span class="meter-val">3/5</span></div>
+        <div class="meter-row"><span class="meter-label">산미</span><div class="meter-track"><div class="meter-fill fill-acidity" style="width:48%"></div></div><span class="meter-val acidity-label acidity-mid">중간</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="decaf" data-acidity="mid" data-search="막달레나 디카페인 magdalena decaffeinated 콜롬비아 colombia 과일 풀바디">
+    <div class="card-img-wrap">
+      <img data-src="https://bachacoffee.com/images/default-source/loose-coffee/coffee-icons/single-origin/bacha-single-origin-magdalena-decaffeinated-830x525.tmb-bc00000001.png?Culture=en" alt="막달레나 디카페인" loading="lazy">
+      <div class="card-img-placeholder"><div class="placeholder-icon">🍃</div><div class="placeholder-name">Magdalena Decaf</div></div>
+      <div class="card-img-overlay"></div>
+    </div>
+    <div class="card-body">
+      <div class="card-header"><div><span class="card-name">막달레나 디카페인 <span class="card-name-en">Magdalena Decaffeinated</span></span></div><span class="roast-badge roast-medium-dark">미디엄 다크</span></div>
+      <div class="origin-row"><span class="origin-flag">🇨🇴</span><span class="origin-text">콜롬비아</span><span class="origin-detail">— 우일라(Huila) 고원 싱글 오리진 ✅</span></div>
+      <div class="flavor-tags"><span class="tag tag-fruity">과일향</span><span class="tag tag-malty">몰티</span><span class="tag tag-nutty">견과류</span><span class="tag tag-spice">스파이스</span></div>
+      <p class="desc">우일라 고원 워시드 가공의 디카페인. 예상 밖의 풀바디와 함께 과일향·몰티·견과·스파이스가 복합적으로 풍성하게 펼쳐진다.</p>
+      <div class="meters">
+        <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:30%"></div></div><span class="meter-val">1.5/5</span></div>
+        <div class="meter-row"><span class="meter-label">산미</span><div class="meter-track"><div class="meter-fill fill-acidity" style="width:40%"></div></div><span class="meter-val acidity-label acidity-mid">중간</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="decaf" data-acidity="low" data-search="아디스아바바 디카페인 addis ababa decaffeinated 그래시 단맛">
+    <div class="card-img-wrap">
+      <img data-src="https://bachacoffee.com/images/default-source/loose-coffee/coffee-icons/fine-flavoured/bacha-fine-flavoured-addis-ababa-decaffeinated-830x525.tmb-bc00000001.png?Culture=en" alt="아디스아바바 디카페인" loading="lazy">
+      <div class="card-img-placeholder"><div class="placeholder-icon">🍃</div><div class="placeholder-name">Addis Ababa Decaf</div></div>
+      <div class="card-img-overlay"></div>
+    </div>
+    <div class="card-body">
+      <div class="card-header"><div><span class="card-name">아디스아바바 디카페인 <span class="card-name-en">Addis Ababa Decaffeinated</span></span></div><span class="roast-badge roast-medium-dark">미디엄 다크</span></div>
+      <div class="origin-row"><span class="origin-unknown">베이스 원두 산지 비공개 (에티오피아 계열 추정)</span></div>
+      <div class="flavor-tags"><span class="tag tag-malty">그래시</span><span class="tag tag-malty">부드러운 단맛</span></div>
+      <p class="desc">신비로운 도시의 에너지가 담긴 천연 CO₂ 디카페인. 신선한 그래시 노트와 부드러운 단맛이 생기있고 활기찬 컵을 만든다.</p>
+      <div class="meters">
+        <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:50%"></div></div><span class="meter-val">2.5/5</span></div>
+        <div class="meter-row"><span class="meter-label">산미</span><div class="meter-track"><div class="meter-fill fill-acidity" style="width:15%"></div></div><span class="meter-val acidity-label acidity-low">낮음</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="decaf" data-acidity="mid" data-search="바라카 디카페인 baraka decaffeinated 다크초콜릿 오렌지 시트러스">
+    <div class="card-img-wrap">
+      <img data-src="https://bachacoffee.com/images/default-source/loose-coffee/coffee-icons/fine-flavoured/bacha-fine-flavoured-baraka-decaffeinated-830x525.tmb-bc00000001.png?Culture=en" alt="바라카 디카페인" loading="lazy">
+      <div class="card-img-placeholder"><div class="placeholder-icon">🍃</div><div class="placeholder-name">Baraka Decaf</div></div>
+      <div class="card-img-overlay"></div>
+    </div>
+    <div class="card-body">
+      <div class="card-header"><div><span class="card-name">바라카 디카페인 <span class="card-name-en">Baraka Decaffeinated</span></span></div><span class="roast-badge roast-medium">미디엄</span></div>
+      <div class="origin-row"><span class="origin-unknown">베이스 원두 산지 비공개</span></div>
+      <div class="flavor-tags"><span class="tag tag-chocolate">다크초콜릿</span><span class="tag tag-citrus">스위트 오렌지</span></div>
+      <p class="desc">행운의 부적처럼 든든한 한 잔. 부드러운 다크초콜릿에 스위트 오렌지의 섬세한 시트러스 산미가 악센트를 이루는 디카페인.</p>
+      <div class="meters">
+        <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:30%"></div></div><span class="meter-val">1.5/5</span></div>
+        <div class="meter-row"><span class="meter-label">산미</span><div class="meter-track"><div class="meter-fill fill-acidity" style="width:42%"></div></div><span class="meter-val acidity-label acidity-mid">중간</span></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<h2 class="section-title" style="margin-top:48px">🫘 홀빈 (WB) <small style="font-size:13px;font-weight:400;font-family:Inter,sans-serif;color:var(--text-light)">— Signature Nomad 컬렉션</small></h2>
+<div class="grid">
+
+  <div class="card" data-cat="wb" data-acidity="high" data-search="예가체프 에얼룸 yirgacheffe heirloom 에티오피아 ethiopia 레몬그라스 베르가못 산미">
+    <div class="card-img-wrap">
+      <img data-src="https://bachacoffee.com/images/default-source/loose-coffee/coffee-icons/single-origin/bacha-single-origin-yirgacheffe-heirloom-830x525.tmb-bc00000001.png?Culture=en" alt="WB 예가체프 에얼룸" loading="lazy">
+      <div class="card-img-placeholder"><div class="placeholder-icon">🫘</div><div class="placeholder-name">Yirgacheffe Heirloom</div></div>
+      <div class="card-img-overlay"></div>
+    </div>
+    <div class="card-body">
+      <div class="card-header"><div><span class="card-name">WB 예가체프 에얼룸 <span class="card-name-en">Yirgacheffe Heirloom</span></span></div><span class="roast-badge roast-medium">미디엄</span></div>
+      <div class="origin-row"><span class="origin-flag">🇪🇹</span><span class="origin-text">에티오피아</span><span class="origin-detail">— 예가체프 · 에얼룸 패밀리 농장 싱글 오리진 ✅</span></div>
+      <div class="flavor-tags"><span class="tag tag-citrus">레몬그라스</span><span class="tag tag-malty">케인슈거</span><span class="tag tag-floral">베르가못</span></div>
+      <p class="desc">에티오피아 남부 최고 커피로 꼽히는 예가체프의 에얼룸 품종. 인상적인 향기로운 산미와 레몬그라스·케인슈거·베르가못이 조화로운 미디엄 바디.</p>
+      <div class="meters">
+        <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:40%"></div></div><span class="meter-val">2/5</span></div>
+        <div class="meter-row"><span class="meter-label">산미</span><div class="meter-track"><div class="meter-fill fill-acidity" style="width:85%"></div></div><span class="meter-val acidity-label acidity-high">높음</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="wb" data-acidity="high" data-search="불칸아줄 volcan azul 코스타리카 costa rica 산미 향기 바디">
+    <div class="card-img-wrap">
+      <img data-src="https://bachacoffee.com/images/default-source/loose-coffee/coffee-icons/single-origin/bacha-single-origin-volcan-azul-830x525.tmb-bc00000001.png?Culture=en" alt="WB 불칸아줄" loading="lazy">
+      <div class="card-img-placeholder"><div class="placeholder-icon">🫘</div><div class="placeholder-name">Volcán Azul</div></div>
+      <div class="card-img-overlay"></div>
+    </div>
+    <div class="card-body">
+      <div class="card-header"><div><span class="card-name">WB 불칸아줄 <span class="card-name-en">Volcán Azul</span></span></div><span class="roast-badge roast-medium">미디엄</span></div>
+      <div class="origin-row"><span class="origin-flag">🇨🇷</span><span class="origin-text">코스타리카</span><span class="origin-detail">— 싱글 오리진 ✅</span></div>
+      <div class="flavor-tags"><span class="tag tag-fruity">향기로운 산미</span><span class="tag tag-malty">조화로운 바디</span></div>
+      <p class="desc">국제적으로 인정받은 향기로운 산미, 부드러운 풍미, 조화로운 바디감. 레인포레스트를 품은 패밀리 농장의 엄격한 기준이 만든 세계 최고 커피 중 하나.</p>
+      <div class="meters">
+        <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:40%"></div></div><span class="meter-val">—</span></div>
+        <div class="meter-row"><span class="meter-label">산미</span><div class="meter-track"><div class="meter-fill fill-acidity" style="width:78%"></div></div><span class="meter-val acidity-label acidity-high">높음</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="wb" data-acidity="mid" data-search="르완다 슈페리어 rwanda superior 르완다 꽃향 땅콩">
+    <div class="card-img-wrap">
+      <img data-src="https://bachacoffee.com/images/default-source/loose-coffee/coffee-icons/single-origin/bacha-single-origin-rwanda-superior-830x525.tmb-bc00000001.png?Culture=en" alt="WB 르완다 슈페리어" loading="lazy">
+      <div class="card-img-placeholder"><div class="placeholder-icon">🫘</div><div class="placeholder-name">Rwanda Superior</div></div>
+      <div class="card-img-overlay"></div>
+    </div>
+    <div class="card-body">
+      <div class="card-header"><div><span class="card-name">WB 르완다 슈페리어 <span class="card-name-en">Rwanda Superior</span></span></div><span class="roast-badge roast-medium-dark">미디엄 다크</span></div>
+      <div class="origin-row"><span class="origin-flag">🇷🇼</span><span class="origin-text">르완다</span><span class="origin-detail">— 싱글 오리진 ✅</span></div>
+      <div class="flavor-tags"><span class="tag tag-floral">신선한 꽃향</span><span class="tag tag-nutty">땅콩 노트</span></div>
+      <p class="desc">약한 산미와 함께 신선하고 화사한 꽃향이 피어오르며 신선한 땅콩 노트로 마무리되는 개성 있는 르완다 싱글 오리진.</p>
+      <div class="meters">
+        <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:40%"></div></div><span class="meter-val">—</span></div>
+        <div class="meter-row"><span class="meter-label">산미</span><div class="meter-track"><div class="meter-fill fill-acidity" style="width:35%"></div></div><span class="meter-val acidity-label acidity-mid">중간</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="wb" data-acidity="low" data-search="상실베스트레 sao silvestre 브라질 brazil 캐러멜 초콜릿 헤이즐넛 세라도">
+    <div class="card-img-wrap">
+      <img data-src="https://bachacoffee.com/images/default-source/loose-coffee/coffee-icons/single-origin/bacha-single-origin-sao-silvestre-830x525.tmb-bc00000001.png?Culture=en" alt="WB 상실베스트레" loading="lazy">
+      <div class="card-img-placeholder"><div class="placeholder-icon">🫘</div><div class="placeholder-name">São Silvestre</div></div>
+      <div class="card-img-overlay"></div>
+    </div>
+    <div class="card-body">
+      <div class="card-header"><div><span class="card-name">WB 상실베스트레 <span class="card-name-en">São Silvestre</span></span></div><span class="roast-badge roast-medium">미디엄</span></div>
+      <div class="origin-row"><span class="origin-flag">🇧🇷</span><span class="origin-text">브라질</span><span class="origin-detail">— 미나스 제라이스 북부 세라도 · 내추럴 가공 ✅</span></div>
+      <div class="flavor-tags"><span class="tag tag-malty">캐러멜</span><span class="tag tag-chocolate">초콜릿</span><span class="tag tag-nutty">헤이즐넛</span></div>
+      <p class="desc">아침 햇살을 가득 받으며 늦게 익는 세라도 미네이루의 커피. 내추럴 가공으로 캐러멜·초콜릿·헤이즐넛의 균형잡힌 달콤함.</p>
+      <div class="meters">
+        <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:40%"></div></div><span class="meter-val">—</span></div>
+        <div class="meter-row"><span class="meter-label">산미</span><div class="meter-track"><div class="meter-fill fill-acidity" style="width:18%"></div></div><span class="meter-val acidity-label acidity-low">낮음</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="wb" data-acidity="mid" data-search="엘플라밍고 el flamingo 멕시코 mexico 카카오 SHG">
+    <div class="card-img-wrap">
+      <img data-src="https://bachacoffee.com/images/default-source/loose-coffee/coffee-icons/single-origin/bacha-single-origin-el-flamingo-830x525.tmb-bc00000001.png?Culture=en" alt="WB 엘플라밍고" loading="lazy">
+      <div class="card-img-placeholder"><div class="placeholder-icon">🫘</div><div class="placeholder-name">El Flamingo</div></div>
+      <div class="card-img-overlay"></div>
+    </div>
+    <div class="card-body">
+      <div class="card-header"><div><span class="card-name">WB 엘플라밍고 <span class="card-name-en">El Flamingo</span></span></div><span class="roast-badge roast-medium">미디엄</span></div>
+      <div class="origin-row"><span class="origin-flag">🇲🇽</span><span class="origin-text">멕시코</span><span class="origin-detail">— 해발 1,200m+ SHG 싱글 오리진 ✅</span></div>
+      <div class="flavor-tags"><span class="tag tag-chocolate">로 카카오</span><span class="tag tag-malty">부드러움</span></div>
+      <p class="desc">1,200m 이상 엄격한 고도 기준의 SHG 등급 멕시코 커피. 로 카카오(생 코코아)의 깔끔하고 부드러운 노트가 특징.</p>
+      <div class="meters">
+        <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:40%"></div></div><span class="meter-val">—</span></div>
+        <div class="meter-row"><span class="meter-label">산미</span><div class="meter-track"><div class="meter-fill fill-acidity" style="width:38%"></div></div><span class="meter-val acidity-label acidity-mid">중간</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="wb" data-acidity="mid" data-search="WB 막달레나 magdalena 콜롬비아 colombia 과일 산미 홀빈">
+    <div class="card-img-wrap">
+      <img data-src="https://bachacoffee.com/images/default-source/loose-coffee/coffee-icons/single-origin/bacha-single-origin-magdalena-830x525.tmb-bc00000001.png?Culture=en" alt="WB 막달레나" loading="lazy">
+      <div class="card-img-placeholder"><div class="placeholder-icon">🫘</div><div class="placeholder-name">Magdalena (WB)</div></div>
+      <div class="card-img-overlay"></div>
+    </div>
+    <div class="card-body">
+      <div class="card-header"><div><span class="card-name">WB 막달레나 <span class="card-name-en">Magdalena</span></span></div><span class="roast-badge roast-medium">미디엄</span></div>
+      <div class="origin-row"><span class="origin-flag">🇨🇴</span><span class="origin-text">콜롬비아</span><span class="origin-detail">— 우일라(Huila) · 냉산수 워시드 싱글 오리진 ✅</span></div>
+      <div class="flavor-tags"><span class="tag tag-fruity">과일향</span><span class="tag tag-malty">부드러운 산미</span></div>
+      <p class="desc">네바도 델 우일라 화산 자락의 홀빈. 균형잡힌 산미와 과일향 오버톤, 신선하고 깔끔한 풍미를 홀빈으로 즐기는 막달레나.</p>
+      <div class="meters">
+        <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:40%"></div></div><span class="meter-val">2/5</span></div>
+        <div class="meter-row"><span class="meter-label">산미</span><div class="meter-track"><div class="meter-fill fill-acidity" style="width:48%"></div></div><span class="meter-val acidity-label acidity-mid">중간</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="wb" data-acidity="mid" data-search="WB 블루다뉴브 blue danube 베리 밀크초콜릿 산미 홀빈">
+    <div class="card-img-wrap">
+      <img data-src="https://bachacoffee.com/images/default-source/loose-coffee/coffee-icons/fine-flavoured/bacha-fine-flavoured-blue-danube-830x525.tmb-bc00000001.png?Culture=en" alt="WB 블루다뉴브" loading="lazy">
+      <div class="card-img-placeholder"><div class="placeholder-icon">🫘</div><div class="placeholder-name">Blue Danube (WB)</div></div>
+      <div class="card-img-overlay"></div>
+    </div>
+    <div class="card-body">
+      <div class="card-header"><div><span class="card-name">WB 블루다뉴브 <span class="card-name-en">Blue Danube</span></span></div><span class="roast-badge roast-medium">미디엄</span></div>
+      <div class="origin-row"><span class="origin-unknown">베이스 원두 산지 비공개 (파인 플레이버드)</span></div>
+      <div class="flavor-tags"><span class="tag tag-fruity">포레스트 베리</span><span class="tag tag-chocolate">밀크초콜릿</span></div>
+      <p class="desc">포레스트 베리의 물결이 밀크초콜릿의 부드러움과 균형을 이루고, 산뜻한 산미로 마무리. 홀빈으로 즐기는 시그니처 노마드 컬렉션.</p>
+      <div class="meters">
+        <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:40%"></div></div><span class="meter-val">2/5</span></div>
+        <div class="meter-row"><span class="meter-label">산미</span><div class="meter-track"><div class="meter-fill fill-acidity" style="width:52%"></div></div><span class="meter-val acidity-label acidity-mid">중간</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="wb" data-acidity="mid" data-search="WB 아이러브파리 i love paris 베리 너트 과일 홀빈">
+    <div class="card-img-wrap">
+      <img data-src="https://bachacoffee.com/images/default-source/loose-coffee/coffee-icons/fine-flavoured/bacha-fine-flavoured-i-love-paris-830x525.tmb-bc00000001.png?Culture=en" alt="WB 아이러브파리" loading="lazy">
+      <div class="card-img-placeholder"><div class="placeholder-icon">🫘</div><div class="placeholder-name">I Love Paris (WB)</div></div>
+      <div class="card-img-overlay"></div>
+    </div>
+    <div class="card-body">
+      <div class="card-header"><div><span class="card-name">WB 아이러브파리 <span class="card-name-en">I Love Paris</span></span></div><span class="roast-badge roast-medium">미디엄</span></div>
+      <div class="origin-row"><span class="origin-unknown">베이스 원두 산지 비공개 (파인 플레이버드)</span></div>
+      <div class="flavor-tags"><span class="tag tag-fruity">포레스트 베리</span><span class="tag tag-nutty">와일드 너트</span></div>
+      <p class="desc">빛의 도시 파리의 여름 햇살. 포레스트 베리와 와일드 너트가 연인의 포옹처럼 어우러지는 한 잔을 홀빈으로 즐기는 시그니처 노마드 컬렉션.</p>
+      <div class="meters">
+        <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:40%"></div></div><span class="meter-val">2/5</span></div>
+        <div class="meter-row"><span class="meter-label">산미</span><div class="meter-track"><div class="meter-fill fill-acidity" style="width:42%"></div></div><span class="meter-val acidity-label acidity-mid">중간</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="wb" data-acidity="mid" data-search="WB 세빌오렌지 seville orange 오렌지 코코아 시트러스 홀빈">
+    <div class="card-img-wrap">
+      <img data-src="https://bachacoffee.com/images/default-source/loose-coffee/coffee-icons/fine-flavoured/bacha-fine-flavoured-seville-orange-830x525.tmb-bc00000001.png?Culture=en" alt="WB 세빌오렌지" loading="lazy">
+      <div class="card-img-placeholder"><div class="placeholder-icon">🫘</div><div class="placeholder-name">Seville Orange (WB)</div></div>
+      <div class="card-img-overlay"></div>
+    </div>
+    <div class="card-body">
+      <div class="card-header"><div><span class="card-name">WB 세빌오렌지 <span class="card-name-en">Seville Orange</span></span></div><span class="roast-badge roast-medium">미디엄</span></div>
+      <div class="origin-row"><span class="origin-unknown">베이스 원두 산지 비공개 (파인 플레이버드)</span></div>
+      <div class="flavor-tags"><span class="tag tag-chocolate">코코아</span><span class="tag tag-citrus">오렌지 제스트</span></div>
+      <p class="desc">시트러스의 산미와 초콜릿의 달콤함이 완벽하게 결합된 커피를 홀빈으로. 크랙 코코아에 세빌 오렌지의 생기있는 제스트가 더해진 오후의 커피.</p>
+      <div class="meters">
+        <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:20%"></div></div><span class="meter-val">1/5</span></div>
+        <div class="meter-row"><span class="meter-label">산미</span><div class="meter-track"><div class="meter-fill fill-acidity" style="width:50%"></div></div><span class="meter-val acidity-label acidity-mid">중간</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="wb" data-acidity="low" data-search="WB 밀라노모닝 milano morning 우간다 초콜릿 브리오슈 홀빈">
+    <div class="card-img-wrap">
+      <img data-src="https://bachacoffee.com/images/default-source/loose-coffee/coffee-icons/fine-flavoured/bacha-fine-flavoured-milano-morning-830x525.tmb-bc00000001.png?Culture=en" alt="WB 밀라노모닝" loading="lazy">
+      <div class="card-img-placeholder"><div class="placeholder-icon">🫘</div><div class="placeholder-name">Milano Morning (WB)</div></div>
+      <div class="card-img-overlay"></div>
+    </div>
+    <div class="card-body">
+      <div class="card-header"><div><span class="card-name">WB 밀라노모닝 <span class="card-name-en">Milano Morning</span></span></div><span class="roast-badge roast-medium">미디엄</span></div>
+      <div class="origin-row"><span class="origin-flag">🇺🇬</span><span class="origin-text">우간다</span><span class="origin-detail">— 싱글 오리진 97% + 천연 메이플 향료 3% ✅</span></div>
+      <div class="flavor-tags"><span class="tag tag-chocolate">쌉싸름한 초콜릿</span><span class="tag tag-malty">브리오슈</span></div>
+      <p class="desc">우간다 아라비카 97%에 천연 메이플 향료 3%로 가향. 이탈리아 밀라노 아침의 에너지를 담은 커피를 홀빈으로 즐기는 시그니처 노마드 컬렉션.</p>
+      <div class="meters">
+        <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:40%"></div></div><span class="meter-val">2/5</span></div>
+        <div class="meter-row"><span class="meter-label">산미</span><div class="meter-track"><div class="meter-fill fill-acidity" style="width:18%"></div></div><span class="meter-val acidity-label acidity-low">낮음</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="wb" data-acidity="mid" data-search="WB 1910 딸기 크림 과일 홀빈">
+    <div class="card-img-wrap">
+      <img data-src="https://bachacoffee.com/images/default-source/loose-coffee/coffee-icons/fine-flavoured/bacha-fine-flavoured-1910-830x525.tmb-bc00000001.png?Culture=en" alt="WB 1910" loading="lazy">
+      <div class="card-img-placeholder"><div class="placeholder-icon">🫘</div><div class="placeholder-name">1910 (WB)</div></div>
+      <div class="card-img-overlay"></div>
+    </div>
+    <div class="card-body">
+      <div class="card-header"><div><span class="card-name">WB 1910 <span class="card-name-en">1910</span></span></div><span class="roast-badge roast-medium">미디엄</span></div>
+      <div class="origin-row"><span class="origin-unknown">베이스 원두 산지 비공개 (파인 플레이버드)</span></div>
+      <div class="flavor-tags"><span class="tag tag-fruity">야생 딸기</span><span class="tag tag-malty">헤비 크림</span></div>
+      <p class="desc">마라케시 다르 엘 바샤 궁전 1910년을 기념하는 시그니처 커피. 갓 딴 야생 딸기와 진한 크림을 연상시키는 여름 소풍 같은 한 잔을 홀빈으로.</p>
+      <div class="meters">
+        <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:30%"></div></div><span class="meter-val">1.5/5</span></div>
+        <div class="meter-row"><span class="meter-label">산미</span><div class="meter-track"><div class="meter-fill fill-acidity" style="width:40%"></div></div><span class="meter-val acidity-label acidity-mid">중간</span></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="no-results" id="noResults">검색 결과가 없습니다. 다른 키워드로 검색해 보세요.</div>
+</main>
+
+<footer class="footer">
+  <strong>Bacha Coffee</strong> 원두 가이드 · 모든 정보는 공식 제품 설명 기준 · 100% 아라비카<br>
+  <span style="font-size:11px;margin-top:6px;display:block">이미지: bachacoffee.com — 브라우저 환경에 따라 표시 여부가 달라질 수 있습니다</span>
+</footer>
+
+<script>
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const cards = document.querySelectorAll('.card');
+  const searchInput = document.getElementById('searchInput');
+  const noResults = document.getElementById('noResults');
+  let activeFilter = 'all', activeAcidity = null;
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      if (btn.dataset.cat) { activeFilter = btn.dataset.cat; activeAcidity = null; }
+      else if (btn.dataset.acidity) { activeAcidity = btn.dataset.acidity; activeFilter = 'all'; }
+      applyFilters();
+    });
+  });
+  searchInput.addEventListener('input', applyFilters);
+
+  function applyFilters() {
+    const q = searchInput.value.toLowerCase().trim();
+    let visible = 0;
+    cards.forEach(card => {
+      const ok = (activeFilter === 'all' || card.dataset.cat === activeFilter)
+               && (!activeAcidity || card.dataset.acidity === activeAcidity)
+               && (!q || card.dataset.search.includes(q));
+      card.style.display = ok ? '' : 'none';
+      if (ok) visible++;
+    });
+    noResults.style.display = visible === 0 ? 'block' : 'none';
+  }
+
+  function loadCardImage(img) {
+    const src = img.dataset.src;
+    if (!src) return;
+    const placeholder = img.closest('.card-img-wrap').querySelector('.card-img-placeholder');
+    img.onload = () => { img.classList.add('loaded'); if (placeholder) placeholder.classList.add('hidden'); };
+    img.onerror = () => { img.classList.add('errored'); };
+    img.src = src;
+  }
+
+  if ('IntersectionObserver' in window) {
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { loadCardImage(e.target); obs.unobserve(e.target); } });
+    }, { rootMargin: '200px' });
+    document.querySelectorAll('.card-img-wrap img[data-src]').forEach(img => obs.observe(img));
+  } else {
+    document.querySelectorAll('.card-img-wrap img[data-src]').forEach(loadCardImage);
+  }
+</script>
+</body>
+</html>
