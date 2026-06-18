@@ -46,6 +46,12 @@
 
   /* SEARCH */
   .search-wrap { padding: 32px 40px 8px; max-width: 1200px; margin: 0 auto; }
+  .acidity-bar { max-width: 1200px; margin: 0 auto; padding: 12px 40px 4px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .acidity-bar-label { font-family: 'Noto Sans KR', sans-serif; font-size: 12px; font-weight: 600; color: var(--text-light); margin-right: 4px; }
+  .acidity-quick-btn { font-family: 'Noto Sans KR', sans-serif; font-size: 12px; font-weight: 500; padding: 5px 14px; border-radius: 20px; border: 1.5px solid var(--beige-mid); background: var(--white); color: var(--text-mid); cursor: pointer; transition: all 0.2s; }
+  .acidity-quick-btn:hover { border-color: var(--gold); color: var(--mocha); }
+  .acidity-quick-btn.active-acid { border-color: var(--gold); background: var(--gold); color: var(--espresso); font-weight: 700; }
+  @media (max-width: 600px) { .acidity-bar { padding: 10px 16px 4px; } }
   .search-box { position: relative; max-width: 360px; }
   .search-box input { width: 100%; background: var(--white); border: 1.5px solid var(--beige-mid); border-radius: 6px; padding: 10px 16px 10px 40px; font-family: 'Noto Sans KR', sans-serif; font-size: 13px; color: var(--text-dark); outline: none; transition: border-color 0.2s; }
   .search-box input:focus { border-color: var(--gold); }
@@ -69,7 +75,7 @@
 
   /* CARD IMAGE */
   .card-img-wrap { position: relative; width: 100%; height: 260px; background: linear-gradient(135deg, #2A1810 0%, #3D1F10 50%, #1C0F0A 100%); overflow: hidden; flex-shrink: 0; }
-  .card-img-wrap img { width: 100%; height: 100%; object-fit: cover; object-position: center bottom; display: block; transition: opacity 0.3s, transform 0.4s; opacity: 0; }
+  .card-img-wrap img { width: 100%; height: 100%; object-fit: cover; object-position: center center; display: block; transition: opacity 0.3s, transform 0.4s; opacity: 0; }
   .card-img-wrap img.loaded { opacity: 1; }
   .card-img-wrap img.errored { display: none; }
   .card-img-wrap:hover img.loaded { transform: scale(1.04); }
@@ -135,6 +141,12 @@
     .grid { grid-template-columns: 1fr; }
     .card-img-wrap { height: 220px; }
   }
+
+  .card[data-cat="single"] .card-img-wrap img,
+  .card[data-cat="decaf"] .card-img-wrap img { object-position: center bottom; }
+  .card[data-cat="gift"] .card-img-wrap img { object-position: center bottom; }
+  .card[data-cat="flavoured"] .card-img-wrap img,
+  .card[data-cat="wb"] .card-img-wrap img { object-position: center center; }
 </style>
 </head>
 <body>
@@ -148,6 +160,12 @@
     <div class="stat"><span class="stat-num">35</span><span class="stat-label">생산국</span></div>
     <div class="stat"><span class="stat-num">100%</span><span class="stat-label">아라비카</span></div>
   </div>
+  <div style="margin-top:28px">
+    <button id="about-toggle-btn" onclick="toggleAbout()" style="font-family:'Noto Sans KR',sans-serif;font-size:12px;font-weight:600;letter-spacing:0.08em;color:var(--espresso);background:var(--gold);border:none;padding:10px 24px;border-radius:20px;cursor:pointer;transition:all 0.2s">
+      ☕ 바샤커피 소개 보기
+    </button>
+  </div>
+</div>
 </header>
 
 <nav class="filter-bar" id="filterBar">
@@ -157,16 +175,116 @@
   <button class="filter-btn" data-cat="decaf">디카페인</button>
   <button class="filter-btn" data-cat="wb">홀빈 (WB)</button>
   <button class="filter-btn" data-cat="gift">기프트세트</button>
-  <button class="filter-btn" data-acidity="high">산미 높음</button>
-  <button class="filter-btn" data-acidity="mid">산미 중간</button>
-  <button class="filter-btn" data-acidity="low">산미 낮음</button>
+
 </nav>
 
-<div class="search-wrap">
+<div id="about-section" style="display:none;border-top:1px solid rgba(200,169,110,0.2)">
+<div style="background:var(--espresso);padding:0 40px;display:flex;gap:0;overflow-x:auto;scrollbar-width:none">
+  <button class="about-sub-btn active-sub" onclick="showSub('brand')" style="font-family:'Noto Sans KR',sans-serif;font-size:12px;font-weight:500;color:rgba(245,237,217,0.5);background:none;border:none;border-bottom:2px solid transparent;padding:16px 18px;cursor:pointer;white-space:nowrap;transition:all 0.2s">브랜드 소개</button>
+  <button class="about-sub-btn" onclick="showSub('arabica')" style="font-family:'Noto Sans KR',sans-serif;font-size:12px;font-weight:500;color:rgba(245,237,217,0.5);background:none;border:none;border-bottom:2px solid transparent;padding:16px 18px;cursor:pointer;white-space:nowrap;transition:all 0.2s">아라비카 vs 로부스타</button>
+  <button class="about-sub-btn" onclick="showSub('origin')" style="font-family:'Noto Sans KR',sans-serif;font-size:12px;font-weight:500;color:rgba(245,237,217,0.5);background:none;border:none;border-bottom:2px solid transparent;padding:16px 18px;cursor:pointer;white-space:nowrap;transition:all 0.2s">생산지</button>
+  <button class="about-sub-btn" onclick="showSub('process')" style="font-family:'Noto Sans KR',sans-serif;font-size:12px;font-weight:500;color:rgba(245,237,217,0.5);background:none;border:none;border-bottom:2px solid transparent;padding:16px 18px;cursor:pointer;white-space:nowrap;transition:all 0.2s">가공방식</button>
+  <button onclick="toggleAbout()" style="font-family:'Noto Sans KR',sans-serif;font-size:12px;font-weight:500;color:rgba(245,237,217,0.35);background:none;border:none;padding:16px 18px;cursor:pointer;margin-left:auto;white-space:nowrap">✕ 닫기</button>
+</div>
+<div style="max-width:900px;margin:0 auto;padding:20px 40px 60px">
+
+  <div id="sub-brand"><h2 class="section-title">☕ 바샤커피란?</h2>
+  <div style="background:var(--white);border:1.5px solid var(--beige);border-radius:12px;padding:28px 32px;margin-bottom:24px">
+    <p style="font-family:'Noto Sans KR',sans-serif;font-size:14px;color:#3A1E0F;line-height:1.9;word-break:keep-all">
+      바샤커피는 <strong>모로코의 다르 엘 바샤(Dar El Bacha Palace)</strong>라는 궁전 내 1910년에 생긴 커피 하우스를 모티브로 한 브랜드입니다. 1910년 궁전 내 운영하였던 커피하우스를 재해석해 <strong>2019년 '바샤커피'로 재탄생</strong>하였습니다.<br><br>
+      바샤커피는 총 <strong>206가지의 원두를 판매</strong>(파인 플레이버, 싱글 오리진, 파인 블렌디드, 디카페인)하며, 35개에 달하는 세계 최고 커피 산지에서 엄선한 원두를 전통적인 느린 가공법(slow method)으로 소량씩 손수 로스팅합니다.<br><br>
+      <strong>파인 플레이버</strong>는 로스팅 과정에서 천연 에센셜 오일을 사용하여 향을 입힙니다.<br>
+      <strong>디카페인</strong>은 100% 이산화탄소 공법을 사용하여 화학 용매 없이 카페인만 선택적으로 제거하며, 향과 맛 성분은 거의 건드리지 않습니다.
+    </p>
+  </div>
+
+  </div><div id="sub-arabica" style="display:none"><h2 class="section-title">🌱 아라비카 vs 로부스타</h2>
+  <div style="background:var(--white);border:1.5px solid var(--beige);border-radius:12px;padding:28px 32px;margin-bottom:24px">
+    <p style="font-family:'Noto Sans KR',sans-serif;font-size:13px;color:var(--text-light);margin-bottom:16px;font-weight:500">바샤커피는 100% 아라비카 스페셜티 커피만을 사용합니다.</p>
+    <div style="overflow-x:auto">
+      <table style="width:100%;border-collapse:collapse;font-family:'Noto Sans KR',sans-serif;font-size:13px">
+        <thead>
+          <tr style="background:var(--espresso);color:var(--cream)">
+            <th style="padding:10px 16px;text-align:left;font-weight:600">구분</th>
+            <th style="padding:10px 16px;text-align:center;font-weight:600;color:var(--gold)">아라비카 ✅</th>
+            <th style="padding:10px 16px;text-align:center;font-weight:600">로부스타</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom:1px solid var(--beige)"><td style="padding:10px 16px;font-weight:600;color:var(--text-mid)">재배 고도</td><td style="padding:10px 16px;text-align:center;color:#3A1E0F">고지대 (800~1,000m)</td><td style="padding:10px 16px;text-align:center;color:var(--text-light)">저지대</td></tr>
+          <tr style="border-bottom:1px solid var(--beige);background:rgba(200,169,110,0.04)"><td style="padding:10px 16px;font-weight:600;color:var(--text-mid)">재배 난이도</td><td style="padding:10px 16px;text-align:center;color:#3A1E0F">높음 (병충해에 약함)</td><td style="padding:10px 16px;text-align:center;color:var(--text-light)">낮음</td></tr>
+          <tr style="border-bottom:1px solid var(--beige)"><td style="padding:10px 16px;font-weight:600;color:var(--text-mid)">전 세계 생산률</td><td style="padding:10px 16px;text-align:center;color:#3A1E0F">약 60~70%</td><td style="padding:10px 16px;text-align:center;color:var(--text-light)">약 30~40%</td></tr>
+          <tr style="border-bottom:1px solid var(--beige);background:rgba(200,169,110,0.04)"><td style="padding:10px 16px;font-weight:600;color:var(--text-mid)">맛</td><td style="padding:10px 16px;text-align:center;color:#3A1E0F">부드럽고 복합적</td><td style="padding:10px 16px;text-align:center;color:var(--text-light)">강하고 직선적</td></tr>
+          <tr style="border-bottom:1px solid var(--beige)"><td style="padding:10px 16px;font-weight:600;color:var(--text-mid)">향</td><td style="padding:10px 16px;text-align:center;color:#3A1E0F">꽃, 과일, 초콜릿, 견과</td><td style="padding:10px 16px;text-align:center;color:var(--text-light)">곡물, 나무, 쓴맛</td></tr>
+          <tr style="border-bottom:1px solid var(--beige);background:rgba(200,169,110,0.04)"><td style="padding:10px 16px;font-weight:600;color:var(--text-mid)">산미</td><td style="padding:10px 16px;text-align:center;color:#3A1E0F">밝고 깔끔</td><td style="padding:10px 16px;text-align:center;color:var(--text-light)">거의 없음</td></tr>
+          <tr style="border-bottom:1px solid var(--beige)"><td style="padding:10px 16px;font-weight:600;color:var(--text-mid)">쓴맛</td><td style="padding:10px 16px;text-align:center;color:#3A1E0F">적음</td><td style="padding:10px 16px;text-align:center;color:var(--text-light)">강함</td></tr>
+          <tr><td style="padding:10px 16px;font-weight:600;color:var(--text-mid)">카페인</td><td style="padding:10px 16px;text-align:center;color:#3A1E0F">1~1.5%</td><td style="padding:10px 16px;text-align:center;color:var(--text-light)">2~2.7%</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  </div><div id="sub-origin" style="display:none"><h2 class="section-title">🗺️ 커피 생산지</h2>
+  <div style="background:var(--white);border:1.5px solid var(--beige);border-radius:12px;padding:28px 32px;margin-bottom:24px">
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;font-family:'Noto Sans KR',sans-serif">
+      <div style="padding:14px 16px;background:var(--cream);border-radius:8px;border-left:3px solid var(--gold)"><div style="font-size:12px;font-weight:700;color:var(--mocha);margin-bottom:6px">🌍 아프리카</div><div style="font-size:13px;color:#3A1E0F;line-height:1.7">에티오피아, 우간다, 르완다, 케냐, 브룬디, 콩고, 잠비아, 탄자니아, 말라위</div></div>
+      <div style="padding:14px 16px;background:var(--cream);border-radius:8px;border-left:3px solid var(--gold)"><div style="font-size:12px;font-weight:700;color:var(--mocha);margin-bottom:6px">🕌 아라비아 반도</div><div style="font-size:13px;color:#3A1E0F;line-height:1.7">예멘</div></div>
+      <div style="padding:14px 16px;background:var(--cream);border-radius:8px;border-left:3px solid var(--gold)"><div style="font-size:12px;font-weight:700;color:var(--mocha);margin-bottom:6px">🌏 아시아</div><div style="font-size:13px;color:#3A1E0F;line-height:1.7">중국, 인도, 인도네시아, 미얀마, 네팔, 태국</div></div>
+      <div style="padding:14px 16px;background:var(--cream);border-radius:8px;border-left:3px solid var(--gold)"><div style="font-size:12px;font-weight:700;color:var(--mocha);margin-bottom:6px">🏝️ 중앙아메리카 · 카리브해</div><div style="font-size:13px;color:#3A1E0F;line-height:1.7">자메이카, 파나마, 도미니칸, 온두라스, 니카라과, 엘살바도르, 과테말라, 코스타리카, 쿠바</div></div>
+      <div style="padding:14px 16px;background:var(--cream);border-radius:8px;border-left:3px solid var(--gold)"><div style="font-size:12px;font-weight:700;color:var(--mocha);margin-bottom:6px">🌎 북아메리카</div><div style="font-size:13px;color:#3A1E0F;line-height:1.7">멕시코, 쿠바</div></div>
+      <div style="padding:14px 16px;background:var(--cream);border-radius:8px;border-left:3px solid var(--gold)"><div style="font-size:12px;font-weight:700;color:var(--mocha);margin-bottom:6px">🌊 오세아니아</div><div style="font-size:13px;color:#3A1E0F;line-height:1.7">하와이, 파푸아뉴기니, 호주</div></div>
+      <div style="padding:14px 16px;background:var(--cream);border-radius:8px;border-left:3px solid var(--gold)"><div style="font-size:12px;font-weight:700;color:var(--mocha);margin-bottom:6px">🌎 남아메리카</div><div style="font-size:13px;color:#3A1E0F;line-height:1.7">페루, 브라질, 콜롬비아, 에콰도르, 볼리비아</div></div>
+    </div>
+  </div>
+
+  </div><div id="sub-process" style="display:none"><h2 class="section-title">⚙️ 커피 가공방식</h2>
+
+  <div style="background:var(--white);border:1.5px solid var(--beige);border-radius:12px;padding:24px 28px;margin-bottom:14px">
+    <div style="font-family:'Noto Sans KR',sans-serif;font-size:12px;font-weight:700;color:var(--gold);background:var(--espresso);display:inline-block;padding:4px 12px;border-radius:20px;margin-bottom:12px">펄프드 내추럴 · 8종</div>
+    <p style="font-family:'Noto Sans KR',sans-serif;font-size:13.5px;color:#3A1E0F;line-height:1.9;word-break:keep-all">커피 열매의 과육(펄프)을 기계로 제거한 뒤, 점액질(뮤실리지)이 붙은 상태로 건조하는 방식입니다. 내추럴의 과일향과 워시드의 깔끔함을 동시에 가지며, <strong>달콤하고 복합적인 풍미</strong>가 특징입니다. 바디감이 중간 수준이며 산미는 워시드보다 낮고 내추럴보다 높습니다.</p>
+    <p style="font-family:'Noto Sans KR',sans-serif;font-size:12px;color:#5A3520;margin-top:10px;font-weight:500">해당 제품: 카르모, 카파 칼디 슈프림, 카모심, 상 벤투, 음피카 주얼, 라고아, 스위트 산토스 디카페인 등</p>
+  </div>
+
+  <div style="background:var(--white);border:1.5px solid var(--beige);border-radius:12px;padding:24px 28px;margin-bottom:14px">
+    <div style="font-family:'Noto Sans KR',sans-serif;font-size:12px;font-weight:700;color:var(--gold);background:var(--espresso);display:inline-block;padding:4px 12px;border-radius:20px;margin-bottom:12px">허니 · 3종</div>
+    <p style="font-family:'Noto Sans KR',sans-serif;font-size:13.5px;color:#3A1E0F;line-height:1.9;word-break:keep-all">과육을 제거한 뒤 점액질 양에 따라 화이트·옐로우·레드·블랙 허니로 구분됩니다. 점액질을 많이 남길수록 더 달콤하고 과일향이 풍부해집니다. <strong>꿀처럼 달콤하고 부드러운 바디감</strong>이 특징이며, 발효 과정에서 독특한 풍미가 생깁니다.</p>
+    <p style="font-family:'Noto Sans KR',sans-serif;font-size:12px;color:#5A3520;margin-top:10px;font-weight:500">해당 제품: 허니 드래곤, 불칸 아줄 레드 허니, 불칸 아줄 게이샤</p>
+  </div>
+
+  <div style="background:var(--white);border:1.5px solid var(--beige);border-radius:12px;padding:24px 28px;margin-bottom:14px">
+    <div style="font-family:'Noto Sans KR',sans-serif;font-size:12px;font-weight:700;color:var(--gold);background:var(--espresso);display:inline-block;padding:4px 12px;border-radius:20px;margin-bottom:12px">내추럴 / 건식법 · 5종</div>
+    <p style="font-family:'Noto Sans KR',sans-serif;font-size:13.5px;color:#3A1E0F;line-height:1.9;word-break:keep-all">수확한 커피 열매를 그대로 햇볕에 말리는 가장 전통적인 방식입니다. 과육과 씨앗이 함께 건조되면서 당분이 원두에 스며들어 <strong>과일향, 베리류, 와인과 같은 풍부한 단맛</strong>이 특징입니다. 바디감이 강하고 산미는 낮습니다.</p>
+    <p style="font-family:'Noto Sans KR',sans-serif;font-size:12px;color:#5A3520;margin-top:10px;font-weight:500">해당 제품: 상실베스트레, 몬순 시크릿, 라 리포마, 그랜드 모카 마타리, 파라이소 골드</p>
+  </div>
+
+  <div style="background:var(--white);border:1.5px solid var(--beige);border-radius:12px;padding:24px 28px;margin-bottom:14px">
+    <div style="font-family:'Noto Sans KR',sans-serif;font-size:12px;font-weight:700;color:var(--gold);background:var(--espresso);display:inline-block;padding:4px 12px;border-radius:20px;margin-bottom:12px">세미 워시드 · 1종</div>
+    <p style="font-family:'Noto Sans KR',sans-serif;font-size:13.5px;color:#3A1E0F;line-height:1.9;word-break:keep-all">과육은 기계로 제거하지만 점액질을 물로 씻지 않고 일부 남긴 채 건조합니다. 워시드보다 <strong>부드럽고 깔끔하면서도 약간의 단맛과 과일향</strong>이 남아 있어 균형 잡힌 풍미를 냅니다.</p>
+    <p style="font-family:'Noto Sans KR',sans-serif;font-size:12px;color:#5A3520;margin-top:10px;font-weight:500">해당 제품: 르완다 슈페리어</p>
+  </div>
+
+  <div style="background:var(--white);border:1.5px solid var(--beige);border-radius:12px;padding:24px 28px;margin-bottom:40px">
+    <div style="font-family:'Noto Sans KR',sans-serif;font-size:12px;font-weight:700;color:var(--gold);background:var(--espresso);display:inline-block;padding:4px 12px;border-radius:20px;margin-bottom:12px">워시드 / 습식법 · 147종</div>
+    <p style="font-family:'Noto Sans KR',sans-serif;font-size:13.5px;color:#3A1E0F;line-height:1.9;word-break:keep-all">과육을 제거한 뒤 발효 탱크에 넣어 점액질을 분해하고 물로 깨끗이 씻어 건조하는 방식입니다. 바샤커피 206종 중 가장 많은 비중을 차지합니다. <strong>깔끔하고 밝은 산미, 투명한 풍미</strong>가 특징이며 원두 본연의 테루아(산지 특성)를 가장 잘 드러냅니다.</p>
+    <p style="font-family:'Noto Sans KR',sans-serif;font-size:12px;color:#5A3520;margin-top:10px;font-weight:500">해당 제품: 위 항목 외 모든 커피 (206종 중 147종)</p>
+  </div>
+
+</div>
+</div>
+
+</div>
+<div class="search-wrap" id="main-search">
   <div class="search-box">
     <span class="search-icon">🔍</span>
     <input type="text" id="searchInput" placeholder="커피 이름, 원산지, 플레이버 검색…">
   </div>
+</div>
+<div class="acidity-bar">
+  <span class="acidity-bar-label">산미 필터</span>
+  <button class="acidity-quick-btn active-acid" data-acidity="">전체</button>
+  <button class="acidity-quick-btn" data-acidity="high">높음</button>
+  <button class="acidity-quick-btn" data-acidity="mid">중간</button>
+  <button class="acidity-quick-btn" data-acidity="low">낮음</button>
 </div>
 
 <main class="section" id="mainContent">
@@ -1077,6 +1195,16 @@
 </footer>
 
 <script>
+  // 페이지 로드시 초기화
+  document.addEventListener('DOMContentLoaded', function() {
+    const ms = document.getElementById('mainContent');
+    const ms2 = document.getElementById('main-search');
+    const ab = document.querySelector('.acidity-bar');
+    if (ms) ms.style.display = '';
+    if (ms2) ms2.style.display = '';
+    if (ab) ab.style.display = '';
+  });
+
   const filterBtns = document.querySelectorAll('.filter-btn');
   const cards = document.querySelectorAll('.card');
   const searchInput = document.getElementById('searchInput');
@@ -1087,12 +1215,27 @@
     btn.addEventListener('click', () => {
       filterBtns.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-      if (btn.dataset.cat) { activeFilter = btn.dataset.cat; activeAcidity = null; }
-      else if (btn.dataset.acidity) { activeAcidity = btn.dataset.acidity; activeFilter = 'all'; }
+      const _about = document.getElementById('about-section');
+      if (_about && _about.style.display !== 'none') toggleAbout();
+      activeFilter = btn.dataset.cat || 'all';
+      activeAcidity = null;
+      document.querySelectorAll('.acidity-quick-btn').forEach(b => b.classList.remove('active-acid'));
+      document.querySelector('.acidity-quick-btn[data-acidity=""]').classList.add('active-acid');
       applyFilters();
     });
   });
   searchInput.addEventListener('input', applyFilters);
+
+  // 산미 빠른필터
+  document.querySelectorAll('.acidity-quick-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.acidity-quick-btn').forEach(b => b.classList.remove('active-acid'));
+      btn.classList.add('active-acid');
+      activeAcidity = btn.dataset.acidity || null;
+      // 카테고리 필터는 유지
+      applyFilters();
+    });
+  });
 
   function applyFilters() {
     const q = searchInput.value.toLowerCase().trim();
@@ -1138,6 +1281,39 @@
     document.querySelectorAll('.card-img-wrap img[data-src]').forEach(img => obs.observe(img));
   } else {
     document.querySelectorAll('.card-img-wrap img[data-src]').forEach(loadCardImage);
+  }
+
+  // 바샤커피 소개 토글
+  function toggleAbout() {
+    const about = document.getElementById('about-section');
+    const mainSearch = document.getElementById('main-search');
+    const acidityBar = document.querySelector('.acidity-bar');
+    const mainSection = document.getElementById('mainContent');
+    const btn = document.getElementById('about-toggle-btn');
+    const noResults = document.getElementById('noResults');
+
+    const isHidden = about.style.display === 'none';
+    about.style.display = isHidden ? 'block' : 'none';
+    if (mainSearch) mainSearch.style.display = isHidden ? 'none' : '';
+    if (acidityBar) acidityBar.style.display = isHidden ? 'none' : '';
+    if (mainSection) mainSection.style.display = isHidden ? 'none' : '';
+    if (noResults) noResults.style.display = 'none';
+    btn.textContent = isHidden ? '✕ 소개 닫기' : '☕ 바샤커피 소개 보기';
+    btn.style.background = isHidden ? 'rgba(200,169,110,0.3)' : 'var(--gold)';
+    btn.style.color = isHidden ? 'var(--gold)' : 'var(--espresso)';
+  }
+
+  // 서브탭 전환
+  function showSub(tab) {
+    ['brand','arabica','origin','process'].forEach(t => {
+      const el = document.getElementById('sub-' + t);
+      if (el) el.style.display = t === tab ? '' : 'none';
+    });
+    document.querySelectorAll('.about-sub-btn').forEach(btn => {
+      const isActive = btn.getAttribute('onclick').includes(tab);
+      btn.style.color = isActive ? 'var(--gold)' : 'rgba(245,237,217,0.5)';
+      btn.style.borderBottomColor = isActive ? 'var(--gold)' : 'transparent';
+    });
   }
 </script>
 </body>
