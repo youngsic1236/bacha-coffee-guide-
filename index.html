@@ -148,6 +148,19 @@
   .card[data-cat="wb"] .card-img-wrap img { object-position: center center; }
   .card[data-cat="gift"] .card-img-wrap img { object-position: center bottom; }
   .card[data-cat="wb"] .card-img-wrap { height: 320px; }
+
+  .rec-btn-group { display: flex; flex-wrap: wrap; gap: 8px; }
+  .rec-choice-btn { font-family: 'Noto Sans KR', sans-serif; font-size: 12.5px; font-weight: 500; padding: 7px 16px; border-radius: 20px; border: 1.5px solid var(--beige-mid); background: var(--white); color: var(--text-mid); cursor: pointer; transition: all 0.2s; }
+  .rec-choice-btn:hover { border-color: var(--gold); }
+  .rec-choice-btn.selected { background: var(--gold); border-color: var(--gold); color: var(--espresso); font-weight: 700; }
+  #rec-text-input:focus { border-color: var(--gold); }
+  .rec-result-card { background: var(--white); border: 1.5px solid var(--beige); border-radius: 10px; padding: 16px 18px; margin-bottom: 10px; display: flex; align-items: center; gap: 14px; }
+  .rec-result-rank { font-family: 'Gowun Batang', serif; font-size: 20px; font-weight: 700; color: var(--gold); width: 28px; flex-shrink: 0; text-align: center; }
+  .rec-result-info { flex: 1; min-width: 0; }
+  .rec-result-name { font-family: 'Gowun Batang', serif; font-size: 15px; font-weight: 700; color: var(--text-dark); }
+  .rec-result-reason { font-family: 'Noto Sans KR', sans-serif; font-size: 12px; color: var(--text-light); margin-top: 3px; }
+  .rec-result-tags { display:flex; gap:5px; margin-top:6px; flex-wrap:wrap; }
+
 </style>
 </head>
 <body>
@@ -161,9 +174,12 @@
     <div class="stat"><span class="stat-num">35</span><span class="stat-label">생산국</span></div>
     <div class="stat"><span class="stat-num">100%</span><span class="stat-label">아라비카</span></div>
   </div>
-  <div style="margin-top:28px">
+  <div style="margin-top:28px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
     <button id="about-toggle-btn" onclick="toggleAbout()" style="font-family:'Noto Sans KR',sans-serif;font-size:12px;font-weight:600;letter-spacing:0.08em;color:var(--espresso);background:var(--gold);border:none;padding:10px 24px;border-radius:20px;cursor:pointer;transition:all 0.2s">
       ☕ 바샤커피 소개 보기
+    </button>
+    <button id="recommend-toggle-btn" onclick="toggleRecommend()" style="font-family:'Noto Sans KR',sans-serif;font-size:12px;font-weight:600;letter-spacing:0.08em;color:var(--gold);background:rgba(200,169,110,0.15);border:1.5px solid var(--gold);padding:9px 24px;border-radius:20px;cursor:pointer;transition:all 0.2s">
+      ✨ 나에게 맞는 원두 찾기
     </button>
   </div>
 </header>
@@ -273,6 +289,57 @@
 </div>
 
 </div>
+<div id="recommend-section" style="display:none;border-top:1px solid rgba(200,169,110,0.2)">
+<div style="max-width:760px;margin:0 auto;padding:32px 40px 50px">
+
+  <h2 class="section-title">✨ 나에게 맞는 원두 찾기</h2>
+  <p style="font-family:'Noto Sans KR',sans-serif;font-size:13px;color:var(--text-light);margin-bottom:20px;line-height:1.7;word-break:keep-all">
+    원하는 맛을 자유롭게 적거나, 아래 버튼으로 선택해보세요. 둘 다 사용하면 더 정확하게 추천해드려요.
+  </p>
+
+  <textarea id="rec-text-input" placeholder="예) 산미는 싫고 초콜릿향이 강한 원두 원해요&#10;예) 산미를 좋아하고 향은 약했으면 좋겠어요" style="width:100%;min-height:64px;font-family:'Noto Sans KR',sans-serif;font-size:13.5px;color:#3A1E0F;background:var(--white);border:1.5px solid var(--beige-mid);border-radius:10px;padding:14px 16px;resize:vertical;outline:none;line-height:1.6;box-sizing:border-box"></textarea>
+
+  <div style="margin-top:20px">
+    <div style="font-family:'Noto Sans KR',sans-serif;font-size:12px;font-weight:700;color:var(--mocha);margin-bottom:8px">산미 선호도</div>
+    <div class="rec-btn-group" data-group="acidity">
+      <button class="rec-choice-btn" data-val="low">산미 싫어요</button>
+      <button class="rec-choice-btn" data-val="mid">중간이 좋아요</button>
+      <button class="rec-choice-btn" data-val="high">산미 좋아요</button>
+    </div>
+  </div>
+
+  <div style="margin-top:16px">
+    <div style="font-family:'Noto Sans KR',sans-serif;font-size:12px;font-weight:700;color:var(--mocha);margin-bottom:8px">향 / 풍미</div>
+    <div class="rec-btn-group" data-group="flavor">
+      <button class="rec-choice-btn" data-val="chocolate">초콜릿</button>
+      <button class="rec-choice-btn" data-val="nutty">견과류</button>
+      <button class="rec-choice-btn" data-val="fruity">과일</button>
+      <button class="rec-choice-btn" data-val="floral">꽃향</button>
+      <button class="rec-choice-btn" data-val="spice">향신료</button>
+      <button class="rec-choice-btn" data-val="malty">몰트/캐러멜</button>
+      <button class="rec-choice-btn" data-val="citrus">시트러스</button>
+      <button class="rec-choice-btn" data-val="none">향 없이 깔끔하게</button>
+    </div>
+  </div>
+
+  <div style="margin-top:16px">
+    <div style="font-family:'Noto Sans KR',sans-serif;font-size:12px;font-weight:700;color:var(--mocha);margin-bottom:8px">바디감 / 강도</div>
+    <div class="rec-btn-group" data-group="strength">
+      <button class="rec-choice-btn" data-val="light">가볍게</button>
+      <button class="rec-choice-btn" data-val="medium">보통</button>
+      <button class="rec-choice-btn" data-val="heavy">묵직하게</button>
+    </div>
+  </div>
+
+  <button onclick="runRecommend()" style="margin-top:24px;width:100%;font-family:'Noto Sans KR',sans-serif;font-size:14px;font-weight:700;letter-spacing:0.03em;color:var(--espresso);background:var(--gold);border:none;padding:13px;border-radius:10px;cursor:pointer;transition:opacity 0.2s">
+    🔍 추천받기
+  </button>
+
+  <div id="rec-results" style="margin-top:28px"></div>
+
+</div>
+</div>
+
 <div class="search-wrap" id="main-search">
   <div class="search-box">
     <span class="search-icon">🔍</span>
@@ -295,7 +362,7 @@
 <h2 class="section-title" data-section="single"><img src="data:image/png;base64,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" style="height:22px;width:auto;vertical-align:middle;margin-right:4px;opacity:0.85"> 싱글 오리진</h2>
 <div class="grid">
 
-  <div class="card" data-cat="single" data-acidity="mid" data-search="시다모 마운틴 sidamo mountain 에티오피아 ethiopia 스파이시 코코아 꽃향">
+  <div class="card" data-cat="single" data-acidity="mid" data-search="시다모 마운틴 sidamo mountain 에티오피아 ethiopia 스파이시 코코아 꽃향" data-strength="60">
     <div class="card-img-wrap">
       <img data-src="https://raw.githubusercontent.com/youngsic1236/bacha-coffee-guide-/main/images/single%20origin/Sidamo%20Mountain.png" alt="시다모 마운틴" loading="lazy">
       <div class="card-img-placeholder"><div class="placeholder-icon">☕</div><div class="placeholder-name">Sidamo Mountain</div></div>
@@ -313,7 +380,7 @@
     </div>
   </div>
 
-  <div class="card" data-cat="single" data-acidity="high" data-search="마운트 케냐 mount kenya 케냐 kenya 베리 초콜릿 과일">
+  <div class="card" data-cat="single" data-acidity="high" data-search="마운트 케냐 mount kenya 케냐 kenya 베리 초콜릿 과일" data-strength="60">
     <div class="card-img-wrap">
       <img data-src="https://raw.githubusercontent.com/youngsic1236/bacha-coffee-guide-/main/images/single%20origin/Mount%20Kenya.png" alt="마운트 케냐" loading="lazy">
       <div class="card-img-placeholder"><div class="placeholder-icon">☕</div><div class="placeholder-name">Mount Kenya</div></div>
@@ -331,7 +398,7 @@
     </div>
   </div>
 
-  <div class="card" data-cat="single" data-acidity="low" data-search="라고아 lagoa 브라질 brazil 초콜릿 헤이즐넛 토피">
+  <div class="card" data-cat="single" data-acidity="low" data-search="라고아 lagoa 브라질 brazil 초콜릿 헤이즐넛 토피" data-strength="20">
     <div class="card-img-wrap">
       <img data-src="https://raw.githubusercontent.com/youngsic1236/bacha-coffee-guide-/main/images/single%20origin/Lagoa.png" alt="라고아" loading="lazy">
       <div class="card-img-placeholder"><div class="placeholder-icon">☕</div><div class="placeholder-name">Lagoa</div></div>
@@ -349,7 +416,7 @@
     </div>
   </div>
 
-  <div class="card" data-cat="single" data-acidity="mid" data-search="막달레나 magdalena 콜롬비아 colombia 과일 산미">
+  <div class="card" data-cat="single" data-acidity="mid" data-search="막달레나 magdalena 콜롬비아 colombia 과일 산미" data-strength="40">
     <div class="card-img-wrap">
       <img data-src="https://raw.githubusercontent.com/youngsic1236/bacha-coffee-guide-/main/images/single%20origin/Magdalena.png" alt="막달레나" loading="lazy">
       <div class="card-img-placeholder"><div class="placeholder-icon">☕</div><div class="placeholder-name">Magdalena</div></div>
@@ -367,7 +434,7 @@
     </div>
   </div>
 
-  <div class="card" data-cat="single" data-acidity="high" data-search="그랜드 모카 마타리 grand moka matari 예멘 yemen 살구 초콜릿 대추">
+  <div class="card" data-cat="single" data-acidity="high" data-search="그랜드 모카 마타리 grand moka matari 예멘 yemen 살구 초콜릿 대추" data-strength="50">
     <div class="card-img-wrap">
       <img data-src="https://raw.githubusercontent.com/youngsic1236/bacha-coffee-guide-/main/images/single%20origin/Grand%20Moka%20Matari.png" alt="그랜드 모카 마타리" loading="lazy">
       <div class="card-img-placeholder"><div class="placeholder-icon">☕</div><div class="placeholder-name">Grand Moka Matari</div></div>
@@ -385,7 +452,7 @@
     </div>
   </div>
 
-  <div class="card" data-cat="single" data-acidity="mid" data-search="시에라 마드레 sierra madre 과테말라 guatemala 코코아 복합">
+  <div class="card" data-cat="single" data-acidity="mid" data-search="시에라 마드레 sierra madre 과테말라 guatemala 코코아 복합" data-strength="40">
     <div class="card-img-wrap">
       <img data-src="https://raw.githubusercontent.com/youngsic1236/bacha-coffee-guide-/main/images/single%20origin/Sierra%20Madre.png" alt="시에라 마드레" loading="lazy">
       <div class="card-img-placeholder"><div class="placeholder-icon">☕</div><div class="placeholder-name">Sierra Madre</div></div>
@@ -403,7 +470,7 @@
     </div>
   </div>
 
-  <div class="card" data-cat="single" data-acidity="high" data-search="나란조 마운틴 naranjo mountain 코스타리카 costa rica 시트러스 몰티 견과">
+  <div class="card" data-cat="single" data-acidity="high" data-search="나란조 마운틴 naranjo mountain 코스타리카 costa rica 시트러스 몰티 견과" data-strength="40">
     <div class="card-img-wrap">
       <img data-src="https://raw.githubusercontent.com/youngsic1236/bacha-coffee-guide-/main/images/single%20origin/Naranjo%20Mountain.png" alt="나란조 마운틴" loading="lazy">
       <div class="card-img-placeholder"><div class="placeholder-icon">☕</div><div class="placeholder-name">Naranjo Mountain</div></div>
@@ -421,7 +488,7 @@
     </div>
   </div>
 
-  <div class="card" data-cat="single" data-acidity="mid" data-search="투르키노 turquino 쿠바 cuba 스파이시 밸런스">
+  <div class="card" data-cat="single" data-acidity="mid" data-search="투르키노 turquino 쿠바 cuba 스파이시 밸런스" data-strength="30">
     <div class="card-img-wrap">
       <img data-src="https://raw.githubusercontent.com/youngsic1236/bacha-coffee-guide-/main/images/single%20origin/Turquino.png" alt="투르키노" loading="lazy">
       <div class="card-img-placeholder"><div class="placeholder-icon">☕</div><div class="placeholder-name">Turquino</div></div>
@@ -439,7 +506,7 @@
     </div>
   </div>
 
-  <div class="card" data-cat="single" data-acidity="low" data-search="몬순시크릿 monsoon secret 인도 india 말라바르 허브 과일 풀바디">
+  <div class="card" data-cat="single" data-acidity="low" data-search="몬순시크릿 monsoon secret 인도 india 말라바르 허브 과일 풀바디" data-strength="60">
     <div class="card-img-wrap">
       <img data-src="https://raw.githubusercontent.com/youngsic1236/bacha-coffee-guide-/main/images/single%20origin/Monsoon%20Secret.png" alt="몬순시크릿" loading="lazy">
       <div class="card-img-placeholder"><div class="placeholder-icon">☕</div><div class="placeholder-name">Monsoon Secret</div></div>
@@ -457,7 +524,7 @@
     </div>
   </div>
 
-  <div class="card" data-cat="single" data-acidity="high" data-search="산크리스토발 san cristobal 에콰도르 ecuador 갈라파고스 초콜릿 탄지">
+  <div class="card" data-cat="single" data-acidity="high" data-search="산크리스토발 san cristobal 에콰도르 ecuador 갈라파고스 초콜릿 탄지" data-strength="40">
     <div class="card-img-wrap">
       <img data-src="https://raw.githubusercontent.com/youngsic1236/bacha-coffee-guide-/main/images/single%20origin/San%20Cristobal.png" alt="산크리스토발" loading="lazy">
       <div class="card-img-placeholder"><div class="placeholder-icon">☕</div><div class="placeholder-name">San Cristóbal</div></div>
@@ -475,7 +542,7 @@
     </div>
   </div>
 
-  <div class="card" data-cat="single" data-acidity="low" data-search="마운트 에베레스트 mount everest 네팔 nepal 견과류 카투라">
+  <div class="card" data-cat="single" data-acidity="low" data-search="마운트 에베레스트 mount everest 네팔 nepal 견과류 카투라" data-strength="40">
     <div class="card-img-wrap">
       <img data-src="https://raw.githubusercontent.com/youngsic1236/bacha-coffee-guide-/main/images/single%20origin/Mount%20Everest.png" alt="마운트 에베레스트" loading="lazy">
       <div class="card-img-placeholder"><div class="placeholder-icon">☕</div><div class="placeholder-name">Mount Everest</div></div>
@@ -493,7 +560,7 @@
     </div>
   </div>
 
-  <div class="card" data-cat="single" data-acidity="mid" data-search="시그리 주얼 sigri jewel 파푸아뉴기니 papua new guinea 다크초콜릿 당밀">
+  <div class="card" data-cat="single" data-acidity="mid" data-search="시그리 주얼 sigri jewel 파푸아뉴기니 papua new guinea 다크초콜릿 당밀" data-strength="50">
     <div class="card-img-wrap">
       <img data-src="https://raw.githubusercontent.com/youngsic1236/bacha-coffee-guide-/main/images/single%20origin/Sigri%20Jewel.png" alt="시그리 주얼" loading="lazy">
       <div class="card-img-placeholder"><div class="placeholder-icon">☕</div><div class="placeholder-name">Sigri Jewel</div></div>
@@ -520,7 +587,7 @@
 <div class="section-note" data-section="flavoured">⚠️ 바샤커피는 <strong>밀라노 모닝(우간다)</strong>을 제외한 파인 플레이버 제품의 베이스 원두 산지를 공식적으로 비공개로 유지합니다.</div>
 <div class="grid">
 
-  <div class="card" data-cat="flavoured" data-acidity="low" data-search="밀라노 모닝 milano morning 우간다 uganda 초콜릿 브리오슈 몰티 메이플">
+  <div class="card" data-cat="flavoured" data-acidity="low" data-search="밀라노 모닝 milano morning 우간다 uganda 초콜릿 브리오슈 몰티 메이플" data-strength="40">
     <div class="card-img-wrap">
       <img data-src="https://raw.githubusercontent.com/youngsic1236/bacha-coffee-guide-/main/images/Fine%20Flavoured%20Coffee%20Drip%20bag%20%2812p%29/Milano%20Morning.png" alt="밀라노 모닝" loading="lazy">
       <div class="card-img-placeholder"><div class="placeholder-icon">🍫</div><div class="placeholder-name">Milano Morning</div></div>
@@ -538,7 +605,7 @@
     </div>
   </div>
 
-  <div class="card" data-cat="flavoured" data-acidity="mid" data-search="아이러브파리 i love paris 베리 너트 과일">
+  <div class="card" data-cat="flavoured" data-acidity="mid" data-search="아이러브파리 i love paris 베리 너트 과일" data-strength="40">
     <div class="card-img-wrap">
       <img data-src="https://raw.githubusercontent.com/youngsic1236/bacha-coffee-guide-/main/images/Fine%20Flavoured%20Coffee%20Drip%20bag%20%2812p%29/I%20Love%20Paris.png" alt="아이러브파리" loading="lazy">
       <div class="card-img-placeholder"><div class="placeholder-icon">🫐</div><div class="placeholder-name">I Love Paris</div></div>
@@ -556,7 +623,7 @@
     </div>
   </div>
 
-  <div class="card" data-cat="flavoured" data-acidity="low" data-search="캐러멜로 모닝 caramelo morning 캐러멜 몰티 크리미">
+  <div class="card" data-cat="flavoured" data-acidity="low" data-search="캐러멜로 모닝 caramelo morning 캐러멜 몰티 크리미" data-strength="40">
     <div class="card-img-wrap">
       <img data-src="https://raw.githubusercontent.com/youngsic1236/bacha-coffee-guide-/main/images/Fine%20Flavoured%20Coffee%20Drip%20bag%20%2812p%29/Caramelo%20Morning.png" alt="캐러멜로 모닝" loading="lazy">
       <div class="card-img-placeholder"><div class="placeholder-icon">🍮</div><div class="placeholder-name">Caramelo Morning</div></div>
@@ -574,7 +641,7 @@
     </div>
   </div>
 
-  <div class="card" data-cat="flavoured" data-acidity="mid" data-search="세빌 오렌지 seville orange 오렌지 코코아 시트러스 초콜릿">
+  <div class="card" data-cat="flavoured" data-acidity="mid" data-search="세빌 오렌지 seville orange 오렌지 코코아 시트러스 초콜릿" data-strength="20">
     <div class="card-img-wrap">
       <img data-src="https://raw.githubusercontent.com/youngsic1236/bacha-coffee-guide-/main/images/Fine%20Flavoured%20Coffee%20Drip%20bag%20%2812p%29/Seville%20Orange.png" alt="세빌 오렌지" loading="lazy">
       <div class="card-img-placeholder"><div class="placeholder-icon">🍊</div><div class="placeholder-name">Seville Orange</div></div>
@@ -592,7 +659,7 @@
     </div>
   </div>
 
-  <div class="card" data-cat="flavoured" data-acidity="low" data-search="스위트 멕시코 sweet mexico 바닐라 스파이스">
+  <div class="card" data-cat="flavoured" data-acidity="low" data-search="스위트 멕시코 sweet mexico 바닐라 스파이스" data-strength="30">
     <div class="card-img-wrap">
       <img data-src="https://raw.githubusercontent.com/youngsic1236/bacha-coffee-guide-/main/images/Fine%20Flavoured%20Coffee%20Drip%20bag%20%2812p%29/Sweet%20Mexico.png" alt="스위트 멕시코" loading="lazy">
       <div class="card-img-placeholder"><div class="placeholder-icon">🌿</div><div class="placeholder-name">Sweet Mexico</div></div>
@@ -610,7 +677,7 @@
     </div>
   </div>
 
-  <div class="card" data-cat="flavoured" data-acidity="low" data-search="톨테카 초콜릿 tolteca chocolate 코코아 달콤">
+  <div class="card" data-cat="flavoured" data-acidity="low" data-search="톨테카 초콜릿 tolteca chocolate 코코아 달콤" data-strength="40">
     <div class="card-img-wrap">
       <img data-src="https://raw.githubusercontent.com/youngsic1236/bacha-coffee-guide-/main/images/Fine%20Flavoured%20Coffee%20Drip%20bag%20%2812p%29/Tolteca%20Chocolate.png" alt="톨테카 초콜릿" loading="lazy">
       <div class="card-img-placeholder"><div class="placeholder-icon">🍫</div><div class="placeholder-name">Tolteca Chocolate</div></div>
@@ -628,7 +695,7 @@
     </div>
   </div>
 
-  <div class="card" data-cat="flavoured" data-acidity="mid" data-search="1910 딸기 크림 과일 프루티">
+  <div class="card" data-cat="flavoured" data-acidity="mid" data-search="1910 딸기 크림 과일 프루티" data-strength="30">
     <div class="card-img-wrap">
       <img data-src="https://raw.githubusercontent.com/youngsic1236/bacha-coffee-guide-/main/images/Fine%20Flavoured%20Coffee%20Drip%20bag%20%2812p%29/1910%20Coffee.png" alt="1910" loading="lazy">
       <div class="card-img-placeholder"><div class="placeholder-icon">🍓</div><div class="placeholder-name">1910</div></div>
@@ -646,7 +713,7 @@
     </div>
   </div>
 
-  <div class="card" data-cat="flavoured" data-acidity="mid" data-search="블루다뉴브 blue danube 베리 밀크초콜릿 산미">
+  <div class="card" data-cat="flavoured" data-acidity="mid" data-search="블루다뉴브 blue danube 베리 밀크초콜릿 산미" data-strength="40">
     <div class="card-img-wrap">
       <img data-src="https://raw.githubusercontent.com/youngsic1236/bacha-coffee-guide-/main/images/Fine%20Flavoured%20Coffee%20Drip%20bag%20%2812p%29/Blue%20Danube.png" alt="블루다뉴브" loading="lazy">
       <div class="card-img-placeholder"><div class="placeholder-icon">🫐</div><div class="placeholder-name">Blue Danube</div></div>
@@ -664,7 +731,7 @@
     </div>
   </div>
 
-  <div class="card" data-cat="flavoured" data-acidity="mid" data-search="싱가포르 모닝 singapore morning 초콜릿 스파이스 시트러스">
+  <div class="card" data-cat="flavoured" data-acidity="mid" data-search="싱가포르 모닝 singapore morning 초콜릿 스파이스 시트러스" data-strength="40">
     <div class="card-img-wrap">
       <img data-src="https://raw.githubusercontent.com/youngsic1236/bacha-coffee-guide-/main/images/Fine%20Flavoured%20Coffee%20Drip%20bag%20%2812p%29/Singapore%20Morning.png" alt="싱가포르 모닝" loading="lazy">
       <div class="card-img-placeholder"><div class="placeholder-icon">🌅</div><div class="placeholder-name">Singapore Morning</div></div>
@@ -682,7 +749,7 @@
     </div>
   </div>
 
-  <div class="card" data-cat="flavoured" data-acidity="low" data-search="매직 이스탄불 magic istanbul 허니콤 그린 아몬드 몰티">
+  <div class="card" data-cat="flavoured" data-acidity="low" data-search="매직 이스탄불 magic istanbul 허니콤 그린 아몬드 몰티" data-strength="60">
     <div class="card-img-wrap">
       <img data-src="https://raw.githubusercontent.com/youngsic1236/bacha-coffee-guide-/main/images/Fine%20Flavoured%20Coffee%20Drip%20bag%20%2812p%29/Magic%20Istanbul.png" alt="매직 이스탄불" loading="lazy">
       <div class="card-img-placeholder"><div class="placeholder-icon">🕌</div><div class="placeholder-name">Magic Istanbul</div></div>
@@ -700,7 +767,7 @@
     </div>
   </div>
 
-  <div class="card" data-cat="flavoured" data-acidity="low" data-search="벌스데이 위시 birthday wish 초콜릿 버터스카치 달콤">
+  <div class="card" data-cat="flavoured" data-acidity="low" data-search="벌스데이 위시 birthday wish 초콜릿 버터스카치 달콤" data-strength="40">
     <div class="card-img-wrap">
       <img data-src="https://raw.githubusercontent.com/youngsic1236/bacha-coffee-guide-/main/images/Fine%20Flavoured%20Coffee%20Drip%20bag%20%2812p%29/Birthday%20Wish.png" alt="벌스데이 위시" loading="lazy">
       <div class="card-img-placeholder"><div class="placeholder-icon">🎂</div><div class="placeholder-name">Birthday Wish</div></div>
@@ -718,7 +785,7 @@
     </div>
   </div>
 
-  <div class="card" data-cat="flavoured" data-acidity="low" data-search="마로키시모 marocchissimo 스파이스 건조과일 견과류 모로코">
+  <div class="card" data-cat="flavoured" data-acidity="low" data-search="마로키시모 marocchissimo 스파이스 건조과일 견과류 모로코" data-strength="40">
     <div class="card-img-wrap">
       <img data-src="https://raw.githubusercontent.com/youngsic1236/bacha-coffee-guide-/main/images/Fine%20Flavoured%20Coffee%20Drip%20bag%20%2812p%29/Marocchissimo%21.png" alt="마로키시모" loading="lazy">
       <div class="card-img-placeholder"><div class="placeholder-icon">🏺</div><div class="placeholder-name">Marocchissimo!</div></div>
@@ -736,7 +803,7 @@
     </div>
   </div>
 
-  <div class="card" data-cat="flavoured" data-acidity="low" data-search="모로칸 사하라 moroccan sahara 코코넛 카라멜 초콜릿">
+  <div class="card" data-cat="flavoured" data-acidity="low" data-search="모로칸 사하라 moroccan sahara 코코넛 카라멜 초콜릿" data-strength="40">
     <div class="card-img-wrap">
       <img data-src="https://raw.githubusercontent.com/youngsic1236/bacha-coffee-guide-/main/images/Fine%20Flavoured%20Coffee%20Drip%20bag%20%2812p%29/Moroccan%20Sahara.png" alt="모로칸 사하라" loading="lazy">
       <div class="card-img-placeholder"><div class="placeholder-icon">🏜️</div><div class="placeholder-name">Moroccan Sahara</div></div>
@@ -754,7 +821,7 @@
     </div>
   </div>
 
-  <div class="card" data-cat="flavoured" data-acidity="low" data-search="킹 오브 아프리카 king of africa 헤이즐넛 카카오 코코넛 바나나 아프리카">
+  <div class="card" data-cat="flavoured" data-acidity="low" data-search="킹 오브 아프리카 king of africa 헤이즐넛 카카오 코코넛 바나나 아프리카" data-strength="40">
     <div class="card-img-wrap">
       <img data-src="https://raw.githubusercontent.com/youngsic1236/bacha-coffee-guide-/main/images/Fine%20Flavoured%20Coffee%20Drip%20bag%20%2812p%29/King%20of%20Africa.png" alt="킹 오브 아프리카" loading="lazy">
       <div class="card-img-placeholder"><div class="placeholder-icon">🦁</div><div class="placeholder-name">King of Africa</div></div>
@@ -772,7 +839,7 @@
     </div>
   </div>
 
-  <div class="card" data-cat="flavoured" data-acidity="mid" data-search="마라케시 모닝 marrakech morning 시나몬 아몬드 자두 체리">
+  <div class="card" data-cat="flavoured" data-acidity="mid" data-search="마라케시 모닝 marrakech morning 시나몬 아몬드 자두 체리" data-strength="40">
     <div class="card-img-wrap">
       <img data-src="https://raw.githubusercontent.com/youngsic1236/bacha-coffee-guide-/main/images/Fine%20Flavoured%20Coffee%20Drip%20bag%20%2812p%29/Marrakech%20Morning.png" alt="마라케시 모닝" loading="lazy">
       <div class="card-img-placeholder"><div class="placeholder-icon">🌙</div><div class="placeholder-name">Marrakech Morning</div></div>
@@ -790,7 +857,7 @@
     </div>
   </div>
 
-  <div class="card" data-cat="flavoured" data-acidity="low" data-search="해피잔두야 happy gianduja 헤이즐넛 이탈리아 달콤">
+  <div class="card" data-cat="flavoured" data-acidity="low" data-search="해피잔두야 happy gianduja 헤이즐넛 이탈리아 달콤" data-strength="40">
     <div class="card-img-wrap">
       <img data-src="https://raw.githubusercontent.com/youngsic1236/bacha-coffee-guide-/main/images/Fine%20Flavoured%20Coffee%20Drip%20bag%20%2812p%29/Happy%20Gianduja.png" alt="해피잔두야" loading="lazy">
       <div class="card-img-placeholder"><div class="placeholder-icon">🌰</div><div class="placeholder-name">Happy Gianduja</div></div>
@@ -816,7 +883,7 @@
 <h2 class="section-title" data-section="decaf" style="margin-top:48px"><img src="data:image/png;base64,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" style="height:22px;width:auto;vertical-align:middle;margin-right:4px;opacity:0.85"> 디카페인 <small style="font-size:13px;font-weight:400;font-family:Inter,sans-serif;color:var(--text-light)">— 전 제품 천연 CO₂ 공법</small></h2>
 <div class="grid">
 
-  <div class="card" data-cat="decaf" data-acidity="mid" data-search="예가체프 디카페인 yirgacheffe decaffeinated 에티오피아 ethiopia 블루베리 레몬 몰티">
+  <div class="card" data-cat="decaf" data-acidity="mid" data-search="예가체프 디카페인 yirgacheffe decaffeinated 에티오피아 ethiopia 블루베리 레몬 몰티" data-strength="60">
     <div class="card-img-wrap">
       <img data-src="https://raw.githubusercontent.com/youngsic1236/bacha-coffee-guide-/main/images/Decaffeinated/Yirgacheffe%20Decaffeinated.png" alt="예가체프 디카페인" loading="lazy">
       <div class="card-img-placeholder"><div class="placeholder-icon">🍃</div><div class="placeholder-name">Yirgacheffe Decaf</div></div>
@@ -834,7 +901,7 @@
     </div>
   </div>
 
-  <div class="card" data-cat="decaf" data-acidity="mid" data-search="막달레나 디카페인 magdalena decaffeinated 콜롬비아 colombia 과일 풀바디">
+  <div class="card" data-cat="decaf" data-acidity="mid" data-search="막달레나 디카페인 magdalena decaffeinated 콜롬비아 colombia 과일 풀바디" data-strength="30">
     <div class="card-img-wrap">
       <img data-src="https://raw.githubusercontent.com/youngsic1236/bacha-coffee-guide-/main/images/Decaffeinated/Magdalena%20Decaffeinated.png" alt="막달레나 디카페인" loading="lazy">
       <div class="card-img-placeholder"><div class="placeholder-icon">🍃</div><div class="placeholder-name">Magdalena Decaf</div></div>
@@ -852,7 +919,7 @@
     </div>
   </div>
 
-  <div class="card" data-cat="decaf" data-acidity="low" data-search="아디스아바바 디카페인 addis ababa decaffeinated 그래시 단맛">
+  <div class="card" data-cat="decaf" data-acidity="low" data-search="아디스아바바 디카페인 addis ababa decaffeinated 그래시 단맛" data-strength="50">
     <div class="card-img-wrap">
       <img data-src="https://raw.githubusercontent.com/youngsic1236/bacha-coffee-guide-/main/images/Decaffeinated/Addis%20Ababa%20Decaffeinated.png" alt="아디스아바바 디카페인" loading="lazy">
       <div class="card-img-placeholder"><div class="placeholder-icon">🍃</div><div class="placeholder-name">Addis Ababa Decaf</div></div>
@@ -870,7 +937,7 @@
     </div>
   </div>
 
-  <div class="card" data-cat="decaf" data-acidity="mid" data-search="바라카 디카페인 baraka decaffeinated 다크초콜릿 오렌지 시트러스">
+  <div class="card" data-cat="decaf" data-acidity="mid" data-search="바라카 디카페인 baraka decaffeinated 다크초콜릿 오렌지 시트러스" data-strength="30">
     <div class="card-img-wrap">
       <img data-src="https://raw.githubusercontent.com/youngsic1236/bacha-coffee-guide-/main/images/Decaffeinated/Baraka%20Decaffeinated.png" alt="바라카 디카페인" loading="lazy">
       <div class="card-img-placeholder"><div class="placeholder-icon">🍃</div><div class="placeholder-name">Baraka Decaf</div></div>
@@ -893,7 +960,7 @@
 <h2 class="section-title" data-section="wb" style="margin-top:48px"><img src="data:image/png;base64,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" style="height:22px;width:auto;vertical-align:middle;margin-right:4px;opacity:0.85"> 홀빈 (WB) <small style="font-size:13px;font-weight:400;font-family:Inter,sans-serif;color:var(--text-light)">— Signature Nomad 컬렉션</small></h2>
 <div class="grid">
 
-  <div class="card" data-cat="wb" data-acidity="high" data-search="예가체프 에얼룸 yirgacheffe heirloom 에티오피아 ethiopia 레몬그라스 베르가못 산미">
+  <div class="card" data-cat="wb" data-acidity="high" data-search="예가체프 에얼룸 yirgacheffe heirloom 에티오피아 ethiopia 레몬그라스 베르가못 산미" data-strength="40">
     <div class="card-img-wrap">
       <img data-src="https://raw.githubusercontent.com/youngsic1236/bacha-coffee-guide-/main/images/Nomad%20WB/Nomad%20WB%20Yirgacheffe%20Heirloom.png" alt="WB 예가체프 에얼룸" loading="lazy">
       <div class="card-img-placeholder"><div class="placeholder-icon">🫘</div><div class="placeholder-name">Yirgacheffe Heirloom</div></div>
@@ -911,7 +978,7 @@
     </div>
   </div>
 
-  <div class="card" data-cat="wb" data-acidity="high" data-search="불칸아줄 volcan azul 코스타리카 costa rica 산미 향기 바디">
+  <div class="card" data-cat="wb" data-acidity="high" data-search="불칸아줄 volcan azul 코스타리카 costa rica 산미 향기 바디" data-strength="40">
     <div class="card-img-wrap">
       <img data-src="https://raw.githubusercontent.com/youngsic1236/bacha-coffee-guide-/main/images/Nomad%20WB/Nomad%20WB%20Volcan%20Azul.png" alt="WB 불칸아줄" loading="lazy">
       <div class="card-img-placeholder"><div class="placeholder-icon">🫘</div><div class="placeholder-name">Volcán Azul</div></div>
@@ -929,7 +996,7 @@
     </div>
   </div>
 
-  <div class="card" data-cat="wb" data-acidity="mid" data-search="르완다 슈페리어 rwanda superior 르완다 꽃향 땅콩">
+  <div class="card" data-cat="wb" data-acidity="mid" data-search="르완다 슈페리어 rwanda superior 르완다 꽃향 땅콩" data-strength="40">
     <div class="card-img-wrap">
       <img data-src="https://raw.githubusercontent.com/youngsic1236/bacha-coffee-guide-/main/images/Nomad%20WB/Nomad%20WB%20Rwanda%20Superior.png" alt="WB 르완다 슈페리어" loading="lazy">
       <div class="card-img-placeholder"><div class="placeholder-icon">🫘</div><div class="placeholder-name">Rwanda Superior</div></div>
@@ -947,7 +1014,7 @@
     </div>
   </div>
 
-  <div class="card" data-cat="wb" data-acidity="low" data-search="상실베스트레 sao silvestre 브라질 brazil 캐러멜 초콜릿 헤이즐넛 세라도">
+  <div class="card" data-cat="wb" data-acidity="low" data-search="상실베스트레 sao silvestre 브라질 brazil 캐러멜 초콜릿 헤이즐넛 세라도" data-strength="40">
     <div class="card-img-wrap">
       <img data-src="https://raw.githubusercontent.com/youngsic1236/bacha-coffee-guide-/main/images/Nomad%20WB/Nomad%20WB%20S%C3%A3o%20Silvestre.png" alt="WB 상실베스트레" loading="lazy">
       <div class="card-img-placeholder"><div class="placeholder-icon">🫘</div><div class="placeholder-name">São Silvestre</div></div>
@@ -965,7 +1032,7 @@
     </div>
   </div>
 
-  <div class="card" data-cat="wb" data-acidity="mid" data-search="엘플라밍고 el flamingo 멕시코 mexico 카카오 SHG">
+  <div class="card" data-cat="wb" data-acidity="mid" data-search="엘플라밍고 el flamingo 멕시코 mexico 카카오 SHG" data-strength="40">
     <div class="card-img-wrap">
       <img data-src="https://raw.githubusercontent.com/youngsic1236/bacha-coffee-guide-/main/images/Nomad%20WB/Nomad%20WB%20El%20Flamingo.png" alt="WB 엘플라밍고" loading="lazy">
       <div class="card-img-placeholder"><div class="placeholder-icon">🫘</div><div class="placeholder-name">El Flamingo</div></div>
@@ -983,7 +1050,7 @@
     </div>
   </div>
 
-  <div class="card" data-cat="wb" data-acidity="mid" data-search="WB 막달레나 magdalena 콜롬비아 colombia 과일 산미 홀빈">
+  <div class="card" data-cat="wb" data-acidity="mid" data-search="WB 막달레나 magdalena 콜롬비아 colombia 과일 산미 홀빈" data-strength="40">
     <div class="card-img-wrap">
       <img data-src="https://raw.githubusercontent.com/youngsic1236/bacha-coffee-guide-/main/images/Nomad%20WB/Nomad%20WB%20Magdalena.png" alt="WB 막달레나" loading="lazy">
       <div class="card-img-placeholder"><div class="placeholder-icon">🫘</div><div class="placeholder-name">Magdalena (WB)</div></div>
@@ -1001,7 +1068,7 @@
     </div>
   </div>
 
-  <div class="card" data-cat="wb" data-acidity="mid" data-search="WB 블루다뉴브 blue danube 베리 밀크초콜릿 산미 홀빈">
+  <div class="card" data-cat="wb" data-acidity="mid" data-search="WB 블루다뉴브 blue danube 베리 밀크초콜릿 산미 홀빈" data-strength="40">
     <div class="card-img-wrap">
       <img data-src="https://raw.githubusercontent.com/youngsic1236/bacha-coffee-guide-/main/images/Nomad%20WB/Nomad%20WB%20Blue%20Danube.png" alt="WB 블루다뉴브" loading="lazy">
       <div class="card-img-placeholder"><div class="placeholder-icon">🫘</div><div class="placeholder-name">Blue Danube (WB)</div></div>
@@ -1019,7 +1086,7 @@
     </div>
   </div>
 
-  <div class="card" data-cat="wb" data-acidity="mid" data-search="WB 아이러브파리 i love paris 베리 너트 과일 홀빈">
+  <div class="card" data-cat="wb" data-acidity="mid" data-search="WB 아이러브파리 i love paris 베리 너트 과일 홀빈" data-strength="40">
     <div class="card-img-wrap">
       <img data-src="https://raw.githubusercontent.com/youngsic1236/bacha-coffee-guide-/main/images/Nomad%20WB/Nomad%20WB%20I%20Love%20Paris.png" alt="WB 아이러브파리" loading="lazy">
       <div class="card-img-placeholder"><div class="placeholder-icon">🫘</div><div class="placeholder-name">I Love Paris (WB)</div></div>
@@ -1037,7 +1104,7 @@
     </div>
   </div>
 
-  <div class="card" data-cat="wb" data-acidity="mid" data-search="WB 세빌오렌지 seville orange 오렌지 코코아 시트러스 홀빈">
+  <div class="card" data-cat="wb" data-acidity="mid" data-search="WB 세빌오렌지 seville orange 오렌지 코코아 시트러스 홀빈" data-strength="20">
     <div class="card-img-wrap">
       <img data-src="https://raw.githubusercontent.com/youngsic1236/bacha-coffee-guide-/main/images/Nomad%20WB/Nomad%20WB%20Seville%20Orange.png" alt="WB 세빌오렌지" loading="lazy">
       <div class="card-img-placeholder"><div class="placeholder-icon">🫘</div><div class="placeholder-name">Seville Orange (WB)</div></div>
@@ -1055,7 +1122,7 @@
     </div>
   </div>
 
-  <div class="card" data-cat="wb" data-acidity="low" data-search="WB 밀라노모닝 milano morning 우간다 초콜릿 브리오슈 홀빈">
+  <div class="card" data-cat="wb" data-acidity="low" data-search="WB 밀라노모닝 milano morning 우간다 초콜릿 브리오슈 홀빈" data-strength="40">
     <div class="card-img-wrap">
       <img data-src="https://raw.githubusercontent.com/youngsic1236/bacha-coffee-guide-/main/images/Nomad%20WB/Nomad%20WB%20Milano%20Morning.png" alt="WB 밀라노모닝" loading="lazy">
       <div class="card-img-placeholder"><div class="placeholder-icon">🫘</div><div class="placeholder-name">Milano Morning (WB)</div></div>
@@ -1073,7 +1140,7 @@
     </div>
   </div>
 
-  <div class="card" data-cat="wb" data-acidity="mid" data-search="WB 1910 딸기 크림 과일 홀빈">
+  <div class="card" data-cat="wb" data-acidity="mid" data-search="WB 1910 딸기 크림 과일 홀빈" data-strength="30">
     <div class="card-img-wrap">
       <img data-src="https://raw.githubusercontent.com/youngsic1236/bacha-coffee-guide-/main/images/Nomad%20WB/Nomad%20WB%201910%20Coffee.png" alt="WB 1910" loading="lazy">
       <div class="card-img-placeholder"><div class="placeholder-icon">🫘</div><div class="placeholder-name">1910 (WB)</div></div>
@@ -1098,7 +1165,7 @@
 <h2 class="section-title" data-section="gift" style="margin-top:48px"><img src="data:image/png;base64,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" style="height:22px;width:auto;vertical-align:middle;margin-right:4px;opacity:0.85"> 드립백 기프트세트 <small style="font-size:13px;font-weight:400;font-family:'Noto Sans KR',sans-serif;color:var(--text-light)">— 25개입</small></h2>
 <div class="grid">
 
-  <div class="card" data-cat="gift" data-acidity="" data-search="어쏘티드 assorted 기프트세트 드립백 25p 캐러멜로 스위트멕시코 세빌오렌지 몬순시크릿 마운트케냐 나란조 라고아 시에라마드레 투르키노 시다모 막달레나 디카페인">
+  <div class="card" data-cat="gift" data-acidity="" data-search="어쏘티드 assorted 기프트세트 드립백 25p 캐러멜로 스위트멕시코 세빌오렌지 몬순시크릿 마운트케냐 나란조 라고아 시에라마드레 투르키노 시다모 막달레나 디카페인" data-strength="40">
     <div class="card-img-wrap">
       <img data-src="https://raw.githubusercontent.com/youngsic1236/bacha-coffee-guide-/main/images/Drip%20Bag%20Gift%20Box/Assorted%20Drip%20Bag%20Gift%20Box%20%2825p%29.png" alt="어쏘티드">
       <div class="card-img-placeholder"><div class="placeholder-icon">🎁</div><div class="placeholder-name">Assorted</div></div>
@@ -1127,7 +1194,7 @@
     </div>
   </div>
 
-  <div class="card" data-cat="gift" data-acidity="" data-search="네비게이터 navigator 기프트세트 드립백 25p 캐러멜로 밀라노 싱가포르 블루다뉴브 투르키노 라고아 시다모 마운트케냐 막달레나 바라카">
+  <div class="card" data-cat="gift" data-acidity="" data-search="네비게이터 navigator 기프트세트 드립백 25p 캐러멜로 밀라노 싱가포르 블루다뉴브 투르키노 라고아 시다모 마운트케냐 막달레나 바라카" data-strength="40">
     <div class="card-img-wrap">
       <img data-src="https://raw.githubusercontent.com/youngsic1236/bacha-coffee-guide-/main/images/Drip%20Bag%20Gift%20Box/Navigator%20Drip%20Bag%20Gift%20Box%20%2825p%29.png" alt="네비게이터">
       <div class="card-img-placeholder"><div class="placeholder-icon">🎁</div><div class="placeholder-name">Navigator</div></div>
@@ -1156,7 +1223,7 @@
     </div>
   </div>
 
-  <div class="card" data-cat="gift" data-acidity="" data-search="익스플로러 explorer 기프트세트 드립백 25p 1910 스위트멕시코 마라케시 톨테카 아이러브파리 세빌오렌지 몬순시크릿 시에라마드레 나란조 막달레나 디카페인">
+  <div class="card" data-cat="gift" data-acidity="" data-search="익스플로러 explorer 기프트세트 드립백 25p 1910 스위트멕시코 마라케시 톨테카 아이러브파리 세빌오렌지 몬순시크릿 시에라마드레 나란조 막달레나 디카페인" data-strength="40">
     <div class="card-img-wrap">
       <img data-src="https://raw.githubusercontent.com/youngsic1236/bacha-coffee-guide-/main/images/Drip%20Bag%20Gift%20Box/Explorer%20Drip%20Bag%20Gift%20Box%20%2825p%29.png" alt="익스플로러">
       <div class="card-img-placeholder"><div class="placeholder-icon">🎁</div><div class="placeholder-name">Explorer</div></div>
@@ -1217,6 +1284,8 @@
       btn.classList.add('active');
       const _about = document.getElementById('about-section');
       if (_about && _about.style.display !== 'none') toggleAbout();
+      const _rec = document.getElementById('recommend-section');
+      if (_rec && _rec.style.display !== 'none') toggleRecommend();
       activeFilter = btn.dataset.cat || 'all';
       activeAcidity = null;
       document.querySelectorAll('.acidity-quick-btn').forEach(b => b.classList.remove('active-acid'));
@@ -1291,6 +1360,8 @@
     const mainSection = document.getElementById('mainContent');
     const btn = document.getElementById('about-toggle-btn');
     const noResults = document.getElementById('noResults');
+    const rec = document.getElementById('recommend-section');
+    if (rec && rec.style.display !== 'none') { rec.style.display = 'none'; document.getElementById('recommend-toggle-btn').textContent = '✨ 나에게 맞는 원두 찾기'; document.getElementById('recommend-toggle-btn').style.background = 'rgba(200,169,110,0.15)'; }
 
     const isHidden = about.style.display === 'none';
     about.style.display = isHidden ? 'block' : 'none';
@@ -1315,6 +1386,175 @@
       btn.style.borderBottomColor = isActive ? 'var(--gold)' : 'transparent';
     });
   }
+
+  // ───── 원두 추천 기능 ─────
+  function toggleRecommend() {
+    const rec = document.getElementById('recommend-section');
+    const about = document.getElementById('about-section');
+    const mainSearch = document.getElementById('main-search');
+    const acidityBar = document.querySelector('.acidity-bar');
+    const mainSection = document.getElementById('mainContent');
+    const btn = document.getElementById('recommend-toggle-btn');
+    const noResults = document.getElementById('noResults');
+
+    if (about && about.style.display !== 'none') { about.style.display = 'none'; }
+
+    const isHidden = rec.style.display === 'none';
+    rec.style.display = isHidden ? 'block' : 'none';
+    if (mainSearch) mainSearch.style.display = isHidden ? 'none' : '';
+    if (acidityBar) acidityBar.style.display = isHidden ? 'none' : '';
+    if (mainSection) mainSection.style.display = isHidden ? 'none' : '';
+    if (noResults) noResults.style.display = 'none';
+    btn.textContent = isHidden ? '✕ 추천 닫기' : '✨ 나에게 맞는 원두 찾기';
+    btn.style.background = isHidden ? 'rgba(200,169,110,0.3)' : 'rgba(200,169,110,0.15)';
+  }
+
+  // 버튼 토글 (그룹 내 단일 선택)
+  document.querySelectorAll('.rec-btn-group').forEach(group => {
+    group.addEventListener('click', (e) => {
+      const btn = e.target.closest('.rec-choice-btn');
+      if (!btn) return;
+      const wasSelected = btn.classList.contains('selected');
+      group.querySelectorAll('.rec-choice-btn').forEach(b => b.classList.remove('selected'));
+      if (!wasSelected) btn.classList.add('selected');
+    });
+  });
+
+  // 자유 텍스트에서 키워드 추출
+  function parseTextInput(text) {
+    const t = text.toLowerCase();
+    const result = { acidity: null, flavors: [], strength: null };
+
+    // 산미
+    const acidNeg = ['산미는 싫', '산미 싫', '산미가 싫', '산미 없', '산미 안', '산미는 별로', '신맛 싫', '신맛은 싫', '시지 않'];
+    const acidPos = ['산미 좋', '산미를 좋', '산미가 좋', '산미 선호', '산미 있는', '신맛 좋', '상큼한'];
+    if (acidNeg.some(k => t.includes(k))) result.acidity = 'low';
+    else if (acidPos.some(k => t.includes(k))) result.acidity = 'high';
+
+    // 향/풍미 키워드 매핑
+    const flavorMap = {
+      chocolate: ['초콜릿', '초코', '코코아', '카카오'],
+      nutty: ['견과', '아몬드', '헤이즐넛', '너트'],
+      fruity: ['과일', '베리', '체리', '딸기', '자두', '살구'],
+      floral: ['꽃향', '꽃', '플로럴'],
+      spice: ['향신료', '스파이스', '시나몬', '계피'],
+      malty: ['몰트', '캐러멜', '몰티', '토피', '바닐라'],
+      citrus: ['시트러스', '오렌지', '레몬', '감귤'],
+      none: ['향이 안', '향 없', '향이 없', '심플', '깔끔', '향이 약', '향 약']
+    };
+    for (const [key, keywords] of Object.entries(flavorMap)) {
+      if (keywords.some(k => t.includes(k))) result.flavors.push(key);
+    }
+
+    // 바디감
+    const lightKw = ['가볍', '연하', '약하게', '묵직하지 않', '안 무겁'];
+    const heavyKw = ['묵직', '진하게', '강하게', '바디감 있는', '무겁게', '풀바디'];
+    if (lightKw.some(k => t.includes(k))) result.strength = 'light';
+    else if (heavyKw.some(k => t.includes(k))) result.strength = 'heavy';
+
+    return result;
+  }
+
+  // 메인 추천 실행
+  function runRecommend() {
+    const textVal = document.getElementById('rec-text-input').value.trim();
+    const textParsed = textVal ? parseTextInput(textVal) : { acidity: null, flavors: [], strength: null };
+
+    const acidityBtn = document.querySelector('.rec-btn-group[data-group="acidity"] .selected');
+    const flavorBtns = document.querySelectorAll('.rec-btn-group[data-group="flavor"] .selected');
+    const strengthBtn = document.querySelector('.rec-btn-group[data-group="strength"] .selected');
+
+    const wantAcidity = acidityBtn ? acidityBtn.dataset.val : textParsed.acidity;
+    const wantFlavors = [...new Set([
+      ...Array.from(flavorBtns).map(b => b.dataset.val),
+      ...textParsed.flavors
+    ])];
+    const wantStrength = strengthBtn ? strengthBtn.dataset.val : textParsed.strength;
+
+    const flavorKeywordMap = {
+      chocolate: ['초콜릿','초코','코코아','카카오'],
+      nutty: ['견과','아몬드','헤이즐넛','너트'],
+      fruity: ['과일','베리','체리','딸기','자두','살구'],
+      floral: ['꽃향','꽃'],
+      spice: ['향신료','스파이스','시나몬'],
+      malty: ['몰트','캐러멜','몰티','토피','바닐라'],
+      citrus: ['시트러스','오렌지','레몬','감귤'],
+    };
+
+    const allCards = document.querySelectorAll('.card');
+    const scored = [];
+
+    allCards.forEach(card => {
+      let score = 0;
+      const acidity = card.dataset.acidity;
+      const strength = parseInt(card.dataset.strength || '40', 10);
+      const search = card.dataset.search || '';
+
+      // 산미 매칭 (가중치 높음)
+      if (wantAcidity) {
+        if (wantAcidity === acidity) score += 40;
+        else if (
+          (wantAcidity === 'low' && acidity === 'mid') ||
+          (wantAcidity === 'high' && acidity === 'mid') ||
+          (wantAcidity === 'mid' && (acidity === 'low' || acidity === 'high'))
+        ) score += 15;
+      }
+
+      // 향/풍미 매칭
+      if (wantFlavors.length > 0) {
+        let flavorHit = 0;
+        wantFlavors.forEach(fk => {
+          if (fk === 'none') {
+            // 향 없는 = 파인플레이버 제외, 단순한 노트만 있는 싱글오리진/디카페인 선호
+            if (card.dataset.cat === 'single' || card.dataset.cat === 'decaf') flavorHit += 1;
+          } else {
+            const keywords = flavorKeywordMap[fk] || [];
+            if (keywords.some(k => search.includes(k))) flavorHit += 1;
+          }
+        });
+        score += flavorHit * 20;
+      }
+
+      // 바디감/강도 매칭
+      if (wantStrength) {
+        if (wantStrength === 'light' && strength <= 30) score += 25;
+        else if (wantStrength === 'medium' && strength > 30 && strength <= 50) score += 25;
+        else if (wantStrength === 'heavy' && strength > 50) score += 25;
+      }
+
+      if (score > 0) scored.push({ card, score });
+    });
+
+    scored.sort((a, b) => b.score - a.score);
+    const top = scored.slice(0, 5);
+
+    const resultsDiv = document.getElementById('rec-results');
+    if (top.length === 0) {
+      resultsDiv.innerHTML = '<p style="font-family:\'Noto Sans KR\',sans-serif;font-size:13px;color:var(--text-light);text-align:center;padding:20px">조건에 맞는 원두를 찾지 못했어요. 조건을 조금 줄여서 다시 시도해보세요.</p>';
+      return;
+    }
+
+    let html = '<div style="font-family:\'Noto Sans KR\',sans-serif;font-size:13px;font-weight:700;color:var(--mocha);margin-bottom:14px">🎯 추천 결과 TOP ' + top.length + '</div>';
+    top.forEach((item, idx) => {
+      const card = item.card;
+      const name = card.querySelector('.card-name')?.childNodes[0]?.textContent?.trim() || '';
+      const nameEn = card.querySelector('.card-name-en')?.textContent?.trim() || '';
+      const desc = card.querySelector('.desc')?.textContent?.trim() || '';
+      const tags = Array.from(card.querySelectorAll('.tag')).map(t => t.textContent.trim()).slice(0,3);
+
+      html += '<div class="rec-result-card">' +
+        '<div class="rec-result-rank">' + (idx+1) + '</div>' +
+        '<div class="rec-result-info">' +
+          '<div class="rec-result-name">' + name + ' <span style="font-family:\'Cormorant Garamond\',serif;font-style:italic;font-size:12px;color:var(--text-light)">' + nameEn + '</span></div>' +
+          '<div class="rec-result-tags">' + tags.map(t => '<span class="tag tag-chocolate" style="font-size:10px">' + t + '</span>').join('') + '</div>' +
+          '<div class="rec-result-reason">' + desc.slice(0, 70) + '...</div>' +
+        '</div>' +
+      '</div>';
+    });
+    resultsDiv.innerHTML = html;
+    resultsDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
 </script>
 </body>
 </html>
