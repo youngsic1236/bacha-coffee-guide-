@@ -161,6 +161,22 @@
   .rec-result-reason { font-family: 'Noto Sans KR', sans-serif; font-size: 12px; color: var(--text-light); margin-top: 3px; }
   .rec-result-tags { display:flex; gap:5px; margin-top:6px; flex-wrap:wrap; }
 
+
+  .quiz-option { font-family: 'Noto Sans KR', sans-serif; font-size: 13.5px; color: #3A1E0F; background: var(--white); border: 1.5px solid var(--beige-mid); border-radius: 10px; padding: 14px 16px; margin-bottom: 10px; cursor: pointer; transition: all 0.2s; display: block; width: 100%; text-align: left; }
+  .quiz-option:hover { border-color: var(--gold); background: rgba(200,169,110,0.06); }
+  .quiz-option.correct { border-color: #4a7c4a; background: rgba(74,124,74,0.1); font-weight: 700; }
+  .quiz-option.wrong { border-color: #b04a3a; background: rgba(176,74,58,0.1); font-weight: 700; }
+  .quiz-option.disabled { cursor: default; pointer-events: none; }
+  .quiz-q-title { font-family: 'Gowun Batang', serif; font-size: 16px; font-weight: 700; color: var(--text-dark); margin-bottom: 18px; line-height: 1.5; word-break: keep-all; }
+  .quiz-match-col { display: flex; flex-direction: column; gap: 8px; }
+  .quiz-match-item { font-family: 'Noto Sans KR', sans-serif; font-size: 13px; padding: 10px 14px; border-radius: 8px; border: 1.5px solid var(--beige-mid); background: var(--white); cursor: pointer; transition: all 0.2s; text-align: center; }
+  .quiz-match-item.selected { border-color: var(--gold); background: rgba(200,169,110,0.15); font-weight: 700; }
+  .quiz-match-item.matched-correct { border-color: #4a7c4a; background: rgba(74,124,74,0.12); }
+  .quiz-match-item.matched-wrong { border-color: #b04a3a; background: rgba(176,74,58,0.12); }
+  .quiz-review-item { background: var(--white); border: 1.5px solid var(--beige); border-radius: 10px; padding: 14px 16px; margin-bottom: 10px; }
+  .quiz-review-item.is-wrong { border-left: 4px solid #b04a3a; }
+  .quiz-review-item.is-right { border-left: 4px solid #4a7c4a; }
+
 </style>
 </head>
 <body>
@@ -180,6 +196,9 @@
     </button>
     <button id="recommend-toggle-btn" onclick="toggleRecommend()" style="font-family:'Noto Sans KR',sans-serif;font-size:12px;font-weight:600;letter-spacing:0.08em;color:var(--gold);background:rgba(200,169,110,0.15);border:1.5px solid var(--gold);padding:9px 24px;border-radius:20px;cursor:pointer;transition:all 0.2s">
       ✨ 나에게 맞는 원두 찾기
+    </button>
+    <button id="quiz-toggle-btn" onclick="toggleQuiz()" style="font-family:'Noto Sans KR',sans-serif;font-size:12px;font-weight:600;letter-spacing:0.08em;color:var(--gold);background:rgba(200,169,110,0.15);border:1.5px solid var(--gold);padding:9px 24px;border-radius:20px;cursor:pointer;transition:all 0.2s">
+      🎓 원두 퀴즈 풀기
     </button>
   </div>
 </header>
@@ -336,6 +355,50 @@
   </button>
 
   <div id="rec-results" style="margin-top:28px"></div>
+
+</div>
+</div>
+
+<div id="quiz-section" style="display:none;border-top:1px solid rgba(200,169,110,0.2)">
+<div style="max-width:760px;margin:0 auto;padding:32px 40px 50px">
+
+  <div id="quiz-intro">
+    <h2 class="section-title">🎓 바샤커피 원두 퀴즈</h2>
+    <p style="font-family:'Noto Sans KR',sans-serif;font-size:13px;color:var(--text-light);margin-bottom:24px;line-height:1.7;word-break:keep-all">
+      신규 교육용 퀴즈입니다. 원산지, 산미, 플레이버 노트를 객관식과 짝맞추기 문제로 학습해보세요. 매 회 10문제가 무작위로 출제됩니다.
+    </p>
+    <div style="background:var(--white);border:1.5px solid var(--beige);border-radius:12px;padding:24px;margin-bottom:20px">
+      <div style="display:flex;gap:20px;flex-wrap:wrap;font-family:'Noto Sans KR',sans-serif;font-size:13px;color:#3A1E0F">
+        <div>📝 <strong>10문제</strong> 무작위 출제</div>
+        <div>🔀 객관식 + 짝맞추기</div>
+        <div>📊 점수 + 오답 리뷰 제공</div>
+      </div>
+    </div>
+    <button onclick="startQuiz()" style="width:100%;font-family:'Noto Sans KR',sans-serif;font-size:14px;font-weight:700;letter-spacing:0.03em;color:var(--espresso);background:var(--gold);border:none;padding:14px;border-radius:10px;cursor:pointer">
+      🚀 퀴즈 시작하기
+    </button>
+  </div>
+
+  <div id="quiz-play" style="display:none">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+      <div style="font-family:'Noto Sans KR',sans-serif;font-size:12px;font-weight:700;color:var(--mocha)" id="quiz-progress">문제 1 / 10</div>
+      <div style="font-family:'Noto Sans KR',sans-serif;font-size:12px;color:var(--text-light)" id="quiz-score-live">정답 0개</div>
+    </div>
+    <div style="height:5px;background:var(--beige);border-radius:3px;overflow:hidden;margin-bottom:24px">
+      <div id="quiz-progress-bar" style="height:100%;width:10%;background:linear-gradient(90deg,var(--gold),var(--mocha));transition:width 0.3s"></div>
+    </div>
+    <div id="quiz-question-box"></div>
+  </div>
+
+  <div id="quiz-result" style="display:none">
+    <h2 class="section-title">📊 퀴즈 결과</h2>
+    <div id="quiz-score-summary" style="text-align:center;padding:24px;background:var(--white);border:1.5px solid var(--beige);border-radius:12px;margin-bottom:24px"></div>
+    <div id="quiz-review"></div>
+    <div style="display:flex;gap:10px;margin-top:20px">
+      <button onclick="startQuiz()" style="flex:1;font-family:'Noto Sans KR',sans-serif;font-size:13px;font-weight:700;color:var(--espresso);background:var(--gold);border:none;padding:12px;border-radius:10px;cursor:pointer">🔄 다시 풀기</button>
+      <button onclick="exitQuiz()" style="flex:1;font-family:'Noto Sans KR',sans-serif;font-size:13px;font-weight:700;color:var(--mocha);background:var(--beige);border:none;padding:12px;border-radius:10px;cursor:pointer">✕ 닫기</button>
+    </div>
+  </div>
 
 </div>
 </div>
@@ -1286,6 +1349,8 @@
       if (_about && _about.style.display !== 'none') toggleAbout();
       const _rec = document.getElementById('recommend-section');
       if (_rec && _rec.style.display !== 'none') toggleRecommend();
+      const _quiz = document.getElementById('quiz-section');
+      if (_quiz && _quiz.style.display !== 'none') toggleQuiz();
       activeFilter = btn.dataset.cat || 'all';
       activeAcidity = null;
       document.querySelectorAll('.acidity-quick-btn').forEach(b => b.classList.remove('active-acid'));
@@ -1362,6 +1427,8 @@
     const noResults = document.getElementById('noResults');
     const rec = document.getElementById('recommend-section');
     if (rec && rec.style.display !== 'none') { rec.style.display = 'none'; document.getElementById('recommend-toggle-btn').textContent = '✨ 나에게 맞는 원두 찾기'; document.getElementById('recommend-toggle-btn').style.background = 'rgba(200,169,110,0.15)'; }
+    const quiz = document.getElementById('quiz-section');
+    if (quiz && quiz.style.display !== 'none') { quiz.style.display = 'none'; document.getElementById('quiz-toggle-btn').textContent = '🎓 원두 퀴즈 풀기'; document.getElementById('quiz-toggle-btn').style.background = 'rgba(200,169,110,0.15)'; }
 
     const isHidden = about.style.display === 'none';
     about.style.display = isHidden ? 'block' : 'none';
@@ -1398,6 +1465,8 @@
     const noResults = document.getElementById('noResults');
 
     if (about && about.style.display !== 'none') { about.style.display = 'none'; }
+    const quiz2 = document.getElementById('quiz-section');
+    if (quiz2 && quiz2.style.display !== 'none') { quiz2.style.display = 'none'; document.getElementById('quiz-toggle-btn').textContent = '🎓 원두 퀴즈 풀기'; document.getElementById('quiz-toggle-btn').style.background = 'rgba(200,169,110,0.15)'; }
 
     const isHidden = rec.style.display === 'none';
     rec.style.display = isHidden ? 'block' : 'none';
@@ -1553,6 +1622,300 @@
     });
     resultsDiv.innerHTML = html;
     resultsDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+
+  // ───── 원두 퀴즈 기능 ─────
+  const QUIZ_DATA = [{"kr": "시다모 마운틴", "en": "Sidamo Mountain", "origin": "에티오피아", "flag": "🇪🇹", "tags": ["스파이시", "코코아", "꽃향"], "acidity": "중간", "cat": "single"}, {"kr": "마운트 케냐", "en": "Mount Kenya", "origin": "케냐", "flag": "🇰🇪", "tags": ["베리류", "밀크초콜릿", "과일향"], "acidity": "높음", "cat": "single"}, {"kr": "라고아", "en": "Lagoa", "origin": "브라질", "flag": "🇧🇷", "tags": ["다크초콜릿", "헤이즐넛", "토피"], "acidity": "낮음", "cat": "single"}, {"kr": "막달레나", "en": "Magdalena", "origin": "콜롬비아", "flag": "🇨🇴", "tags": ["과일향", "균형감"], "acidity": "중간", "cat": "single"}, {"kr": "그랜드 모카 마타리", "en": "Grand Moka Matari", "origin": "예멘", "flag": "🇾🇪", "tags": ["살구", "다크초콜릿", "대추야자", "캐러멜"], "acidity": "높음", "cat": "single"}, {"kr": "시에라 마드레", "en": "Sierra Madre", "origin": "과테말라", "flag": "🇬🇹", "tags": ["코코아", "과일향"], "acidity": "중간", "cat": "single"}, {"kr": "나란조 마운틴", "en": "Naranjo Mountain", "origin": "코스타리카", "flag": "🇨🇷", "tags": ["몰티", "견과류", "시트러스"], "acidity": "높음", "cat": "single"}, {"kr": "투르키노", "en": "Turquino", "origin": "쿠바", "flag": "🇨🇺", "tags": ["스파이시", "밸런스"], "acidity": "중간", "cat": "single"}, {"kr": "몬순시크릿", "en": "Monsoon Secret", "origin": "인도", "flag": "🇮🇳", "tags": ["과일향", "허브", "풀바디"], "acidity": "낮음", "cat": "single"}, {"kr": "산크리스토발", "en": "San Cristóbal", "origin": "에콰도르", "flag": "🇪🇨", "tags": ["탄지함", "초콜릿"], "acidity": "높음", "cat": "single"}, {"kr": "마운트 에베레스트", "en": "Mount Everest", "origin": "네팔", "flag": "🇳🇵", "tags": ["견과류", "깊은 풍미"], "acidity": "낮음", "cat": "single"}, {"kr": "시그리 주얼", "en": "Sigri Jewel", "origin": "파푸아뉴기니", "flag": "🇵🇬", "tags": ["다크초콜릿", "당밀"], "acidity": "중간", "cat": "single"}, {"kr": "밀라노 모닝", "en": "Milano Morning", "origin": "우간다", "flag": "🇺🇬", "tags": ["쌉싸름한 초콜릿", "브리오슈", "몰티"], "acidity": "낮음", "cat": "flavoured"}, {"kr": "아이러브파리", "en": "I Love Paris", "origin": null, "flag": "", "tags": ["포레스트 베리", "와일드 너트"], "acidity": "중간", "cat": "flavoured"}, {"kr": "캐러멜로 모닝", "en": "Caramelo Morning", "origin": null, "flag": "", "tags": ["캐러멜", "몰티"], "acidity": "낮음", "cat": "flavoured"}, {"kr": "세빌 오렌지", "en": "Seville Orange", "origin": null, "flag": "", "tags": ["코코아", "오렌지 제스트", "초콜릿"], "acidity": "중간", "cat": "flavoured"}, {"kr": "스위트 멕시코", "en": "Sweet Mexico", "origin": null, "flag": "", "tags": ["바닐라", "스파이스"], "acidity": "낮음", "cat": "flavoured"}, {"kr": "톨테카 초콜릿", "en": "Tolteca Chocolate", "origin": null, "flag": "", "tags": ["진한 코코아", "초콜릿"], "acidity": "낮음", "cat": "flavoured"}, {"kr": "1910", "en": "1910", "origin": null, "flag": "", "tags": ["야생 딸기", "헤비 크림"], "acidity": "중간", "cat": "flavoured"}, {"kr": "블루다뉴브", "en": "Blue Danube", "origin": null, "flag": "", "tags": ["포레스트 베리", "밀크초콜릿"], "acidity": "중간", "cat": "flavoured"}, {"kr": "싱가포르 모닝", "en": "Singapore Morning", "origin": null, "flag": "", "tags": ["초콜릿", "스파이스", "시트러스"], "acidity": "중간", "cat": "flavoured"}, {"kr": "매직 이스탄불", "en": "Magic Istanbul", "origin": null, "flag": "", "tags": ["허니콤", "그린 아몬드"], "acidity": "낮음", "cat": "flavoured"}, {"kr": "벌스데이 위시", "en": "Birthday Wish", "origin": null, "flag": "", "tags": ["초콜릿", "버터스카치"], "acidity": "낮음", "cat": "flavoured"}, {"kr": "마로키시모", "en": "Marocchissimo!", "origin": null, "flag": "", "tags": ["스파이스", "건조 과일", "견과류"], "acidity": "낮음", "cat": "flavoured"}, {"kr": "모로칸 사하라", "en": "Moroccan Sahara", "origin": null, "flag": "", "tags": ["코코넛", "카라멜 너트", "핫 초콜릿"], "acidity": "낮음", "cat": "flavoured"}, {"kr": "킹 오브 아프리카", "en": "King of Africa", "origin": null, "flag": "", "tags": ["와일드 헤이즐넛", "크랙 카카오", "허니드 바나나"], "acidity": "낮음", "cat": "flavoured"}, {"kr": "마라케시 모닝", "en": "Marrakech Morning", "origin": null, "flag": "", "tags": ["시나몬", "그린 아몬드", "자두·체리"], "acidity": "중간", "cat": "flavoured"}, {"kr": "해피잔두야", "en": "Happy Gianduja", "origin": null, "flag": "", "tags": ["이탈리안 헤이즐넛", "달콤함"], "acidity": "낮음", "cat": "flavoured"}, {"kr": "예가체프 디카페인", "en": "Yirgacheffe Decaffeinated", "origin": "에티오피아", "flag": "🇪🇹", "tags": ["블루베리", "레몬 산미", "몰티"], "acidity": "중간", "cat": "decaf"}, {"kr": "막달레나 디카페인", "en": "Magdalena Decaffeinated", "origin": "콜롬비아", "flag": "🇨🇴", "tags": ["과일향", "몰티", "견과류", "스파이스"], "acidity": "중간", "cat": "decaf"}, {"kr": "아디스아바바 디카페인", "en": "Addis Ababa Decaffeinated", "origin": null, "flag": "", "tags": ["그래시", "부드러운 단맛"], "acidity": "낮음", "cat": "decaf"}, {"kr": "바라카 디카페인", "en": "Baraka Decaffeinated", "origin": null, "flag": "", "tags": ["다크초콜릿", "스위트 오렌지"], "acidity": "중간", "cat": "decaf"}, {"kr": "WB 예가체프 에얼룸", "en": "Yirgacheffe Heirloom", "origin": "에티오피아", "flag": "🇪🇹", "tags": ["레몬그라스", "케인슈거", "베르가못"], "acidity": "높음", "cat": "wb"}, {"kr": "WB 불칸아줄", "en": "Volcán Azul", "origin": "코스타리카", "flag": "🇨🇷", "tags": ["향기로운 산미", "조화로운 바디"], "acidity": "높음", "cat": "wb"}, {"kr": "WB 르완다 슈페리어", "en": "Rwanda Superior", "origin": "르완다", "flag": "🇷🇼", "tags": ["신선한 꽃향", "땅콩 노트"], "acidity": "중간", "cat": "wb"}, {"kr": "WB 상실베스트레", "en": "São Silvestre", "origin": "브라질", "flag": "🇧🇷", "tags": ["캐러멜", "초콜릿", "헤이즐넛"], "acidity": "낮음", "cat": "wb"}, {"kr": "WB 엘플라밍고", "en": "El Flamingo", "origin": "멕시코", "flag": "🇲🇽", "tags": ["로 카카오", "부드러움"], "acidity": "중간", "cat": "wb"}, {"kr": "WB 막달레나", "en": "Magdalena", "origin": "콜롬비아", "flag": "🇨🇴", "tags": ["과일향", "부드러운 산미"], "acidity": "중간", "cat": "wb"}, {"kr": "WB 블루다뉴브", "en": "Blue Danube", "origin": null, "flag": "", "tags": ["포레스트 베리", "밀크초콜릿"], "acidity": "중간", "cat": "wb"}, {"kr": "WB 아이러브파리", "en": "I Love Paris", "origin": null, "flag": "", "tags": ["포레스트 베리", "와일드 너트"], "acidity": "중간", "cat": "wb"}, {"kr": "WB 세빌오렌지", "en": "Seville Orange", "origin": null, "flag": "", "tags": ["코코아", "오렌지 제스트"], "acidity": "중간", "cat": "wb"}, {"kr": "WB 밀라노모닝", "en": "Milano Morning", "origin": "우간다", "flag": "🇺🇬", "tags": ["쌉싸름한 초콜릿", "브리오슈"], "acidity": "낮음", "cat": "wb"}, {"kr": "WB 1910", "en": "1910", "origin": null, "flag": "", "tags": ["야생 딸기", "헤비 크림"], "acidity": "중간", "cat": "wb"}];
+  let quizQuestions = [];
+  let quizCurrentIdx = 0;
+  let quizAnswers = [];
+  let quizMatchState = null;
+
+  function toggleQuiz() {
+    const quiz = document.getElementById('quiz-section');
+    const about = document.getElementById('about-section');
+    const rec = document.getElementById('recommend-section');
+    const mainSearch = document.getElementById('main-search');
+    const acidityBar = document.querySelector('.acidity-bar');
+    const mainSection = document.getElementById('mainContent');
+    const btn = document.getElementById('quiz-toggle-btn');
+    const noResults = document.getElementById('noResults');
+
+    if (about && about.style.display !== 'none') { about.style.display = 'none'; }
+    if (rec && rec.style.display !== 'none') { rec.style.display = 'none'; document.getElementById('recommend-toggle-btn').textContent = '✨ 나에게 맞는 원두 찾기'; document.getElementById('recommend-toggle-btn').style.background = 'rgba(200,169,110,0.15)'; }
+
+    const isHidden = quiz.style.display === 'none';
+    quiz.style.display = isHidden ? 'block' : 'none';
+    if (mainSearch) mainSearch.style.display = isHidden ? 'none' : '';
+    if (acidityBar) acidityBar.style.display = isHidden ? 'none' : '';
+    if (mainSection) mainSection.style.display = isHidden ? 'none' : '';
+    if (noResults) noResults.style.display = 'none';
+    btn.textContent = isHidden ? '✕ 퀴즈 닫기' : '🎓 원두 퀴즈 풀기';
+    btn.style.background = isHidden ? 'rgba(200,169,110,0.3)' : 'rgba(200,169,110,0.15)';
+
+    if (isHidden) {
+      document.getElementById('quiz-intro').style.display = '';
+      document.getElementById('quiz-play').style.display = 'none';
+      document.getElementById('quiz-result').style.display = 'none';
+    }
+  }
+
+  function exitQuiz() {
+    toggleQuiz();
+  }
+
+  function shuffleArr(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  function pickRandom(arr, n, exclude) {
+    const pool = arr.filter(x => x !== exclude);
+    return shuffleArr(pool).slice(0, n);
+  }
+
+  // 문제 생성: 타입별로 풀을 만들고 랜덤 10개 추출
+  function buildQuizQuestions() {
+    const withOrigin = QUIZ_DATA.filter(d => d.origin);
+    const all = QUIZ_DATA;
+    const pool = [];
+
+    // 타입1: 원산지 객관식 (원산지 있는 원두만)
+    withOrigin.forEach(d => {
+      const wrongOrigins = pickRandom([...new Set(withOrigin.map(x => x.origin))], 3, d.origin);
+      const options = shuffleArr([d.origin, ...wrongOrigins]);
+      pool.push({
+        type: 'mc', category: '원산지',
+        question: `"${d.kr}"의 원산지는 어디일까요?`,
+        options, answer: d.origin, item: d
+      });
+    });
+
+    // 타입2: 산미 객관식
+    all.forEach(d => {
+      if (!d.acidity) return;
+      const options = shuffleArr(['높음', '중간', '낮음']);
+      pool.push({
+        type: 'mc', category: '산미',
+        question: `"${d.kr}"의 산미 강도는 어느 정도일까요?`,
+        options, answer: d.acidity, item: d
+      });
+    });
+
+    // 타입3: 노트(플레이버) 객관식
+    all.forEach(d => {
+      if (!d.tags || d.tags.length === 0) return;
+      const correctTag = d.tags[0];
+      const otherTagsPool = [...new Set(all.flatMap(x => x.tags))].filter(t => !d.tags.includes(t));
+      const wrongTags = pickRandom(otherTagsPool, 3, correctTag);
+      const options = shuffleArr([correctTag, ...wrongTags]);
+      pool.push({
+        type: 'mc', category: '플레이버 노트',
+        question: `"${d.kr}"의 대표적인 플레이버 노트는?`,
+        options, answer: correctTag, item: d
+      });
+    });
+
+    // 타입4: 짝맞추기 (원두-원산지) 4쌍
+    if (withOrigin.length >= 4) {
+      pool.push({ type: 'match-origin', category: '원두-원산지 짝맞추기' });
+    }
+
+    // 타입5: 짝맞추기 (원두-노트) 4쌍
+    pool.push({ type: 'match-note', category: '원두-노트 짝맞추기' });
+
+    return shuffleArr(pool).slice(0, 10);
+  }
+
+  function startQuiz() {
+    quizQuestions = buildQuizQuestions();
+    quizCurrentIdx = 0;
+    quizAnswers = [];
+    document.getElementById('quiz-intro').style.display = 'none';
+    document.getElementById('quiz-result').style.display = 'none';
+    document.getElementById('quiz-play').style.display = '';
+    renderQuizQuestion();
+  }
+
+  function renderQuizQuestion() {
+    const q = quizQuestions[quizCurrentIdx];
+    document.getElementById('quiz-progress').textContent = `문제 ${quizCurrentIdx + 1} / ${quizQuestions.length}`;
+    document.getElementById('quiz-score-live').textContent = `정답 ${quizAnswers.filter(a => a.correct).length}개`;
+    document.getElementById('quiz-progress-bar').style.width = ((quizCurrentIdx + 1) / quizQuestions.length * 100) + '%';
+
+    const box = document.getElementById('quiz-question-box');
+
+    if (q.type === 'mc') {
+      box.innerHTML = `
+        <div style="font-family:'Noto Sans KR',sans-serif;font-size:11px;font-weight:700;color:var(--gold);margin-bottom:8px">${q.category}</div>
+        <div class="quiz-q-title">${q.question}</div>
+        <div id="quiz-options"></div>
+      `;
+      const optWrap = document.getElementById('quiz-options');
+      q.options.forEach(opt => {
+        const btn = document.createElement('button');
+        btn.className = 'quiz-option';
+        btn.textContent = opt;
+        btn.onclick = () => answerMC(q, opt, btn);
+        optWrap.appendChild(btn);
+      });
+    } else if (q.type === 'match-origin' || q.type === 'match-note') {
+      renderMatchQuestion(q);
+    }
+  }
+
+  function answerMC(q, selected, btnEl) {
+    const correct = selected === q.answer;
+    document.querySelectorAll('#quiz-options .quiz-option').forEach(b => {
+      b.classList.add('disabled');
+      if (b.textContent === q.answer) b.classList.add('correct');
+      else if (b === btnEl && !correct) b.classList.add('wrong');
+    });
+    quizAnswers.push({ q, selected, correct, item: q.item });
+    setTimeout(nextQuizQuestion, 900);
+  }
+
+  function renderMatchQuestion(q) {
+    const isOrigin = q.type === 'match-origin';
+    const sourceData = isOrigin ? QUIZ_DATA.filter(d => d.origin) : QUIZ_DATA.filter(d => d.tags && d.tags.length);
+    const picked = shuffleArr(sourceData).slice(0, 4);
+    const rightItems = picked.map(d => isOrigin ? d.origin : d.tags[0]);
+    const shuffledRight = shuffleArr(rightItems);
+
+    quizMatchState = { picked, matched: {}, selectedLeft: null, isOrigin };
+
+    const box = document.getElementById('quiz-question-box');
+    box.innerHTML = `
+      <div style="font-family:'Noto Sans KR',sans-serif;font-size:11px;font-weight:700;color:var(--gold);margin-bottom:8px">${q.category}</div>
+      <div class="quiz-q-title">${isOrigin ? '원두와 원산지를 알맞게 연결해보세요.' : '원두와 대표 노트를 알맞게 연결해보세요.'}</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+        <div class="quiz-match-col" id="match-left"></div>
+        <div class="quiz-match-col" id="match-right"></div>
+      </div>
+      <div id="match-feedback" style="margin-top:14px;font-family:'Noto Sans KR',sans-serif;font-size:12px;color:var(--text-light);text-align:center"></div>
+    `;
+
+    const leftCol = document.getElementById('match-left');
+    picked.forEach((d, i) => {
+      const el = document.createElement('div');
+      el.className = 'quiz-match-item';
+      el.textContent = d.kr;
+      el.dataset.idx = i;
+      el.onclick = () => selectMatchLeft(i, el);
+      leftCol.appendChild(el);
+    });
+
+    const rightCol = document.getElementById('match-right');
+    shuffledRight.forEach((val) => {
+      const el = document.createElement('div');
+      el.className = 'quiz-match-item';
+      el.textContent = val;
+      el.dataset.val = val;
+      el.onclick = () => selectMatchRight(val, el);
+      rightCol.appendChild(el);
+    });
+  }
+
+  function selectMatchLeft(idx, el) {
+    if (quizMatchState.matched[idx] !== undefined) return;
+    document.querySelectorAll('#match-left .quiz-match-item').forEach(e => e.classList.remove('selected'));
+    el.classList.add('selected');
+    quizMatchState.selectedLeft = idx;
+  }
+
+  function selectMatchRight(val, el) {
+    if (quizMatchState.selectedLeft === null) return;
+    if (el.classList.contains('matched-correct')) return;
+
+    const idx = quizMatchState.selectedLeft;
+    const d = quizMatchState.picked[idx];
+    const correctVal = quizMatchState.isOrigin ? d.origin : d.tags[0];
+    const leftEl = document.querySelector(`#match-left [data-idx="${idx}"]`);
+    const correct = val === correctVal;
+
+    quizMatchState.matched[idx] = correct;
+    leftEl.classList.remove('selected');
+    leftEl.classList.add(correct ? 'matched-correct' : 'matched-wrong');
+    el.classList.add(correct ? 'matched-correct' : 'matched-wrong');
+    quizMatchState.selectedLeft = null;
+
+    const totalMatched = Object.keys(quizMatchState.matched).length;
+    document.getElementById('match-feedback').textContent = `${totalMatched} / ${quizMatchState.picked.length} 연결 완료`;
+
+    if (totalMatched === quizMatchState.picked.length) {
+      const correctCount = Object.values(quizMatchState.matched).filter(v => v).length;
+      const allCorrect = correctCount === quizMatchState.picked.length;
+      quizAnswers.push({
+        q: { type: quizMatchState.isOrigin ? 'match-origin' : 'match-note', category: quizMatchState.isOrigin ? '원두-원산지 짝맞추기' : '원두-노트 짝맞추기' },
+        correct: allCorrect,
+        partial: `${correctCount}/${quizMatchState.picked.length}`,
+        item: null
+      });
+      setTimeout(nextQuizQuestion, 1100);
+    }
+  }
+
+  function nextQuizQuestion() {
+    quizCurrentIdx++;
+    if (quizCurrentIdx >= quizQuestions.length) {
+      showQuizResult();
+    } else {
+      renderQuizQuestion();
+    }
+  }
+
+  function showQuizResult() {
+    document.getElementById('quiz-play').style.display = 'none';
+    document.getElementById('quiz-result').style.display = '';
+
+    const correctCount = quizAnswers.filter(a => a.correct).length;
+    const total = quizAnswers.length;
+    const pct = Math.round((correctCount / total) * 100);
+
+    let grade = '🌱 더 공부해봐요';
+    if (pct >= 90) grade = '🏆 원두 마스터!';
+    else if (pct >= 70) grade = '☕ 잘 알고 있어요';
+    else if (pct >= 50) grade = '📖 조금 더 학습이 필요해요';
+
+    document.getElementById('quiz-score-summary').innerHTML = `
+      <div style="font-family:'Gowun Batang',serif;font-size:32px;font-weight:700;color:var(--mocha)">${correctCount} / ${total}</div>
+      <div style="font-family:'Noto Sans KR',sans-serif;font-size:13px;color:var(--text-light);margin-top:6px">정답률 ${pct}%</div>
+      <div style="font-family:'Noto Sans KR',sans-serif;font-size:14px;font-weight:700;color:var(--gold);margin-top:10px">${grade}</div>
+    `;
+
+    let reviewHtml = '<div style="font-family:\'Noto Sans KR\',sans-serif;font-size:13px;font-weight:700;color:var(--mocha);margin-bottom:12px">📋 문제 리뷰</div>';
+    quizAnswers.forEach((a, i) => {
+      const isMatch = a.q.type.startsWith('match');
+      const statusIcon = a.correct ? '✅' : '❌';
+      let detail = '';
+      if (isMatch) {
+        detail = `${a.q.category} — ${a.partial} 정답`;
+      } else {
+        detail = `${a.q.question}<br><span style="color:var(--text-light)">정답: <strong>${a.q.answer}</strong>${a.correct ? '' : ' (선택: ' + a.selected + ')'}</span>`;
+      }
+      const linkBtn = (a.item) ? `<button onclick="goToCard('${a.item.kr}')" style="margin-top:8px;font-family:'Noto Sans KR',sans-serif;font-size:11px;color:var(--gold);background:none;border:1px solid var(--gold);padding:4px 10px;border-radius:14px;cursor:pointer">${a.item.kr} 카드 보기 →</button>` : '';
+
+      reviewHtml += `<div class="quiz-review-item ${a.correct ? 'is-right' : 'is-wrong'}">
+        <div style="font-family:'Noto Sans KR',sans-serif;font-size:13px;color:#3A1E0F">${statusIcon} ${detail}</div>
+        ${linkBtn}
+      </div>`;
+    });
+    document.getElementById('quiz-review').innerHTML = reviewHtml;
+  }
+
+  function goToCard(name) {
+    toggleQuiz();
+    setTimeout(() => {
+      searchInput.value = name;
+      applyFilters();
+      const target = [...document.querySelectorAll('.card')].find(c => c.dataset.search.includes(name.toLowerCase()) || c.querySelector('.card-name')?.textContent.includes(name));
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 100);
   }
 
 </script>
