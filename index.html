@@ -48,9 +48,9 @@
   .search-wrap { padding: 32px 40px 8px; max-width: 1200px; margin: 0 auto; }
   .acidity-bar { max-width: 1200px; margin: 0 auto; padding: 12px 40px 4px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
   .acidity-bar-label { font-family: 'Noto Sans KR', sans-serif; font-size: 12px; font-weight: 600; color: var(--text-light); margin-right: 4px; }
-  .acidity-quick-btn { font-family: 'Noto Sans KR', sans-serif; font-size: 12px; font-weight: 500; padding: 5px 14px; border-radius: 20px; border: 1.5px solid var(--beige-mid); background: var(--white); color: var(--text-mid); cursor: pointer; transition: all 0.2s; }
-  .acidity-quick-btn:hover { border-color: var(--gold); color: var(--mocha); }
-  .acidity-quick-btn.active-acid { border-color: var(--gold); background: var(--gold); color: var(--espresso); font-weight: 700; }
+  .acidity-quick-btn, .strength-quick-btn { font-family: 'Noto Sans KR', sans-serif; font-size: 12px; font-weight: 500; padding: 5px 14px; border-radius: 20px; border: 1.5px solid var(--beige-mid); background: var(--white); color: var(--text-mid); cursor: pointer; transition: all 0.2s; }
+  .acidity-quick-btn:hover, .strength-quick-btn:hover { border-color: var(--gold); color: var(--mocha); }
+  .acidity-quick-btn.active-acid, .strength-quick-btn.active-strength { border-color: var(--gold); background: var(--gold); color: var(--espresso); font-weight: 700; }
   @media (max-width: 600px) { .acidity-bar { padding: 10px 16px 4px; } }
   .search-box { position: relative; max-width: 360px; }
   .search-box input { width: 100%; background: var(--white); border: 1.5px solid var(--beige-mid); border-radius: 6px; padding: 10px 16px 10px 40px; font-family: 'Noto Sans KR', sans-serif; font-size: 13px; color: var(--text-dark); outline: none; transition: border-color 0.2s; }
@@ -316,9 +316,24 @@
     원하는 맛을 자유롭게 적거나, 아래 버튼으로 선택해보세요. 둘 다 사용하면 더 정확하게 추천해드려요.
   </p>
 
-  <textarea id="rec-text-input" placeholder="예) 산미는 싫고 초콜릿향이 강한 원두 원해요&#10;예) 산미를 좋아하고 향은 약했으면 좋겠어요" style="width:100%;min-height:64px;font-family:'Noto Sans KR',sans-serif;font-size:13.5px;color:#3A1E0F;background:var(--white);border:1.5px solid var(--beige-mid);border-radius:10px;padding:14px 16px;resize:vertical;outline:none;line-height:1.6;box-sizing:border-box"></textarea>
+  <div style="position:relative">
+    <textarea id="rec-text-input" placeholder="예) 산미는 싫고 초콜릿향이 강한 원두 원해요&#10;예) 산미를 좋아하고 향은 약했으면 좋겠어요" style="width:100%;min-height:64px;font-family:'Noto Sans KR',sans-serif;font-size:13.5px;color:#3A1E0F;background:var(--white);border:1.5px solid var(--beige-mid);border-radius:10px;padding:14px 50px 14px 16px;resize:vertical;outline:none;line-height:1.6;box-sizing:border-box"></textarea>
+    <button id="rec-mic-btn" onclick="toggleVoiceInput()" title="음성으로 입력하기" style="position:absolute;top:12px;right:10px;width:32px;height:32px;border-radius:50%;border:1.5px solid var(--beige-mid);background:var(--white);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;transition:all 0.2s">🎤</button>
+  </div>
+  <div id="rec-mic-status" style="display:none;font-family:'Noto Sans KR',sans-serif;font-size:11.5px;color:var(--gold);margin-top:6px;text-align:center">🔴 듣고 있어요... 말씀해주세요</div>
 
   <div style="margin-top:20px">
+    <div style="font-family:'Noto Sans KR',sans-serif;font-size:12px;font-weight:700;color:var(--mocha);margin-bottom:8px">고객 연령대 <span style="font-weight:400;color:var(--text-light);font-size:11px">(선택 시 일반적인 선호 경향 반영)</span></div>
+    <div class="rec-btn-group" data-group="age">
+      <button class="rec-choice-btn" data-val="20s">20대</button>
+      <button class="rec-choice-btn" data-val="30s">30대</button>
+      <button class="rec-choice-btn" data-val="40s">40대</button>
+      <button class="rec-choice-btn" data-val="50s">50대</button>
+      <button class="rec-choice-btn" data-val="60s">60대 이상</button>
+    </div>
+  </div>
+
+  <div style="margin-top:16px">
     <div style="font-family:'Noto Sans KR',sans-serif;font-size:12px;font-weight:700;color:var(--mocha);margin-bottom:8px">산미 선호도</div>
     <div class="rec-btn-group" data-group="acidity">
       <button class="rec-choice-btn" data-val="low">산미 싫어요</button>
@@ -332,6 +347,7 @@
     <div class="rec-btn-group" data-group="flavor">
       <button class="rec-choice-btn" data-val="chocolate">초콜릿</button>
       <button class="rec-choice-btn" data-val="nutty">견과류</button>
+      <button class="rec-choice-btn" data-val="savory">고소함</button>
       <button class="rec-choice-btn" data-val="fruity">과일</button>
       <button class="rec-choice-btn" data-val="floral">꽃향</button>
       <button class="rec-choice-btn" data-val="spice">향신료</button>
@@ -415,6 +431,13 @@
   <button class="acidity-quick-btn" data-acidity="high">높음</button>
   <button class="acidity-quick-btn" data-acidity="mid">중간</button>
   <button class="acidity-quick-btn" data-acidity="low">낮음</button>
+</div>
+<div class="acidity-bar">
+  <span class="acidity-bar-label">바디감 필터</span>
+  <button class="strength-quick-btn active-strength" data-strength="">전체</button>
+  <button class="strength-quick-btn" data-strength="heavy">묵직하게</button>
+  <button class="strength-quick-btn" data-strength="medium">보통</button>
+  <button class="strength-quick-btn" data-strength="light">가볍게</button>
 </div>
 
 <main class="section" id="mainContent">
@@ -1339,7 +1362,7 @@
   const cards = document.querySelectorAll('.card');
   const searchInput = document.getElementById('searchInput');
   const noResults = document.getElementById('noResults');
-  let activeFilter = 'all', activeAcidity = null;
+  let activeFilter = 'all', activeAcidity = null, activeStrength = null;
 
   filterBtns.forEach(btn => {
     btn.addEventListener('click', () => {
@@ -1353,8 +1376,11 @@
       if (_quiz && _quiz.style.display !== 'none') toggleQuiz();
       activeFilter = btn.dataset.cat || 'all';
       activeAcidity = null;
+      activeStrength = null;
       document.querySelectorAll('.acidity-quick-btn').forEach(b => b.classList.remove('active-acid'));
       document.querySelector('.acidity-quick-btn[data-acidity=""]').classList.add('active-acid');
+      document.querySelectorAll('.strength-quick-btn').forEach(b => b.classList.remove('active-strength'));
+      document.querySelector('.strength-quick-btn[data-strength=""]').classList.add('active-strength');
       applyFilters();
     });
   });
@@ -1371,13 +1397,28 @@
     });
   });
 
+  document.querySelectorAll('.strength-quick-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.strength-quick-btn').forEach(b => b.classList.remove('active-strength'));
+      btn.classList.add('active-strength');
+      activeStrength = btn.dataset.strength || null;
+      applyFilters();
+    });
+  });
+
   function applyFilters() {
     const q = searchInput.value.toLowerCase().trim();
     let visible = 0;
 
     cards.forEach(card => {
+      const cardStrengthVal = parseInt(card.dataset.strength || '40', 10);
+      const strengthMatch = !activeStrength ||
+        (activeStrength === 'light' && cardStrengthVal <= 30) ||
+        (activeStrength === 'medium' && cardStrengthVal > 30 && cardStrengthVal <= 50) ||
+        (activeStrength === 'heavy' && cardStrengthVal > 50);
       const ok = (activeFilter === 'all' || card.dataset.cat === activeFilter)
                && (!activeAcidity || card.dataset.acidity === activeAcidity)
+               && strengthMatch
                && (!q || card.dataset.search.includes(q));
       card.style.display = ok ? '' : 'none';
       if (ok) visible++;
@@ -1492,7 +1533,13 @@
   // 자유 텍스트에서 키워드 추출
   function parseTextInput(text) {
     const t = text.toLowerCase();
-    const result = { acidity: null, flavors: [], strength: null };
+    const result = { acidity: null, flavors: [], strength: null, age: null };
+
+    // 나이대 인식
+    const ageMap = { '20대': '20s', '30대': '30s', '40대': '40s', '50대': '50s', '60대': '60s', '70대': '60s', '80대': '60s' };
+    for (const [kr, code] of Object.entries(ageMap)) {
+      if (t.includes(kr)) { result.age = code; break; }
+    }
 
     // 산미
     const acidNeg = ['산미는 싫', '산미 싫', '산미가 싫', '산미 없', '산미 안', '산미는 별로', '신맛 싫', '신맛은 싫', '시지 않'];
@@ -1504,12 +1551,13 @@
     const flavorMap = {
       chocolate: ['초콜릿', '초코', '코코아', '카카오'],
       nutty: ['견과', '아몬드', '헤이즐넛', '너트'],
+      savory: ['고소', '고소한', '고소함'],
       fruity: ['과일', '베리', '체리', '딸기', '자두', '살구'],
       floral: ['꽃향', '꽃', '플로럴'],
       spice: ['향신료', '스파이스', '시나몬', '계피'],
       malty: ['몰트', '캐러멜', '몰티', '토피', '바닐라'],
       citrus: ['시트러스', '오렌지', '레몬', '감귤'],
-      none: ['향이 안', '향 없', '향이 없', '심플', '깔끔', '향이 약', '향 약']
+      none: ['향이 안', '향 없', '향이 없', '심플', '깔끔', '향이 약', '향 약', '향은 진하지 않', '진하지 않', '진하지않']
     };
     for (const [key, keywords] of Object.entries(flavorMap)) {
       if (keywords.some(k => t.includes(k))) result.flavors.push(key);
@@ -1529,20 +1577,39 @@
     const textVal = document.getElementById('rec-text-input').value.trim();
     const textParsed = textVal ? parseTextInput(textVal) : { acidity: null, flavors: [], strength: null };
 
+    const ageBtn = document.querySelector('.rec-btn-group[data-group="age"] .selected');
     const acidityBtn = document.querySelector('.rec-btn-group[data-group="acidity"] .selected');
     const flavorBtns = document.querySelectorAll('.rec-btn-group[data-group="flavor"] .selected');
     const strengthBtn = document.querySelector('.rec-btn-group[data-group="strength"] .selected');
 
-    const wantAcidity = acidityBtn ? acidityBtn.dataset.val : textParsed.acidity;
+    const wantAge = ageBtn ? ageBtn.dataset.val : textParsed.age;
+    let wantAcidity = acidityBtn ? acidityBtn.dataset.val : textParsed.acidity;
+    let wantStrength = strengthBtn ? strengthBtn.dataset.val : textParsed.strength;
+
+    // 나이대별 일반적 선호 경향 보정 (다른 명시적 선택이 없을 때만 기본값으로 적용)
+    const ageTendency = {
+      '20s': { acidity: 'high', strength: 'light' },
+      '30s': { acidity: 'mid',  strength: 'medium' },
+      '40s': { acidity: 'mid',  strength: 'medium' },
+      '50s': { acidity: 'low',  strength: 'heavy' },
+      '60s': { acidity: 'low',  strength: 'heavy' }
+    };
+    let ageBonus = null;
+    if (wantAge && ageTendency[wantAge]) {
+      ageBonus = ageTendency[wantAge];
+      if (!wantAcidity) wantAcidity = ageBonus.acidity;
+      if (!wantStrength) wantStrength = ageBonus.strength;
+    }
+
     const wantFlavors = [...new Set([
       ...Array.from(flavorBtns).map(b => b.dataset.val),
       ...textParsed.flavors
     ])];
-    const wantStrength = strengthBtn ? strengthBtn.dataset.val : textParsed.strength;
 
     const flavorKeywordMap = {
       chocolate: ['초콜릿','초코','코코아','카카오'],
       nutty: ['견과','아몬드','헤이즐넛','너트'],
+      savory: ['견과','아몬드','헤이즐넛','너트','몰트','캐러멜','몰티','토피'],
       fruity: ['과일','베리','체리','딸기','자두','살구'],
       floral: ['꽃향','꽃'],
       spice: ['향신료','스파이스','시나몬'],
@@ -1916,6 +1983,77 @@
       const target = [...document.querySelectorAll('.card')].find(c => c.dataset.search.includes(name.toLowerCase()) || c.querySelector('.card-name')?.textContent.includes(name));
       if (target) target.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }, 100);
+  }
+
+
+  // ───── 음성 인식 (Web Speech API) ─────
+  let voiceRecognition = null;
+  let voiceListening = false;
+
+  function getSpeechRecognition() {
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    return SR ? new SR() : null;
+  }
+
+  function toggleVoiceInput() {
+    const micBtn = document.getElementById('rec-mic-btn');
+    const statusEl = document.getElementById('rec-mic-status');
+    const textInput = document.getElementById('rec-text-input');
+
+    if (voiceListening) {
+      if (voiceRecognition) voiceRecognition.stop();
+      return;
+    }
+
+    if (!voiceRecognition) {
+      voiceRecognition = getSpeechRecognition();
+    }
+
+    if (!voiceRecognition) {
+      alert('이 브라우저는 음성 인식을 지원하지 않아요. 크롬이나 안드로이드 브라우저를 이용해주세요.');
+      return;
+    }
+
+    voiceRecognition.lang = 'ko-KR';
+    voiceRecognition.interimResults = false;
+    voiceRecognition.maxAlternatives = 1;
+
+    voiceRecognition.onstart = () => {
+      voiceListening = true;
+      micBtn.textContent = '⏹️';
+      micBtn.style.background = 'var(--gold)';
+      micBtn.style.borderColor = 'var(--gold)';
+      statusEl.style.display = 'block';
+    };
+
+    voiceRecognition.onresult = (event) => {
+      const transcript = event.results[0][0].transcript;
+      const existing = textInput.value.trim();
+      textInput.value = existing ? existing + ' ' + transcript : transcript;
+    };
+
+    voiceRecognition.onerror = (event) => {
+      if (event.error === 'not-allowed' || event.error === 'permission-denied') {
+        alert('마이크 권한이 필요해요. 브라우저 설정에서 마이크 접근을 허용해주세요.');
+      } else if (event.error === 'no-speech') {
+        statusEl.textContent = '🤔 음성이 감지되지 않았어요. 다시 시도해주세요.';
+        setTimeout(() => { statusEl.textContent = '🔴 듣고 있어요... 말씀해주세요'; }, 2000);
+      }
+    };
+
+    voiceRecognition.onend = () => {
+      voiceListening = false;
+      micBtn.textContent = '🎤';
+      micBtn.style.background = 'var(--white)';
+      micBtn.style.borderColor = 'var(--beige-mid)';
+      statusEl.style.display = 'none';
+    };
+
+    try {
+      voiceRecognition.start();
+    } catch (e) {
+      console.warn('음성 인식 시작 실패:', e);
+    }
   }
 
 </script>
