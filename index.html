@@ -1598,6 +1598,16 @@ window.addEventListener('load', function() {
 
     noResults.style.display = visible === 0 ? 'block' : 'none';
   }
+  document.querySelectorAll('.card-img-wrap img').forEach(img => {
+    const placeholder = img.closest('.card-img-wrap').querySelector('.card-img-placeholder');
+    if (img.complete && img.naturalWidth > 0) {
+      img.classList.add('loaded');
+      if (placeholder) placeholder.classList.add('hidden');
+    } else {
+      img.onload = () => { img.classList.add('loaded'); if (placeholder) placeholder.classList.add('hidden'); };
+      img.onerror = () => { img.classList.add('errored'); };
+    }
+  });
   // 바샤커피 소개 토글
   function toggleAbout() {
     const about = document.getElementById('about-section');
