@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://youngsic1236.github.io/bacha-coffee-guide-/sitemap.xml
