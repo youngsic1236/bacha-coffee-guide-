@@ -220,13 +220,17 @@ window.addEventListener('load', function() {
     const origin = card.querySelector('.origin-text')?.textContent.trim() || '';
     const cat = card.dataset.cat || '';
     return {
-      "@type": "Product",
+      "@type": "ListItem",
       "position": i + 1,
-      "name": nameEn ? `${name} (${nameEn})` : name,
-      "category": cat,
-      "description": desc,
-      "brand": { "@type": "Brand", "name": "Bacha Coffee" },
-      "countryOfOrigin": origin
+      "item": {
+        "@type": "Thing",
+        "name": nameEn ? `${name} (${nameEn})` : name,
+        "description": desc,
+        "additionalProperty": [
+          { "@type": "PropertyValue", "name": "분류", "value": cat },
+          { "@type": "PropertyValue", "name": "원산지", "value": origin }
+        ]
+      }
     };
   });
 
@@ -234,7 +238,7 @@ window.addEventListener('load', function() {
     "@context": "https://schema.org",
     "@type": "ItemList",
     "name": "바샤커피 원두 가이드",
-    "description": "바샤커피 전 제품을 싱글 오리진, 파인 플레이버, 디카페인, 홀빈으로 분류한 가이드",
+    "description": "바샤커피 전 제품 정보를 싱글 오리진, 파인 플레이버, 디카페인, 홀빈으로 분류해 소개하는 정보 가이드입니다. 본 페이지에서는 판매가 이루어지지 않습니다.",
     "numberOfItems": items.length,
     "itemListElement": items
   };
@@ -243,7 +247,7 @@ window.addEventListener('load', function() {
   script.type = 'application/ld+json';
   script.textContent = JSON.stringify(jsonLd);
   document.head.appendChild(script);
- });
+});
 </script>
 
 <header class="hero">
