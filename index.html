@@ -1406,9 +1406,30 @@
     });
   });
 
+  // 검색어가 일반 키워드(원두명/국가/노트)인지, 자연어 문장인지 판별
+  function isNaturalLanguageQuery(q) {
+    if (!q || q.length < 4) return false;
+    const nlSignals = ['산미','향','싫','좋','원해','했으면','느낌','풍미','맛','고소','진하지','진한','약하','강하','묵직','가볍','연하'];
+    return nlSignals.some(sig => q.includes(sig));
+  }
+
   function applyFilters() {
-    const q = searchInput.value.toLowerCase().trim();
+    const rawQ = searchInput.value.toLowerCase().trim();
     let visible = 0;
+
+    const isNL = isNaturalLanguageQuery(rawQ);
+    const nlParsed = isNL ? parseTextInput(rawQ) : null;
+
+    const flavorKeywordMapForSearch = {
+      chocolate: ['초콜릿','초코','코코아','카카오'],
+      nutty: ['견과','아몬드','헤이즐넛','너트'],
+      savory: ['견과','아몬드','헤이즐넛','너트','몰트','캐러멜','몰티','토피'],
+      fruity: ['과일','베리','체리','딸기','자두','살구'],
+      floral: ['꽃향','꽃'],
+      spice: ['향신료','스파이스','시나몬'],
+      malty: ['몰트','캐러멜','몰티','토피','바닐라'],
+      citrus: ['시트러스','오렌지','레몬','감귤'],
+    };
 
     cards.forEach(card => {
       const cardStrengthVal = parseInt(card.dataset.strength || '40', 10);
@@ -1416,10 +1437,37 @@
         (activeStrength === 'light' && cardStrengthVal <= 30) ||
         (activeStrength === 'medium' && cardStrengthVal > 30 && cardStrengthVal <= 50) ||
         (activeStrength === 'heavy' && cardStrengthVal > 50);
+
+      let searchMatch;
+      if (isNL && nlParsed) {
+        // 자연어 검색: 산미/향/강도 조건으로 매칭
+        let nlOk = true;
+        if (nlParsed.acidity) nlOk = nlOk && (card.dataset.acidity === nlParsed.acidity);
+        if (nlParsed.strength) {
+          const sVal = cardStrengthVal;
+          const sOk = (nlParsed.strength === 'light' && sVal <= 30) ||
+                      (nlParsed.strength === 'heavy' && sVal > 50) ||
+                      (nlParsed.strength !== 'light' && nlParsed.strength !== 'heavy');
+          nlOk = nlOk && sOk;
+        }
+        if (nlParsed.flavors && nlParsed.flavors.length > 0) {
+          const search = card.dataset.search || '';
+          const flavorOk = nlParsed.flavors.some(fk => {
+            if (fk === 'none') return card.dataset.cat === 'single' || card.dataset.cat === 'decaf';
+            const kws = flavorKeywordMapForSearch[fk] || [];
+            return kws.some(k => search.includes(k));
+          });
+          nlOk = nlOk && flavorOk;
+        }
+        searchMatch = nlOk;
+      } else {
+        searchMatch = !rawQ || card.dataset.search.includes(rawQ);
+      }
+
       const ok = (activeFilter === 'all' || card.dataset.cat === activeFilter)
                && (!activeAcidity || card.dataset.acidity === activeAcidity)
                && strengthMatch
-               && (!q || card.dataset.search.includes(q));
+               && searchMatch;
       card.style.display = ok ? '' : 'none';
       if (ok) visible++;
     });
@@ -2056,6 +2104,105 @@
     }
   }
 
+
+  // ───── 상세 정보 모달 ─────
+  const DETAIL_DATA = {"시다모 마운틴": {"story": "에티오피아 시다모 지역은 커피의 발원지로 불리는 동아프리카 고원 지대 중에서도 손꼽히는 명산지입니다. 해발 1,800~2,200m의 고지대 소규모 농장에서, 워시드(습식) 가공으로 한 알 한 알 정성스럽게 가공된 원두입니다.", "profile": "잔을 들면 가장 먼저 향긋한 스파이스 향이 코끝을 스치고, 곧이어 크랙 코코아빈의 쌉싸름함이 따라옵니다. 식어가면서 은은한 꽃향기가 피어올라 마지막 한 모금까지 복합적인 인상을 남기는, 에티오피아 워시드 특유의 깔끔하면서도 화려한 캐릭터를 지닌 커피입니다.", "pairing": "크림이나 우유 없이 블랙으로 마실 때 향의 층위가 가장 잘 드러납니다. 오전 시간, 가벼운 페이스트리와 함께 즐기기 좋습니다."}, "마운트 케냐": {"story": "케냐 남부 키암부(Kiambu) 고원 지대, 해발 1,500~2,100m의 화산성 토양에서 자란 원두입니다. 케냐 커피는 전통적으로 더블 워시드 가공을 거쳐 산미와 풍미가 극도로 또렷하게 표현되는 것이 특징입니다.", "profile": "잘 익은 베리류의 새콤달콤한 산미가 가장 먼저 다가오고, 그 위로 밀크초콜릿의 부드러운 단맛이 겹쳐집니다. 풀바디의 묵직함과 생동감 있는 산미가 동시에 느껴지는, 케냐 커피 애호가들이 첫손에 꼽는 균형감을 갖췄습니다.", "pairing": "신맛이 살아있는 만큼 약간 식었을 때 마시면 단맛과 베리 향이 더욱 또렷해집니다. 가벼운 과일 디저트와 잘 어울립니다."}, "라고아": {"story": "브라질 미나스 제라이스의 캄포 다스 베르텐치스(Campo das Vertentes) 지역, 해발 950~1,200m의 오래된 농장에서 생산됩니다. 재규어와 늑대가 서식하는 보존림에 둘러싸인 농장에서 손으로만 수확하는 희귀한 원두입니다.", "profile": "낮은 산미와 부드러운 바디가 특징인 전형적인 브라질 커피로, 다크초콜릿의 깊은 향과 고소한 헤이즐넛 노트가 기본을 이룹니다. 식을수록 캐러멜화된 토피의 단맛이 더 진하게 살아나, 시간이 지날수록 풍미가 깊어지는 재미가 있습니다.", "pairing": "산미가 거의 없어 위에 부담이 적고, 우유나 크림과 매우 잘 어우러져 라떼 베이스로도 추천됩니다."}, "막달레나": {"story": "콜롬비아 남부 우일라(Huila) 지역, 네바도 델 우일라 활화산 자락의 나무 그늘 아래에서 재배된 원두입니다. 냉산수(차가운 물)를 이용한 워시드 가공을 거쳐 깔끔한 풍미를 극대화했습니다.", "profile": "은은하고 부드러운 산미가 과일향 오버톤과 자연스럽게 어우러집니다. 강하게 튀는 부분 없이 모든 요소가 균형을 이루는, 콜롬비아 커피의 표준적이면서도 완성도 높은 한 잔입니다.", "pairing": "무난한 밸런스 덕분에 어떤 시간대, 어떤 디저트와도 두루 잘 맞는 데일리 커피로 추천됩니다."}, "그랜드 모카 마타리": {"story": "예멘의 험준한 산악지대에서 전통적인 건식(드라이) 가공으로 만들어지는, 세계에서 가장 오래된 커피 산지 중 하나의 산물입니다. 땅 위에 지붕을 얹어 그 아래서 천천히 건조시키는 고대 방식 그대로를 따릅니다.", "profile": "건식 가공의 전형적인 특징인 와인 같은 발효향과 함께 살구, 대추야자의 달콤함이 먼저 느껴집니다. 다크초콜릿의 깊이와 캐러멜·스파이스의 여운이 길게 이어지며, 밝은 산미가 전체를 가볍게 들어 올려줍니다.", "pairing": "복합적인 풍미를 가장 잘 느낄 수 있는 블랙 그대로, 천천히 음미하며 마시는 것을 추천합니다."}, "시에라 마드레": {"story": "과테말라의 시에라 마드레 화산 산맥, 영양이 풍부한 화산성 토양에서 자란 원두입니다. 중앙아메리카 커피 산지 중에서도 토양의 미네랄감이 풍미에 직접적으로 반영되는 지역으로 알려져 있습니다.", "profile": "묵직하지 않은 미디엄 바디에 코코아의 부드러운 단맛이 기본을 이루고, 과일향이 잔잔하게 배경을 채웁니다. 자극적이지 않고 편안하게 마실 수 있는 복합적인 풍미입니다.", "pairing": "오후 시간 부담 없이 즐기기 좋고, 코코아 풍미가 있어 초콜릿 디저트와 자연스럽게 어울립니다."}, "나란조 마운틴": {"story": "코스타리카 나란호(Naranjo) 고원, 해발 1,200~1,700m의 비옥한 화산토에서 완숙된 체리만을 핸드픽으로 수확합니다. 코스타리카는 중앙아메리카에서도 까다로운 품질 관리로 유명한 산지입니다.", "profile": "섬세한 몰티함이 기본을 이루는 가운데, 고소한 견과류 오버톤이 더해지고 마지막에 밝은 시트러스 산미가 산뜻하게 마무리됩니다. 가볍고 상쾌한 인상을 주는 균형 잡힌 커피입니다.", "pairing": "산미가 또렷한 편이라 차갑게 즐기는 콜드브루로도 좋은 선택입니다."}, "투르키노": {"story": "쿠바의 시에라 마에스트라 산맥, 해발 400~800m 지역에서 생산되는 원두입니다. 쿠바 시가 산업으로도 유명한 이 지역 특유의 토양 특성이 원두에도 독특한 색감과 풍미로 반영됩니다.", "profile": "스파이시한 향이 전체를 감싸면서도 어느 한쪽으로 튀지 않는 절제된 밸런스가 인상적입니다. 산미는 섬세하게 느껴질 정도로 낮게 깔리고, 여운이 길게 남아 마신 후에도 향이 오래 지속됩니다.", "pairing": "여운을 즐기기 위해 천천히, 디저트 없이 단독으로 음미하는 것을 추천합니다."}, "몬순시크릿": {"story": "인도 남서부 코친 인근 말라바르(Malabar) 해안 지역, 해발 900~1,500m에서 재배됩니다. 몬순 시즌의 습한 바람에 원두를 직접 노출시켜 숙성하는 인도 특유의 '몬순드 말라바르' 가공법이 적용됐습니다.", "profile": "특수 가공으로 산미가 거의 느껴지지 않을 만큼 낮아지고, 그 대신 풀바디의 묵직함과 달콤한 향, 허브와 과일이 어우러진 복합적인 풍미가 두드러집니다. 강도가 높은 편이라 진한 한 잔을 원할 때 좋은 선택입니다.", "pairing": "산미에 예민하거나 위장이 약한 분들도 편하게 즐길 수 있는 부드러운 풀바디 커피입니다."}, "산크리스토발": {"story": "에콰도르령 갈라파고스 제도, 그중에서도 산 크리스토발 섬에서만 자라는 세계적으로 희귀한 원두입니다. 화산 토양과 청정 열대 기후, 무농약 재배 환경이 만든 갈라파고스만의 독보적인 산물입니다.", "profile": "상큼하고 생동감 있는 탄지함(tangy acidity)이 가장 큰 특징으로, 일반적인 산미와는 다른 독특한 신선함을 줍니다. 그 위에 섬세한 초콜릿 힌트가 더해져 단순히 시지 않고 깊이를 갖춘 풍미를 완성합니다.", "pairing": "희귀성과 독특한 풍미 때문에 커피 애호가들의 컬렉션 아이템으로도 인기가 높습니다. 블랙으로 마셔야 갈라파고스만의 개성을 제대로 느낄 수 있습니다."}, "마운트 에베레스트": {"story": "네팔 히말라야 산기슭, 세계 최고봉의 그림자 아래에서 재배되는 원두입니다. 주로 카투라(Caturra) 품종을 재배하며, 극한의 고지대 환경이 원두에 독특한 깊이를 부여합니다.", "profile": "고소한 견과류 풍미가 기본을 이루며, 산미는 낮고 부드럽게 깔립니다. 다른 산지에서는 찾기 힘든 독특한 깊이와 다양한 층위의 맛이 한 잔 안에 공존합니다.", "pairing": "묵직하지 않으면서도 깊은 풍미를 원할 때, 오후 휴식 시간에 추천됩니다."}, "시그리 주얼": {"story": "파푸아뉴기니 와기(Wahgi) 밸리, 아루샤(Arusha)와 티피카(Typica) 품종을 재배하는 희귀 산지의 원두입니다. 완숙된 레드 펄 베리만을 엄선하여 핸드픽한, 극히 한정된 생산량을 자랑합니다.", "profile": "진하고 강렬한 다크초콜릿 풍미가 압도적으로 다가오며, 그 뒤를 당밀(molasses)의 깊고 묵직한 단맛이 받쳐줍니다. 산미는 중간 정도로 느껴지지만 다른 어떤 산지보다 강렬한 인상을 남기는 개성 있는 원두입니다.", "pairing": "강한 풍미를 가진 디저트나 다크초콜릿과 함께 페어링하면 시너지가 좋습니다."}, "밀라노 모닝": {"story": "이탈리아 밀라노의 아침, 분주한 카페 거리에서 에스프레소 한 잔으로 하루를 시작하는 그 활기를 담아낸 시그니처 블렌드입니다. 우간다산 아라비카 97%를 베이스로, 천연 메이플 향료 3%를 더해 가향했습니다.", "profile": "우간다 원두 특유의 묵직하고 고소한 바디감 위에, 쌉싸름한 다크초콜릿 향과 달콤한 브리오슈 빵 냄새가 겹겹이 쌓입니다. 향이 과하게 튀지 않고 원두 본연의 바디 위에 자연스럽게 얹혀, 밀라노 카페에서 아침 식사를 즐기는 듯한 풍미를 완성합니다.", "pairing": "크루아상이나 버터 토스트 같은 아침 식사 메뉴와 가장 잘 어울리는 조합입니다."}, "아이러브파리": {"story": "빛의 도시 파리의 여름 햇살과 거리의 정취를 모티브로 만들어진 가향 커피입니다. 베이스 원두 산지는 비공개로 유지되며, 천연 베리·너트 향료로 가향했습니다.", "profile": "포레스트 베리의 새콤달콤한 향이 가장 먼저 다가오고, 와일드 너트의 고소함이 그 뒤를 부드럽게 받쳐줍니다. 두 향이 마치 연인의 포옹처럼 자연스럽게 어우러져, 파리의 노천 카페에 앉아 있는 듯한 낭만적인 분위기를 자아냅니다.", "pairing": "베리류 타르트나 마카롱 등 프랑스식 디저트와 함께 즐기면 향의 조화가 더욱 살아납니다."}, "캐러멜로 모닝": {"story": "아침을 부드럽게 깨우는 달콤한 캐러멜 향을 테마로 만든 가향 커피입니다. 최고급 아라비카 원두를 부드럽게 로스팅해, 향료가 원두 본연의 단맛과 자연스럽게 어우러지도록 설계됐습니다.", "profile": "스위트 캐러멜의 진한 단향과 몰트(맥아) 특유의 고소함이 기본 골격을 이룹니다. 산미가 거의 느껴지지 않을 정도로 낮아, 어떤 시간에도 부담 없이 마시기 좋은 부드러운 풍미입니다.", "pairing": "우유나 크림을 더하면 캐러멜 라떼와 같은 풍부한 맛을 즐길 수 있습니다."}, "세빌 오렌지": {"story": "스페인 세빌(Seville) 지역의 명물인 신맛 강한 오렌지를 테마로 만든 가향 커피입니다. 시트러스와 초콜릿이라는 클래식한 조합을 커피로 재해석했습니다.", "profile": "오렌지 껍질의 산뜻한 시트러스 산미가 먼저 다가오고, 갈라진 코코아의 쌉싸름함이 그 뒤를 따라옵니다. 두 향이 교차하며 만들어내는 상큼함과 깊이의 대비가 이 커피의 가장 큰 매력입니다.", "pairing": "오렌지 향이 강한 만큼 다크초콜릿 디저트와 함께하면 풍미가 한층 살아납니다."}, "스위트 멕시코": {"story": "멕시코의 따뜻한 정서를 바닐라 향으로 표현한 가향 커피입니다. 희귀한 바닐라빈에서 추출한 천연 향료를 사용해 자연스러운 단맛을 구현했습니다.", "profile": "바닐라빈의 부드럽고 크리미한 단향이 전체를 감싸며, 산미는 거의 느껴지지 않을 정도로 낮습니다. 자극 없이 편안하게 마실 수 있는, 디저트 같은 느낌의 커피입니다.", "pairing": "식사 후 디저트 대용으로, 우유나 크림과 함께 부드럽게 즐기기 좋습니다."}, "톨테카 초콜릿": {"story": "고대 메소아메리카 문명에서 신성하게 여겨졌던 카카오의 전통을 현대적으로 재해석한 가향 커피입니다. 멕시코의 초콜릿 문화에서 영감을 받았습니다.", "profile": "진하고 따뜻한 초콜릿 향이 처음부터 끝까지 일관되게 이어집니다. 산미는 거의 없고, 묵직하지 않으면서도 깊은 카카오의 풍미만이 온전히 전해집니다.", "pairing": "초콜릿 케이크나 브라우니와 페어링하면 풍미가 배가됩니다."}, "1910": {"story": "바샤커피의 모태가 된 모로코 다르 엘 바샤 궁전의 1910년 커피 하우스를 기념하는 시그니처 커피입니다. 여름 소풍과 숲속에서 딸기를 따 모으던 추억을 향으로 구현했습니다.", "profile": "갓 딴 야생 딸기를 한 그릇 가득 담아놓은 듯한 신선한 베리 향과, 진한 헤비 크림의 부드러움이 동시에 느껴집니다. 산미는 중간 정도로 적당히 살아 있어 단조롭지 않은 입체적인 풍미를 완성합니다.", "pairing": "여름철 시원하게 즐기는 콜드브루로 만들면 딸기와 크림의 향이 한층 산뜻하게 살아납니다."}, "블루다뉴브": {"story": "유럽을 가로지르는 다뉴브 강의 낭만적인 정취를 테마로 한 가향 커피입니다. 빈(Wien)의 전통적인 커피하우스 문화에서 영감을 받았습니다.", "profile": "포레스트 베리의 물결이 밀크초콜릿의 부드러움과 균형을 이루며 펼쳐집니다. 마지막에는 산뜻한 산미로 마무리되어, 달콤함과 신선함이 동시에 느껴지는 입체적인 풍미입니다.", "pairing": "샹티이 크림을 올려 비엔나식으로 즐기면 본래의 컨셉을 가장 잘 느낄 수 있습니다."}, "싱가포르 모닝": {"story": "다민족 문화가 어우러진 싱가포르의 활기찬 아침을 표현한 가향 커피입니다. 동서양의 향신료와 초콜릿, 시트러스가 한 잔에 공존합니다.", "profile": "초콜릿의 깊이, 스파이스의 이국적인 향, 그리고 시트러스의 산미가 차례로 또는 동시에 느껴지는 복합적인 풍미입니다. 어느 하나로 정의되지 않는 다층적인 캐릭터가 특징입니다.", "pairing": "아침 시간, 진한 향을 원할 때 추천되는 활력 충전형 커피입니다."}, "매직 이스탄불": {"story": "동서양 문명이 만나는 도시 이스탄불의 신비로운 매력을 담은 가향 커피입니다. 터키식 커피 문화에 대한 헌사로 만들어졌습니다.", "profile": "신선한 허니콤(벌집)의 달콤함과 그린 아몬드의 고소함이 균형을 이룹니다. 강도는 비교적 높은 편이지만 산미는 매우 낮아, 묵직하면서도 자극적이지 않은 독특한 캐릭터를 지녔습니다.", "pairing": "터키식 디저트인 바클라바와 함께하면 견과류 풍미의 시너지가 좋습니다."}, "벌스데이 위시": {"story": "생일과 같은 특별한 날을 축하하기 위해 만들어진 컨셉 커피입니다. 케이크와 디저트의 달콤함을 그대로 커피에 옮겨놓았습니다.", "profile": "진한 초콜릿의 풍미와 버터스카치의 고소한 단맛이 함께 어우러집니다. 산미가 거의 없어 누구나 부담 없이 즐길 수 있는, 디저트에 가까운 달콤한 커피입니다.", "pairing": "생일 케이크나 쿠키와 함께 작은 축하 자리에서 즐기기에 제격입니다."}, "마로키시모": {"story": "모로코의 화려한 색채와 향신료 시장을 그대로 옮겨놓은 듯한 강렬한 가향 커피입니다. 모로코 전통 시장(souk)의 다채로운 감각적 경험에서 영감을 받았습니다.", "profile": "향신료의 이국적인 향, 건조 과일의 농축된 단맛, 견과류의 고소함이 한꺼번에 밀려옵니다. 여러 향이 겹겹이 쌓인 복합적이고 강렬한 풍미가 특징입니다.", "pairing": "모로코식 민트티 디저트나 견과류가 들어간 페이스트리와 잘 어울립니다."}, "모로칸 사하라": {"story": "사하라 사막의 뜨거운 모래 언덕과 그 너머의 청량한 바다를 대비시킨 컨셉 커피입니다. 모로코 해안과 사막의 두 가지 풍경을 향으로 표현했습니다.", "profile": "코코넛의 열대적인 달콤함, 카라멜라이즈드 너트의 고소함, 그리고 핫초코의 따뜻함이 함께 느껴집니다. 산미가 매우 낮아 진하고 묵직한 인상을 줍니다.", "pairing": "코코넛이 들어간 디저트나 따뜻한 초콜릿 음료와의 페어링을 추천합니다."}, "킹 오브 아프리카": {"story": "아프리카 대륙의 저지대 평원부터 고지대까지, 다양한 지형의 원두를 블렌딩하여 만든 컨셉 커피입니다. 아프리카 대륙 전체의 다채로움을 한 잔에 담아냈습니다.", "profile": "와일드 헤이즐넛의 고소함, 갈라진 카카오의 쌉싸름함, 코코넛의 달콤함, 허니드 바나나의 부드러움이 차례로 펼쳐집니다. 다양한 향이 겹겹이 쌓이는 복합적이고 풍성한 풍미입니다.", "pairing": "바나나나 코코넛이 들어간 디저트와 페어링하면 풍미의 일관성이 좋습니다."}, "마라케시 모닝": {"story": "모로코 마라케시의 붉은 진흙 메디나(구시가지), 좁은 골목을 거니는 아침의 정취를 담은 가향 커피입니다. 향신료 시장의 향과 거리의 정취를 향으로 재현했습니다.", "profile": "달콤한 시나몬과 그린 아몬드의 향이 산들바람처럼 부드럽게 다가오고, 자두와 야생 체리의 탄지함이 그 뒤를 받쳐줍니다. 스파이스와 과일이 균형을 이루는 입체적인 풍미입니다.", "pairing": "시나몬이 들어간 페이스트리나 모로코식 쿠키와 잘 어울립니다."}, "해피잔두야": {"story": "이탈리아의 전통 헤이즐넛 초콜릿 페이스트인 '잔두야(Gianduja)'에서 이름을 따온 컨셉 커피입니다. 따뜻하고 행복한 순간을 위한 디저트 같은 커피로 기획됐습니다.", "profile": "이탈리안 헤이즐넛의 깊고 고소한 향이 전체를 감싸며, 부드럽고 달콤한 인상을 남깁니다. 자극적이지 않고 편안하게 마실 수 있는 마무리용 커피입니다.", "pairing": "식사를 마친 뒤 디저트 코스의 마지막을 장식하기에 좋습니다."}, "예가체프 디카페인": {"story": "에티오피아 예가체프 지역, 아라비카의 원종에 가장 가까운 에얼룸 품종으로 만든 싱글 오리진 디카페인입니다. 100% 천연 이산화탄소 공법으로 카페인만 선택적으로 제거해, 향과 맛의 손실을 최소화했습니다.", "profile": "건초와 블루베리의 신선한 아로마가 가장 먼저 느껴지며, 은은한 레몬 산미가 그 위에 산뜻하게 얹힙니다. 지속되는 몰티(맥아) 풍미가 마지막까지 복합적인 인상을 남겨, 디카페인임에도 일반 원두 못지않은 풍부한 풍미를 자랑합니다.", "pairing": "카페인에 민감하지만 향의 복합성을 포기하고 싶지 않은 분들께 가장 추천되는 선택입니다."}, "막달레나 디카페인": {"story": "콜롬비아 우일라 고원의 워시드 가공 막달레나 원두를 천연 CO₂ 공법으로 디카페인화했습니다. 일반 막달레나와 동일한 산지·가공법을 거쳐 풍미의 일관성을 유지합니다.", "profile": "예상을 뛰어넘는 풀바디감이 특징으로, 과일향과 몰티함, 견과류와 스파이스가 복합적으로 풍성하게 펼쳐집니다. 디카페인 특유의 평이함 없이 입체적인 풍미를 그대로 간직했습니다.", "pairing": "저녁 시간, 카페인 걱정 없이 진한 풍미를 즐기고 싶을 때 좋은 선택입니다."}, "아디스아바바 디카페인": {"story": "에티오피아의 수도 아디스아바바의 활기찬 에너지를 담은 파인 플레이버 디카페인입니다. 신비로운 도시의 분위기를 향으로 표현했습니다.", "profile": "신선한 그래시(풀) 노트와 부드러운 캐러멜 단맛이 어우러져 생기있고 활기찬 인상을 줍니다. 강도는 중간 정도이며 산미는 낮아 부담 없이 마시기 좋습니다.", "pairing": "카페인 없이도 활력을 느끼고 싶은 오후 시간에 추천됩니다."}, "바라카 디카페인": {"story": "아랍어로 '축복'을 의미하는 '바라카(Baraka)'에서 이름을 따온 파인 플레이버 디카페인입니다. 든든하고 편안한 한 잔을 위해 기획됐습니다.", "profile": "부드러운 다크초콜릿의 깊이에 스위트 오렌지의 시트러스 산미가 산뜻한 악센트로 더해집니다. 낮은 강도로 가볍게 즐기기 좋은 균형 잡힌 풍미입니다.", "pairing": "저녁 식사 후, 부담 없이 즐기는 마무리 커피로 적합합니다."}, "WB 예가체프 에얼룸": {"story": "에티오피아 남부 예가체프 지역, 에얼룸(Heirloom) 패밀리 농장에서 재배된 싱글 오리진을 홀빈(원두 그대로)으로 선보입니다. 에티오피아 커피의 정수로 평가받는 품종입니다.", "profile": "인상적일 만큼 향기로운 산미가 가장 먼저 다가오며, 레몬그라스와 케인슈거의 달콤함, 베르가못의 은은한 향이 조화롭게 어우러진 미디엄 바디입니다. 홀빈으로 직접 그라인딩하면 그 향이 한층 더 살아납니다.", "pairing": "직접 분쇄해서 마시는 핸드드립이나 푸어오버 방식에 가장 잘 맞는 원두입니다."}, "WB 불칸아줄": {"story": "코스타리카의 화산 지대, 레인포레스트를 품은 패밀리 농장의 엄격한 품질 기준을 통과한 싱글 오리진을 홀빈으로 만났습니다. 국제적으로 인정받은 코스타리카 최고급 커피 중 하나입니다.", "profile": "향기로운 산미와 부드러운 풍미, 그리고 조화로운 바디감이 삼위일체를 이루는 균형 잡힌 한 잔입니다. 어느 한쪽으로 치우치지 않는 완성도가 특징입니다.", "pairing": "갓 로스팅된 홀빈을 그라인딩 직후 바로 추출하면 향의 신선함을 가장 잘 느낄 수 있습니다."}, "WB 르완다 슈페리어": {"story": "아프리카 중부 르완다의 고원 지대에서 자란 싱글 오리진 원두입니다. 르완다는 비교적 최근 스페셜티 커피 시장에서 주목받기 시작한 신흥 산지로, 독특한 개성을 지니고 있습니다.", "profile": "약한 산미와 함께 신선하고 화사한 꽃향이 피어오르며, 마지막에는 신선한 땅콩 노트로 마무리됩니다. 다른 아프리카 산지와는 또 다른 개성 있는 풍미입니다.", "pairing": "꽃향이 살아있는 만큼 향이 날아가기 전, 갓 추출한 신선한 상태로 즐기는 것을 추천합니다."}, "WB 상실베스트레": {"story": "브라질 미나스 제라이스 북부의 세라도 미네이루(Cerrado Mineiro) 지역, 아침 햇살을 충분히 받으며 천천히 익어가는 늦수확 원두를 내추럴(건식) 가공한 홀빈입니다.", "profile": "캐러멜, 초콜릿, 헤이즐넛이 균형 있게 어우러진 전형적인 브라질 풍미입니다. 낮은 산미와 묵직한 바디감으로 편안하게 마시기 좋습니다.", "pairing": "에스프레소 머신이나 모카포트로 추출했을 때 진한 풍미가 가장 잘 살아납니다."}, "WB 엘플라밍고": {"story": "멕시코의 해발 1,200m 이상 지역에서 재배되는, 엄격한 고도 기준을 통과한 SHG(Strictly High Grown) 등급 싱글 오리진입니다.", "profile": "로 카카오(가공하지 않은 생 코코아)의 깔끔한 노트가 특징으로, 부드럽고 자극적이지 않은 인상을 줍니다. 산미와 강도 모두 중간 정도로 무난하게 즐기기 좋습니다.", "pairing": "데일리 드립 커피로 매일 마셔도 부담 없는 균형 잡힌 원두입니다."}, "WB 막달레나": {"story": "콜롬비아 우일라 지역, 네바도 델 우일라 화산 자락에서 냉산수 워시드 가공으로 만들어진 싱글 오리진을 홀빈으로 만났습니다.", "profile": "균형잡힌 부드러운 산미와 과일향 오버톤이 특징으로, 신선하고 깔끔한 풍미를 자랑합니다. 콜롬비아 커피의 표준을 보여주는 완성도 높은 원두입니다.", "pairing": "프렌치프레스로 추출하면 바디감이 한층 더 풍부하게 느껴집니다."}, "WB 블루다뉴브": {"story": "유럽 다뉴브 강의 낭만적인 정취를 담은 파인 플레이버 커피를 홀빈으로 만났습니다. 직접 분쇄하여 즐기고 싶은 분들을 위해 마련됐습니다.", "profile": "포레스트 베리의 향과 밀크초콜릿의 부드러움이 균형을 이루고, 산뜻한 산미로 마무리됩니다. 홀빈 상태에서 향이 더 오래 보존되는 장점이 있습니다.", "pairing": "샹티이 크림과 함께, 직접 그라인딩한 신선한 향을 즐겨보세요."}, "WB 아이러브파리": {"story": "파리의 여름 햇살과 거리의 정취를 담은 가향 커피의 홀빈 버전입니다. 신선한 향을 오래 유지하고 싶은 분들에게 추천됩니다.", "profile": "포레스트 베리와 와일드 너트의 향이 연인의 포옹처럼 자연스럽게 어우러집니다. 홀빈 상태로 보관하면 향의 지속력이 더 우수합니다.", "pairing": "마실 때마다 그라인딩하여 신선한 향을 그대로 즐기는 것이 가장 좋습니다."}, "WB 세빌오렌지": {"story": "스페인 세빌의 시트러스 오렌지를 테마로 한 가향 커피를 홀빈으로 선보입니다.", "profile": "오렌지 제스트의 산뜻한 산미와 갈라진 코코아의 쌉싸름함이 교차하는 풍미입니다. 홀빈으로 두면 향료의 휘발을 늦출 수 있어 더 오래 신선하게 즐길 수 있습니다.", "pairing": "오후 시간, 다크초콜릿 디저트와 함께 페어링을 추천합니다."}, "WB 밀라노모닝": {"story": "우간다 아라비카 97%에 천연 메이플 향료 3%를 더한 밀라노 모닝의 홀빈 버전입니다. 이탈리아 카페 문화의 활기를 그대로 담았습니다.", "profile": "묵직하고 고소한 바디감 위로 쌉싸름한 초콜릿과 달콤한 브리오슈 향이 겹겹이 쌓입니다. 홀빈 상태에서 우간다 원두 본연의 바디감을 더 선명하게 느낄 수 있습니다.", "pairing": "에스프레소나 모카포트로 추출하면 밀라노 카페의 분위기를 그대로 느낄 수 있습니다."}, "WB 1910": {"story": "바샤커피의 시그니처, 1910년 다르 엘 바샤 궁전의 커피 하우스를 기념하는 커피를 홀빈으로 만났습니다.", "profile": "야생 딸기의 신선한 향과 헤비 크림의 부드러움이 동시에 느껴지는 여름 소풍 같은 풍미입니다. 홀빈으로 보관 시 베리 향의 휘발 속도를 늦출 수 있습니다.", "pairing": "콜드브루로 추출하면 딸기와 크림의 향이 더욱 산뜻하게 살아납니다."}, "어쏘티드": {"story": "바샤커피의 다양한 라인업을 처음 경험하는 분들을 위해 구성된 입문용 드립백 기프트세트입니다. 싱글 오리진, 파인 플레이버, 디카페인을 균형 있게 25개입으로 담았습니다.", "profile": "캐러멜로 모닝, 스위트 멕시코, 세빌 오렌지 등 파인 플레이버 3종과 몬순시크릿, 마운트 케냐, 나란조 마운틴, 라고아, 시에라 마드레, 투르키노, 시다모 마운틴, 막달레나 등 싱글 오리진 8종, 막달레나 디카페인까지 가장 폭넓은 구성을 자랑합니다.", "pairing": "바샤커피를 처음 접하는 분, 또는 다양한 취향의 손님을 위한 선물로 가장 안전한 선택입니다."}, "네비게이터": {"story": "모닝 시리즈의 부드러운 파인 플레이버와 싱글 오리진을 균형 있게 담은 25개입 드립백 세트입니다. 은은하고 부드러운 구성으로 선물용으로 특히 인기가 높습니다.", "profile": "캐러멜로 모닝, 밀라노 모닝, 싱가포르 모닝, 블루다뉴브의 파인 플레이버 4종과 투르키노, 라고아, 시다모 마운틴, 마운트 케냐, 막달레나의 싱글 오리진 5종, 바라카 디카페인으로 구성됩니다.", "pairing": "은은한 향을 선호하는 분, 또는 직장 동료나 어르신께 드리는 선물로 적합한 구성입니다."}, "익스플로러": {"story": "모로코, 멕시코, 파리 등 이국적인 정취의 파인 플레이버를 위주로 구성된 25개입 드립백 탐험가 세트입니다. 다양한 향미를 경험하고 싶은 분들을 위해 기획됐습니다.", "profile": "1910, 스위트 멕시코, 마라케시 모닝, 톨테카 초콜릿, 아이러브파리, 세빌 오렌지의 파인 플레이버 6종과 몬순시크릿, 시에라 마드레, 나란조 마운틴의 싱글 오리진 3종, 막달레나 디카페인으로 구성됩니다.", "pairing": "이국적이고 화려한 향을 좋아하는 분, 또는 특별한 선물을 찾는 분께 추천되는 구성입니다."}};
+
+  function openDetailModal(card) {
+    const nameKr = card.querySelector('.card-name')?.childNodes[0]?.textContent?.trim() || '';
+    const nameEn = card.querySelector('.card-name-en')?.textContent?.trim() || '';
+    const roastBadge = card.querySelector('.roast-badge')?.outerHTML || '';
+    const imgEl = card.querySelector('.card-img-wrap img');
+    const imgSrc = imgEl ? (imgEl.src || imgEl.dataset.src) : '';
+    const originRowHtml = card.querySelector('.origin-row')?.innerHTML || '';
+    const tagsHtml = card.querySelector('.flavor-tags')?.innerHTML || '';
+    const metersHtml = card.querySelector('.meters')?.innerHTML || '';
+
+    const detail = DETAIL_DATA[nameKr];
+
+    document.getElementById('detail-modal-img').src = imgSrc || '';
+    document.getElementById('detail-modal-header').innerHTML =
+      `<div><span style="font-family:'Gowun Batang',serif;font-size:20px;font-weight:700;color:var(--text-dark)">${nameKr}</span>
+       <span style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:14px;color:var(--text-light);display:block;margin-top:2px">${nameEn}</span></div>
+       ${roastBadge}`;
+    document.getElementById('detail-modal-origin').innerHTML = originRowHtml;
+    document.getElementById('detail-modal-tags').innerHTML = tagsHtml;
+    document.getElementById('detail-modal-meters').innerHTML = metersHtml;
+
+    const storyBlock = document.getElementById('detail-modal-story-block');
+    const profileBlock = document.getElementById('detail-modal-profile-block');
+    const pairingBlock = document.getElementById('detail-modal-pairing-block');
+
+    if (detail) {
+      storyBlock.style.display = '';
+      profileBlock.style.display = '';
+      pairingBlock.style.display = '';
+      document.getElementById('detail-modal-story').textContent = detail.story || '';
+      document.getElementById('detail-modal-profile').textContent = detail.profile || '';
+      document.getElementById('detail-modal-pairing').textContent = detail.pairing || '';
+    } else {
+      storyBlock.style.display = 'none';
+      profileBlock.style.display = 'none';
+      pairingBlock.style.display = 'none';
+    }
+
+    const overlay = document.getElementById('detail-modal-overlay');
+    overlay.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeDetailModal(e) {
+    document.getElementById('detail-modal-overlay').style.display = 'none';
+    document.body.style.overflow = '';
+  }
+
+  document.querySelectorAll('.card').forEach(card => {
+    card.style.cursor = 'pointer';
+    card.addEventListener('click', (e) => {
+      openDetailModal(card);
+    });
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      const overlay = document.getElementById('detail-modal-overlay');
+      if (overlay.style.display !== 'none') closeDetailModal(e);
+    }
+  });
+
 </script>
+
+<!-- DETAIL MODAL -->
+<div id="detail-modal-overlay" onclick="closeDetailModal(event)" style="display:none;position:fixed;inset:0;background:rgba(20,10,5,0.65);z-index:1000;backdrop-filter:blur(2px);align-items:center;justify-content:center;padding:20px">
+  <div id="detail-modal-box" onclick="event.stopPropagation()" style="background:var(--cream);max-width:560px;width:100%;max-height:86vh;overflow-y:auto;border-radius:16px;position:relative;box-shadow:0 24px 60px rgba(0,0,0,0.35)">
+    <button onclick="closeDetailModal(event)" aria-label="닫기" style="position:absolute;top:14px;right:14px;width:34px;height:34px;border-radius:50%;border:none;background:rgba(28,15,10,0.08);color:var(--espresso);font-size:18px;cursor:pointer;z-index:2;display:flex;align-items:center;justify-content:center;transition:background 0.2s">✕</button>
+    <div id="detail-modal-img-wrap" style="width:100%;height:230px;background:linear-gradient(135deg,#2A1810 0%,#3D1F10 50%,#1C0F0A 100%);border-radius:16px 16px 0 0;overflow:hidden;position:relative">
+      <img id="detail-modal-img" src="" alt="" style="width:100%;height:100%;object-fit:cover;object-position:center center;display:block">
+    </div>
+    <div style="padding:26px 28px 30px">
+      <div id="detail-modal-header" style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;gap:10px"></div>
+      <div id="detail-modal-origin" style="margin-bottom:14px"></div>
+      <div id="detail-modal-tags" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px"></div>
+
+      <div id="detail-modal-story-block" style="margin-bottom:18px">
+        <div style="font-family:'Noto Sans KR',sans-serif;font-size:11px;font-weight:700;color:var(--gold);letter-spacing:0.05em;margin-bottom:6px">📖 STORY</div>
+        <p id="detail-modal-story" style="font-family:'Noto Sans KR',sans-serif;font-size:13.5px;color:#3A1E0F;line-height:1.85;word-break:keep-all;margin:0"></p>
+      </div>
+
+      <div id="detail-modal-profile-block" style="margin-bottom:18px">
+        <div style="font-family:'Noto Sans KR',sans-serif;font-size:11px;font-weight:700;color:var(--gold);letter-spacing:0.05em;margin-bottom:6px">👃 향 & 풍미 프로필</div>
+        <p id="detail-modal-profile" style="font-family:'Noto Sans KR',sans-serif;font-size:13.5px;color:#3A1E0F;line-height:1.85;word-break:keep-all;margin:0"></p>
+      </div>
+
+      <div id="detail-modal-pairing-block" style="margin-bottom:20px">
+        <div style="font-family:'Noto Sans KR',sans-serif;font-size:11px;font-weight:700;color:var(--gold);letter-spacing:0.05em;margin-bottom:6px">☕ 추천 음용법</div>
+        <p id="detail-modal-pairing" style="font-family:'Noto Sans KR',sans-serif;font-size:13.5px;color:#3A1E0F;line-height:1.85;word-break:keep-all;margin:0"></p>
+      </div>
+
+      <div id="detail-modal-meters" style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid var(--beige-mid)"></div>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
