@@ -1598,25 +1598,6 @@ window.addEventListener('load', function() {
 
     noResults.style.display = visible === 0 ? 'block' : 'none';
   }
-
-  function loadCardImage(img) {
-    const src = img.dataset.src;
-    if (!src) return;
-    const placeholder = img.closest('.card-img-wrap').querySelector('.card-img-placeholder');
-    img.onload = () => { img.classList.add('loaded'); if (placeholder) placeholder.classList.add('hidden'); };
-    img.onerror = () => { img.classList.add('errored'); };
-    img.src = src;
-  }
-
-  if ('IntersectionObserver' in window) {
-    const obs = new IntersectionObserver(entries => {
-      entries.forEach(e => { if (e.isIntersecting) { loadCardImage(e.target); obs.unobserve(e.target); } });
-    }, { rootMargin: '200px' });
-    document.querySelectorAll('.card-img-wrap img[data-src]').forEach(img => obs.observe(img));
-  } else {
-    document.querySelectorAll('.card-img-wrap img[data-src]').forEach(loadCardImage);
-  }
-
   // 바샤커피 소개 토글
   function toggleAbout() {
     const about = document.getElementById('about-section');
