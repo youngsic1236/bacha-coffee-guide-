@@ -209,6 +209,41 @@
 </style>
 </head>
 <body>
+<script>
+(function() {
+  const cards = document.querySelectorAll('.card');
+  const items = Array.from(cards).map((card, i) => {
+    const name = card.querySelector('.card-name')?.childNodes[0]?.textContent.trim() || '';
+    const nameEn = card.querySelector('.card-name-en')?.textContent.trim() || '';
+    const desc = card.querySelector('.desc')?.textContent.trim() || '';
+    const origin = card.querySelector('.origin-text')?.textContent.trim() || '';
+    const cat = card.dataset.cat || '';
+    return {
+      "@type": "Product",
+      "position": i + 1,
+      "name": nameEn ? `${name} (${nameEn})` : name,
+      "category": cat,
+      "description": desc,
+      "brand": { "@type": "Brand", "name": "Bacha Coffee" },
+      "countryOfOrigin": origin
+    };
+  });
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": "바샤커피 원두 가이드",
+    "description": "바샤커피 전 제품을 싱글 오리진, 파인 플레이버, 디카페인, 홀빈으로 분류한 가이드",
+    "numberOfItems": items.length,
+    "itemListElement": items
+  };
+
+  const script = document.createElement('script');
+  script.type = 'application/ld+json';
+  script.textContent = JSON.stringify(jsonLd);
+  document.head.appendChild(script);
+})();
+</script>
 
 <header class="hero">
   <div class="hero-eyebrow">Bacha Coffee · 원두 가이드</div>
