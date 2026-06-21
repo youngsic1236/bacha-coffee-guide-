@@ -210,7 +210,7 @@
 </head>
 <body>
 <script>
-(function() {
+window.addEventListener('load', function() {
   const cards = document.querySelectorAll('.card');
   const items = Array.from(cards).map((card, i) => {
     const name = card.querySelector('.card-name')?.childNodes[0]?.textContent.trim() || '';
