@@ -2340,8 +2340,8 @@ window.addEventListener('load', function() {
 <div id="detail-modal-overlay" onclick="closeDetailModal(event)" style="display:none;position:fixed;inset:0;background:rgba(20,10,5,0.65);z-index:1000;backdrop-filter:blur(2px);align-items:center;justify-content:center;padding:20px">
   <div id="detail-modal-box" onclick="event.stopPropagation()" style="background:var(--cream);max-width:560px;width:100%;max-height:86vh;overflow-y:auto;border-radius:16px;position:relative;box-shadow:0 24px 60px rgba(0,0,0,0.35)">
     <button onclick="closeDetailModal(event)" aria-label="닫기" style="position:absolute;top:14px;right:14px;width:34px;height:34px;border-radius:50%;border:none;background:rgba(28,15,10,0.08);color:var(--espresso);font-size:18px;cursor:pointer;z-index:2;display:flex;align-items:center;justify-content:center;transition:background 0.2s">✕</button>
-    <div id="detail-modal-img-wrap" style="width:100%;height:280px;background:var(--cream);border-radius:16px 16px 0 0;overflow:hidden;position:relative;display:flex;align-items:center;justify-content:center">
-      <img id="detail-modal-img" src="" alt="" style="max-width:75%;max-height:85%;width:auto;height:auto;object-fit:contain;display:block;filter:drop-shadow(0 8px 16px rgba(0,0,0,0.18))">
+    <div id="detail-modal-img-wrap" style="width:100%;height:230px;background:linear-gradient(135deg,#2A1810 0%,#3D1F10 50%,#1C0F0A 100%);border-radius:16px 16px 0 0;overflow:hidden;position:relative">
+      <img id="detail-modal-img" src="" alt="" style="width:100%;height:100%;object-fit:cover;object-position:center center;display:block">
     </div>
     <div style="padding:26px 28px 30px">
       <div id="detail-modal-header" style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;gap:10px"></div>
