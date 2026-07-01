@@ -116,15 +116,24 @@
   .origin-flag { font-size: 16px; line-height: 1; }
   .origin-text { font-family: 'Noto Sans KR', sans-serif; font-size: 12px; color: var(--text-mid); font-weight: 600; }
   .origin-detail { font-family: 'Noto Sans KR', sans-serif; font-size: 11px; color: var(--text-light); font-weight: 400; }
-  .flavor-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 14px; }
-  .tag { font-family: 'Noto Sans KR', sans-serif; font-size: 10.5px; font-weight: 500; padding: 3px 9px; border-radius: 20px; border: 1px solid; letter-spacing: 0.01em; }
-  .tag-chocolate { background: rgba(107,58,42,0.08); border-color: rgba(107,58,42,0.25); color: #5A2E18; }
-  .tag-fruity { background: rgba(180,80,50,0.08); border-color: rgba(180,80,50,0.25); color: #8B3A20; }
-  .tag-nutty { background: rgba(140,110,60,0.1); border-color: rgba(140,110,60,0.3); color: #705A20; }
-  .tag-malty { background: rgba(200,160,80,0.1); border-color: rgba(200,160,80,0.3); color: #7A5E20; }
-  .tag-spice { background: rgba(160,80,40,0.08); border-color: rgba(160,80,40,0.25); color: #7A3818; }
-  .tag-citrus { background: rgba(180,150,30,0.08); border-color: rgba(180,150,30,0.25); color: #6A5510; }
-  .tag-floral { background: rgba(150,100,150,0.08); border-color: rgba(150,100,150,0.25); color: #6A3A6A; }
+  .flavor-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 14px; align-items: center; }
+  .flavor-tags::before { content: '대표'; font-family: 'Noto Sans KR', sans-serif; font-size: 10px; font-weight: 700; color: var(--text-light); letter-spacing: 0.05em; margin-right: 2px; white-space: nowrap; }
+  .tag { font-family: 'Noto Sans KR', sans-serif; font-size: 10.5px; font-weight: 700; padding: 4px 10px; border-radius: 20px; border: 1.5px solid; letter-spacing: 0.01em; display:inline-flex; align-items:center; gap:3px; }
+  .tag::before { font-size: 10px; }
+  .tag-chocolate { background: #3D1A0E; border-color: #5A2E18; color: #F5C89A; }
+  .tag-chocolate::before { content: '🍫'; }
+  .tag-fruity { background: #5C1A0A; border-color: #8B3A20; color: #FFB49A; }
+  .tag-fruity::before { content: '🍒'; }
+  .tag-nutty { background: #3A2E08; border-color: #705A20; color: #F0D080; }
+  .tag-nutty::before { content: '🌰'; }
+  .tag-malty { background: #3A2E08; border-color: #8A6A20; color: #F5D88A; }
+  .tag-malty::before { content: '☕'; }
+  .tag-spice { background: #4A1A08; border-color: #8A4020; color: #FFB07A; }
+  .tag-spice::before { content: '🌶'; }
+  .tag-citrus { background: #3A3000; border-color: #706010; color: #F5E060; }
+  .tag-citrus::before { content: '🍋'; }
+  .tag-floral { background: #2A1030; border-color: #6A3A6A; color: #E8A0E8; }
+  .tag-floral::before { content: '🌸'; }
   .desc { font-family: 'Noto Sans KR', sans-serif; font-size: 13px; color: #3A1E0F; line-height: 1.75; margin-bottom: 16px; word-break: keep-all; font-weight: 400; }
   .meters { display: flex; flex-direction: column; gap: 8px; }
   .meter-row { display: flex; align-items: center; gap: 6px; flex-wrap: nowrap; min-width: 0; }
@@ -254,7 +263,8 @@
     const el = document.getElementById('quiz-leaderboard');
     const elIntro = document.getElementById('quiz-leaderboard-intro');
     try {
-      const res = await fetch(SUPA_URL + '/rest/v1/quiz_rankings?select=nickname,score,total,created_at&order=score.desc,created_at.asc&limit=10', {
+      // 전체 데이터 가져와서 클라이언트에서 닉네임별 평균 계산
+      const res = await fetch(SUPA_URL + '/rest/v1/quiz_rankings?select=nickname,score,total', {
         headers: {
           'apikey': SUPA_KEY,
           'Authorization': 'Bearer ' + SUPA_KEY
@@ -267,15 +277,36 @@
         if (elIntro) elIntro.innerHTML = emptyMsg;
         return;
       }
+
+      // 닉네임별 집계 (총 시도 횟수, 평균 정답률 계산)
+      const grouped = {};
+      data.forEach(r => {
+        if (!grouped[r.nickname]) grouped[r.nickname] = { totalScore: 0, totalTotal: 0, count: 0 };
+        grouped[r.nickname].totalScore += r.score;
+        grouped[r.nickname].totalTotal += r.total;
+        grouped[r.nickname].count += 1;
+      });
+
+      // 평균 정답률 기준 정렬 → TOP 10
+      const ranked = Object.entries(grouped)
+        .map(([nickname, d]) => ({
+          nickname,
+          avgPct: Math.round((d.totalScore / d.totalTotal) * 100),
+          count: d.count,
+          totalScore: d.totalScore,
+          totalTotal: d.totalTotal
+        }))
+        .sort((a, b) => b.avgPct - a.avgPct || b.count - a.count)
+        .slice(0, 10);
+
       const medals = ['🥇','🥈','🥉'];
-      const rows = data.map((r,i) => {
-        const pct = Math.round((r.score / r.total) * 100);
+      const rows = ranked.map((r, i) => {
         const medal = medals[i] || `${i+1}위`;
         return `<div style="display:flex;align-items:center;justify-content:space-between;padding:9px 4px;border-bottom:1px solid var(--beige);font-family:'Noto Sans KR',sans-serif;font-size:13px">
           <span style="min-width:32px;font-weight:700;color:var(--mocha)">${medal}</span>
           <span style="flex:1;color:var(--text-dark);font-weight:600">${r.nickname}</span>
-          <span style="color:var(--mocha);font-weight:700">${r.score}/${r.total}</span>
-          <span style="color:var(--text-light);font-size:11px;margin-left:8px">${pct}%</span>
+          <span style="color:var(--mocha);font-weight:700">${r.avgPct}%</span>
+          <span style="color:var(--text-light);font-size:11px;margin-left:8px">${r.count}회 평균</span>
         </div>`;
       }).join('');
       if (el) el.innerHTML = rows;
@@ -351,7 +382,7 @@ window.addEventListener('load', function() {
 
 <!-- 홈 복귀 고정 버튼 -->
 <div id="home-fab" style="position:fixed;bottom:28px;right:20px;z-index:900;display:none">
-  <a href="https://youngsic1236.github.io/bacha-coffee-guide-/" title="홈으로" style="display:flex;align-items:center;justify-content:center;width:48px;height:48px;border-radius:50%;background:var(--mocha);box-shadow:0 4px 14px rgba(0,0,0,0.25);text-decoration:none;font-size:20px;transition:transform 0.2s" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">🏠</a>
+  <a href="https://youngsic1236.github.io/bacha-coffee-guide-/" title="홈으로" style="display:flex;align-items:center;justify-content:center;width:48px;height:48px;border-radius:50%;background:var(--mocha);box-shadow:0 4px 14px rgba(0,0,0,0.25);text-decoration:none;line-height:1;transition:transform 0.2s" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'"><span style="font-size:20px;line-height:1;display:block;margin:0;padding:0">🏠</span></a>
 </div>
 <script>
   window.addEventListener('scroll', function() {
@@ -2604,7 +2635,7 @@ window.addEventListener('load', function() {
     <div style="padding:26px 28px 30px">
       <div id="detail-modal-header" style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;gap:10px"></div>
       <div id="detail-modal-origin" style="margin-bottom:14px"></div>
-      <div id="detail-modal-tags" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px"></div>
+      <div id="detail-modal-tags" class="flavor-tags" style="margin-bottom:20px"></div>
 
       <div id="detail-modal-story-block" style="margin-bottom:18px">
         <div style="font-family:'Noto Sans KR',sans-serif;font-size:11px;font-weight:700;color:var(--gold);letter-spacing:0.05em;margin-bottom:6px">📖 STORY</div>
