@@ -2413,6 +2413,21 @@ window.addEventListener('load', function() {
       </div>`;
     });
     document.getElementById('quiz-review').innerHTML = reviewHtml;
+
+    // 점수 전역 저장 (submitRanking에서 사용)
+    window._quizLastScore = correctCount;
+    window._quizLastTotal = total;
+
+    // 랭킹 폼 초기화 (다시 풀기 후 재등록 가능하게)
+    const rankForm = document.getElementById('quiz-ranking-form');
+    if (rankForm) { rankForm.style.opacity = '1'; rankForm.style.pointerEvents = ''; }
+    const rankMsg = document.getElementById('quiz-ranking-msg');
+    if (rankMsg) rankMsg.textContent = '';
+    const nickInput = document.getElementById('quiz-nickname');
+    if (nickInput) nickInput.value = '';
+
+    // 리더보드 로드
+    loadLeaderboard();
   }
 
   function goToCard(name) {
