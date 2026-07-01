@@ -211,6 +211,77 @@
 </head>
 <body>
 <script>
+  // ===== Supabase 랭킹 기능 =====
+  const SUPA_URL = 'https://sblqavdzwqonljwceugy.supabase.co';
+  const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNibHFhdmR6d3Fvbmxqd2NldWd5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI4NzIwMTcsImV4cCI6MjA5ODQ0ODAxN30.ABx2-rZ_XrzRk_BdS1_p5e-M79X31gJsXFQ63XNom3M';
+
+  async function submitRanking() {
+    const nickname = document.getElementById('quiz-nickname').value.trim();
+    const msg = document.getElementById('quiz-ranking-msg');
+    if (!nickname) { msg.style.color = '#b04a3a'; msg.textContent = '닉네임을 입력해주세요.'; return; }
+    const score = window._quizLastScore || 0;
+    const total = window._quizLastTotal || 10;
+    msg.style.color = 'var(--text-light)';
+    msg.textContent = '등록 중...';
+    try {
+      const res = await fetch(SUPA_URL + '/rest/v1/quiz_rankings', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': SUPA_KEY,
+          'Authorization': 'Bearer ' + SUPA_KEY,
+          'Prefer': 'return=minimal'
+        },
+        body: JSON.stringify({ nickname, score, total })
+      });
+      if (res.ok) {
+        msg.style.color = '#4a7c4a';
+        msg.textContent = '✅ 등록됐습니다!';
+        document.getElementById('quiz-nickname').value = '';
+        document.getElementById('quiz-ranking-form').style.opacity = '0.6';
+        document.getElementById('quiz-ranking-form').style.pointerEvents = 'none';
+        loadLeaderboard();
+      } else {
+        throw new Error('서버 오류');
+      }
+    } catch(e) {
+      msg.style.color = '#b04a3a';
+      msg.textContent = '❌ 등록에 실패했습니다. 다시 시도해주세요.';
+    }
+  }
+
+  async function loadLeaderboard() {
+    const el = document.getElementById('quiz-leaderboard');
+    if (!el) return;
+    try {
+      const res = await fetch(SUPA_URL + '/rest/v1/quiz_rankings?select=nickname,score,total,created_at&order=score.desc,created_at.asc&limit=10', {
+        headers: {
+          'apikey': SUPA_KEY,
+          'Authorization': 'Bearer ' + SUPA_KEY
+        }
+      });
+      const data = await res.json();
+      if (!data.length) {
+        el.innerHTML = '<div style="font-family:\'Noto Sans KR\',sans-serif;font-size:13px;color:var(--text-light);text-align:center;padding:12px">아직 등록된 점수가 없습니다.</div>';
+        return;
+      }
+      const medals = ['🥇','🥈','🥉'];
+      const rows = data.map((r,i) => {
+        const pct = Math.round((r.score / r.total) * 100);
+        const medal = medals[i] || `${i+1}위`;
+        return `<div style="display:flex;align-items:center;justify-content:space-between;padding:9px 4px;border-bottom:1px solid var(--beige);font-family:'Noto Sans KR',sans-serif;font-size:13px">
+          <span style="min-width:32px;font-weight:700;color:var(--mocha)">${medal}</span>
+          <span style="flex:1;color:var(--text-dark);font-weight:600">${r.nickname}</span>
+          <span style="color:var(--mocha);font-weight:700">${r.score}/${r.total}</span>
+          <span style="color:var(--text-light);font-size:11px;margin-left:8px">${pct}%</span>
+        </div>`;
+      }).join('');
+      el.innerHTML = rows;
+    } catch(e) {
+      el.innerHTML = '<div style="font-family:\'Noto Sans KR\',sans-serif;font-size:12px;color:var(--text-light);text-align:center">랭킹을 불러올 수 없습니다.</div>';
+    }
+  }
+
 window.addEventListener('load', function() {
   const cards = document.querySelectorAll('.card');
   const items = Array.from(cards).map((card, i) => {
