@@ -117,23 +117,15 @@
   .origin-text { font-family: 'Noto Sans KR', sans-serif; font-size: 12px; color: var(--text-mid); font-weight: 600; }
   .origin-detail { font-family: 'Noto Sans KR', sans-serif; font-size: 11px; color: var(--text-light); font-weight: 400; }
   .flavor-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 14px; align-items: center; }
-  .flavor-tags::before { content: '대표'; font-family: 'Noto Sans KR', sans-serif; font-size: 10px; font-weight: 700; color: var(--text-light); letter-spacing: 0.05em; margin-right: 2px; white-space: nowrap; }
-  .tag { font-family: 'Noto Sans KR', sans-serif; font-size: 10.5px; font-weight: 700; padding: 4px 10px; border-radius: 20px; border: 1.5px solid; letter-spacing: 0.01em; display:inline-flex; align-items:center; gap:3px; }
-  .tag::before { font-size: 10px; }
-  .tag-chocolate { background: #3D1A0E; border-color: #5A2E18; color: #F5C89A; }
-  .tag-chocolate::before { content: '🍫'; }
-  .tag-fruity { background: #5C1A0A; border-color: #8B3A20; color: #FFB49A; }
-  .tag-fruity::before { content: '🍒'; }
-  .tag-nutty { background: #3A2E08; border-color: #705A20; color: #F0D080; }
-  .tag-nutty::before { content: '🌰'; }
-  .tag-malty { background: #3A2E08; border-color: #8A6A20; color: #F5D88A; }
-  .tag-malty::before { content: '☕'; }
-  .tag-spice { background: #4A1A08; border-color: #8A4020; color: #FFB07A; }
-  .tag-spice::before { content: '🌶'; }
-  .tag-citrus { background: #3A3000; border-color: #706010; color: #F5E060; }
-  .tag-citrus::before { content: '🍋'; }
-  .tag-floral { background: #2A1030; border-color: #6A3A6A; color: #E8A0E8; }
-  .tag-floral::before { content: '🌸'; }
+  .flavor-label { font-family: 'Noto Sans KR', sans-serif; font-size: 10px; font-weight: 700; color: var(--text-light); margin-right: 2px; }
+  .tag { font-family: 'Noto Sans KR', sans-serif; font-size: 10.5px; font-weight: 500; padding: 3px 9px; border-radius: 20px; border: 1px solid; letter-spacing: 0.01em; }
+  .tag-chocolate { background: rgba(107,58,42,0.08); border-color: rgba(107,58,42,0.25); color: #5A2E18; }
+  .tag-fruity { background: rgba(180,80,50,0.08); border-color: rgba(180,80,50,0.25); color: #8B3A20; }
+  .tag-nutty { background: rgba(140,110,60,0.1); border-color: rgba(140,110,60,0.3); color: #705A20; }
+  .tag-malty { background: rgba(200,160,80,0.1); border-color: rgba(200,160,80,0.3); color: #7A5E20; }
+  .tag-spice { background: rgba(160,80,40,0.08); border-color: rgba(160,80,40,0.25); color: #7A3818; }
+  .tag-citrus { background: rgba(180,150,30,0.08); border-color: rgba(180,150,30,0.25); color: #6A5510; }
+  .tag-floral { background: rgba(150,100,150,0.08); border-color: rgba(150,100,150,0.25); color: #6A3A6A; }
   .desc { font-family: 'Noto Sans KR', sans-serif; font-size: 13px; color: #3A1E0F; line-height: 1.75; margin-bottom: 16px; word-break: keep-all; font-weight: 400; }
   .meters { display: flex; flex-direction: column; gap: 8px; }
   .meter-row { display: flex; align-items: center; gap: 6px; flex-wrap: nowrap; min-width: 0; }
@@ -678,7 +670,7 @@ window.addEventListener('load', function() {
       <div class="card-header"><div><a class="card-detail-link" href="coffee/sidamo-mountain.html" style="text-decoration:none;color:inherit" onclick="event.stopPropagation()"><span class="card-name">시다모 마운틴 <span class="card-name-en">Sidamo Mountain</span></span></a></div><span class="roast-badge roast-medium-dark">미디엄 다크</span></div>
       <div class="price-tag"></div>
       <div class="origin-row"><span class="origin-flag">🇪🇹</span><span class="origin-text">에티오피아</span><span class="origin-detail">— 시다모 고원 남부 · 워시드</span></div>
-      <div class="flavor-tags"><span class="tag tag-spice">스파이시</span><span class="tag tag-chocolate">코코아</span><span class="tag tag-floral">꽃향</span></div>
+      <div class="flavor-tags"><span class="flavor-label">대표</span><span class="tag tag-spice">스파이시</span><span class="tag tag-chocolate">코코아</span><span class="tag tag-floral">꽃향</span></div>
       <p class="desc">에티오피아 남부 고원 소규모 농장의 워시드 수확물. 향긋한 스파이시 향에 크랙 코코아빈 노트, 놀랍도록 복합적인 꽃향기가 더해진 희귀 커피.</p>
       <div class="meters">
         <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:60%"></div></div><span class="meter-val">3/5</span></div>
@@ -697,7 +689,7 @@ window.addEventListener('load', function() {
       <div class="card-header"><div><a class="card-detail-link" href="coffee/mount-kenya.html" style="text-decoration:none;color:inherit" onclick="event.stopPropagation()"><span class="card-name">마운트 케냐 <span class="card-name-en">Mount Kenya</span></span></a></div><span class="roast-badge roast-medium-dark">미디엄 다크</span></div>
       <div class="price-tag"></div>
       <div class="origin-row"><span class="origin-flag">🇰🇪</span><span class="origin-text">케냐</span><span class="origin-detail">— 키암부 고원 · 해발 1,500~2,100m</span></div>
-      <div class="flavor-tags"><span class="tag tag-fruity">베리류</span><span class="tag tag-chocolate">밀크초콜릿</span><span class="tag tag-fruity">과일향</span></div>
+      <div class="flavor-tags"><span class="flavor-label">대표</span><span class="tag tag-fruity">베리류</span><span class="tag tag-chocolate">밀크초콜릿</span><span class="tag tag-fruity">과일향</span></div>
       <p class="desc">키암부 남부 고원의 정수. 과일향 아로마와 밀크초콜릿 힌트, 케냐 특유의 밝고 생동감 있는 베리류 산미와 풀바디가 특징.</p>
       <div class="meters">
         <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:60%"></div></div><span class="meter-val">3/5</span></div>
@@ -716,7 +708,7 @@ window.addEventListener('load', function() {
       <div class="card-header"><div><a class="card-detail-link" href="coffee/lagoa.html" style="text-decoration:none;color:inherit" onclick="event.stopPropagation()"><span class="card-name">라고아 <span class="card-name-en">Lagoa</span></span></a></div><span class="roast-badge roast-light">미디엄 라이트</span></div>
       <div class="price-tag"></div>
       <div class="origin-row"><span class="origin-flag">🇧🇷</span><span class="origin-text">브라질</span><span class="origin-detail">— 캄포 다스 베르텐치스 · 950~1,200m</span></div>
-      <div class="flavor-tags"><span class="tag tag-chocolate">다크초콜릿</span><span class="tag tag-nutty">헤이즐넛</span><span class="tag tag-malty">토피</span></div>
+      <div class="flavor-tags"><span class="flavor-label">대표</span><span class="tag tag-chocolate">다크초콜릿</span><span class="tag tag-nutty">헤이즐넛</span><span class="tag tag-malty">토피</span></div>
       <p class="desc">재규어·늑대가 공존하는 오래된 농장에서 손으로만 수확. 식을수록 진해지는 다크초콜릿 향과 토피, 크랙 헤이즐넛 노트.</p>
       <div class="meters">
         <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:20%"></div></div><span class="meter-val">1/5</span></div>
@@ -735,7 +727,7 @@ window.addEventListener('load', function() {
       <div class="card-header"><div><a class="card-detail-link" href="coffee/magdalena.html" style="text-decoration:none;color:inherit" onclick="event.stopPropagation()"><span class="card-name">막달레나 <span class="card-name-en">Magdalena</span></span></a></div><span class="roast-badge roast-medium">미디엄</span></div>
       <div class="price-tag"></div>
       <div class="origin-row"><span class="origin-flag">🇨🇴</span><span class="origin-text">콜롬비아</span><span class="origin-detail">— 우일라(Huila) 고원 · 냉산수 워시드</span></div>
-      <div class="flavor-tags"><span class="tag tag-fruity">과일향</span><span class="tag tag-malty">균형감</span></div>
+      <div class="flavor-tags"><span class="flavor-label">대표</span><span class="tag tag-fruity">과일향</span><span class="tag tag-malty">균형감</span></div>
       <p class="desc">네바도 델 우일라 화산 자락, 나무 그늘 아래서 자란 원두. 냉산수 습식 가공으로 깔끔한 산미와 과일 오버톤이 균형을 이룬 커피.</p>
       <div class="meters">
         <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:40%"></div></div><span class="meter-val">2/5</span></div>
@@ -754,7 +746,7 @@ window.addEventListener('load', function() {
       <div class="card-header"><div><a class="card-detail-link" href="coffee/grand-moka-matari.html" style="text-decoration:none;color:inherit" onclick="event.stopPropagation()"><span class="card-name">그랜드 모카 마타리 <span class="card-name-en">Grand Moka Matari</span></span></a></div><span class="roast-badge roast-medium-dark">미디엄 다크</span></div>
       <div class="price-tag"></div>
       <div class="origin-row"><span class="origin-flag">🇾🇪</span><span class="origin-text">예멘</span><span class="origin-detail">— 전통 건식(드라이) 가공</span></div>
-      <div class="flavor-tags"><span class="tag tag-fruity">살구</span><span class="tag tag-chocolate">다크초콜릿</span><span class="tag tag-malty">대추야자</span><span class="tag tag-spice">캐러멜</span></div>
+      <div class="flavor-tags"><span class="flavor-label">대표</span><span class="tag tag-fruity">살구</span><span class="tag tag-chocolate">다크초콜릿</span><span class="tag tag-malty">대추야자</span><span class="tag tag-spice">캐러멜</span></div>
       <p class="desc">땅 지붕 위에서 건조된 예멘의 희귀 수확물. 밝은 산미와 풀바디, 살구·다크초콜릿·대추의 달콤함, 캐러멜·스파이스 여운이 인상적.</p>
       <div class="meters">
         <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:50%"></div></div><span class="meter-val">2.5/5</span></div>
@@ -773,7 +765,7 @@ window.addEventListener('load', function() {
       <div class="card-header"><div><a class="card-detail-link" href="coffee/sierra-madre.html" style="text-decoration:none;color:inherit" onclick="event.stopPropagation()"><span class="card-name">시에라 마드레 <span class="card-name-en">Sierra Madre</span></span></a></div><span class="roast-badge roast-medium">미디엄</span></div>
       <div class="price-tag"></div>
       <div class="origin-row"><span class="origin-flag">🇬🇹</span><span class="origin-text">과테말라</span><span class="origin-detail">— 시에라 마드레 화산성 토양</span></div>
-      <div class="flavor-tags"><span class="tag tag-chocolate">코코아</span><span class="tag tag-fruity">과일향</span></div>
+      <div class="flavor-tags"><span class="flavor-label">대표</span><span class="tag tag-chocolate">코코아</span><span class="tag tag-fruity">과일향</span></div>
       <p class="desc">풍요로운 화산 토양이 키운 과테말라 최고급 커피. 풍부하고 복합적인 아로마와 코코아 노트가 은은하게 남는 커피.</p>
       <div class="meters">
         <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:40%"></div></div><span class="meter-val">2/5</span></div>
@@ -792,7 +784,7 @@ window.addEventListener('load', function() {
       <div class="card-header"><div><a class="card-detail-link" href="coffee/naranjo-mountain.html" style="text-decoration:none;color:inherit" onclick="event.stopPropagation()"><span class="card-name">나란조 마운틴 <span class="card-name-en">Naranjo Mountain</span></span></a></div><span class="roast-badge roast-medium">미디엄</span></div>
       <div class="price-tag"></div>
       <div class="origin-row"><span class="origin-flag">🇨🇷</span><span class="origin-text">코스타리카</span><span class="origin-detail">— 나란호 고원 · 1,200~1,700m</span></div>
-      <div class="flavor-tags"><span class="tag tag-malty">몰티</span><span class="tag tag-nutty">견과류</span><span class="tag tag-citrus">시트러스</span></div>
+      <div class="flavor-tags"><span class="flavor-label">대표</span><span class="tag tag-malty">몰티</span><span class="tag tag-nutty">견과류</span><span class="tag tag-citrus">시트러스</span></div>
       <p class="desc">영양이 풍부한 토양의 농장에서 완숙된 체리만 핸드픽. 섬세한 몰티함과 견과 오버톤, 밝은 시트러스 여운이 상쾌한 커피.</p>
       <div class="meters">
         <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:40%"></div></div><span class="meter-val">2/5</span></div>
@@ -811,7 +803,7 @@ window.addEventListener('load', function() {
       <div class="card-header"><div><a class="card-detail-link" href="coffee/turquino.html" style="text-decoration:none;color:inherit" onclick="event.stopPropagation()"><span class="card-name">투르키노 <span class="card-name-en">Turquino</span></span></a></div><span class="roast-badge roast-medium-dark">미디엄 다크</span></div>
       <div class="price-tag"></div>
       <div class="origin-row"><span class="origin-flag">🇨🇺</span><span class="origin-text">쿠바</span><span class="origin-detail">— 시에라 마에스트라 · 400~800m</span></div>
-      <div class="flavor-tags"><span class="tag tag-spice">스파이시</span><span class="tag tag-malty">밸런스</span></div>
+      <div class="flavor-tags"><span class="flavor-label">대표</span><span class="tag tag-spice">스파이시</span><span class="tag tag-malty">밸런스</span></div>
       <p class="desc">독특한 밤색 원두를 지닌 쿠바 최고 커피. 밸런스 좋은 스파이시함과 섬세한 산미, 오래 남는 긴 여운이 특징.</p>
       <div class="meters">
         <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:30%"></div></div><span class="meter-val">1.5/5</span></div>
@@ -830,7 +822,7 @@ window.addEventListener('load', function() {
       <div class="card-header"><div><a class="card-detail-link" href="coffee/monsoon-secret.html" style="text-decoration:none;color:inherit" onclick="event.stopPropagation()"><span class="card-name">몬순시크릿 <span class="card-name-en">Monsoon Secret</span></span></a></div><span class="roast-badge roast-medium-dark">미디엄 다크</span></div>
       <div class="price-tag"></div>
       <div class="origin-row"><span class="origin-flag">🇮🇳</span><span class="origin-text">인도</span><span class="origin-detail">— 말라바르(Malabar) · 900~1,500m · 몬순 가공</span></div>
-      <div class="flavor-tags"><span class="tag tag-fruity">과일향</span><span class="tag tag-malty">허브</span><span class="tag tag-spice">풀바디</span></div>
+      <div class="flavor-tags"><span class="flavor-label">대표</span><span class="tag tag-fruity">과일향</span><span class="tag tag-malty">허브</span><span class="tag tag-spice">풀바디</span></div>
       <p class="desc">몬순 바람에 노출되는 특수 가공으로 산미가 크게 줄고 바디감이 극대화. 달콤한 향과 섬세한 허브·과일 풍미의 묵직한 한 잔.</p>
       <div class="meters">
         <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:60%"></div></div><span class="meter-val">3/5</span></div>
@@ -849,7 +841,7 @@ window.addEventListener('load', function() {
       <div class="card-header"><div><a class="card-detail-link" href="coffee/san-cristobal.html" style="text-decoration:none;color:inherit" onclick="event.stopPropagation()"><span class="card-name">산크리스토발 <span class="card-name-en">San Cristóbal</span></span></a></div><span class="roast-badge roast-medium-dark">미디엄 다크</span></div>
       <div class="price-tag"></div>
       <div class="origin-row"><span class="origin-flag">🇪🇨</span><span class="origin-text">에콰도르</span><span class="origin-detail">— 갈라파고스 제도 · 화산토 · 무농약</span></div>
-      <div class="flavor-tags"><span class="tag tag-citrus">탄지함</span><span class="tag tag-chocolate">초콜릿</span></div>
+      <div class="flavor-tags"><span class="flavor-label">대표</span><span class="tag tag-citrus">탄지함</span><span class="tag tag-chocolate">초콜릿</span></div>
       <p class="desc">세계에서 단 하나뿐인 갈라파고스 원두. 열대 기후·젊은 화산토·무농약의 삼박자가 만든 상큼한 탄지함과 섬세한 초콜릿 힌트.</p>
       <div class="meters">
         <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:40%"></div></div><span class="meter-val">2/5</span></div>
@@ -868,7 +860,7 @@ window.addEventListener('load', function() {
       <div class="card-header"><div><a class="card-detail-link" href="coffee/mount-everest.html" style="text-decoration:none;color:inherit" onclick="event.stopPropagation()"><span class="card-name">마운트 에베레스트 <span class="card-name-en">Mount Everest</span></span></a></div><span class="roast-badge roast-medium-dark">미디엄 다크</span></div>
       <div class="price-tag"></div>
       <div class="origin-row"><span class="origin-flag">🇳🇵</span><span class="origin-text">네팔</span><span class="origin-detail">— 히말라야 산기슭 · 카투라(Caturra) 품종</span></div>
-      <div class="flavor-tags"><span class="tag tag-nutty">견과류</span><span class="tag tag-malty">깊은 풍미</span></div>
+      <div class="flavor-tags"><span class="flavor-label">대표</span><span class="tag tag-nutty">견과류</span><span class="tag tag-malty">깊은 풍미</span></div>
       <p class="desc">히말라야 산기슭 토양의 에센스를 흡수한 카투라 품종. 다른 곳에서는 구할 수 없는 독특한 깊이와 다양성의 풍미.</p>
       <div class="meters">
         <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:40%"></div></div><span class="meter-val">2/5</span></div>
@@ -887,7 +879,7 @@ window.addEventListener('load', function() {
       <div class="card-header"><div><a class="card-detail-link" href="coffee/sigri-jewel.html" style="text-decoration:none;color:inherit" onclick="event.stopPropagation()"><span class="card-name">시그리 주얼 <span class="card-name-en">Sigri Jewel</span></span></a></div><span class="roast-badge roast-medium-dark">미디엄 다크</span></div>
       <div class="price-tag"></div>
       <div class="origin-row"><span class="origin-flag">🇵🇬</span><span class="origin-text">파푸아뉴기니</span><span class="origin-detail">— 와기(Wahgi) 밸리 · Arusha·Typica 품종</span></div>
-      <div class="flavor-tags"><span class="tag tag-chocolate">다크초콜릿</span><span class="tag tag-malty">당밀</span></div>
+      <div class="flavor-tags"><span class="flavor-label">대표</span><span class="tag tag-chocolate">다크초콜릿</span><span class="tag tag-malty">당밀</span></div>
       <p class="desc">완숙한 레드 펄 베리만 핸드픽한 희귀 품종. 진하고 강렬한 다크초콜릿과 당밀(molasses)의 깊고 묵직한 맛.</p>
       <div class="meters">
         <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:50%"></div></div><span class="meter-val">2.5/5</span></div>
@@ -915,7 +907,7 @@ window.addEventListener('load', function() {
       <div class="card-header"><div><a class="card-detail-link" href="coffee/milano-morning.html" style="text-decoration:none;color:inherit" onclick="event.stopPropagation()"><span class="card-name">밀라노 모닝 <span class="card-name-en">Milano Morning</span></span></a></div><span class="roast-badge roast-medium">미디엄</span></div>
       <div class="price-tag"></div>
       <div class="origin-row"><span class="origin-flag">🇺🇬</span><span class="origin-text">우간다</span><span class="origin-detail">— 싱글 오리진 97% + 천연 메이플 향료 3% ✅</span></div>
-      <div class="flavor-tags"><span class="tag tag-chocolate">쌉싸름한 초콜릿</span><span class="tag tag-malty">브리오슈</span><span class="tag tag-nutty">몰티</span></div>
+      <div class="flavor-tags"><span class="flavor-label">대표</span><span class="tag tag-chocolate">쌉싸름한 초콜릿</span><span class="tag tag-malty">브리오슈</span><span class="tag tag-nutty">몰티</span></div>
       <p class="desc">이탈리아 밀라노 아침의 에너지를 담은 커피. 우간다 아라비카 97%에 천연 메이플 향료 3%로 가향. 쌉싸름한 초콜릿과 달콤한 브리오슈 노트.</p>
       <div class="meters">
         <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:40%"></div></div><span class="meter-val">2/5</span></div>
@@ -934,7 +926,7 @@ window.addEventListener('load', function() {
       <div class="card-header"><div><a class="card-detail-link" href="coffee/i-love-paris.html" style="text-decoration:none;color:inherit" onclick="event.stopPropagation()"><span class="card-name">아이러브파리 <span class="card-name-en">I Love Paris</span></span></a></div><span class="roast-badge roast-medium">미디엄</span></div>
       <div class="price-tag"></div>
       <div class="origin-row"><span class="origin-unknown">베이스 원두 산지 비공개</span></div>
-      <div class="flavor-tags"><span class="tag tag-fruity">포레스트 베리</span><span class="tag tag-nutty">와일드 너트</span></div>
+      <div class="flavor-tags"><span class="flavor-label">대표</span><span class="tag tag-fruity">포레스트 베리</span><span class="tag tag-nutty">와일드 너트</span></div>
       <p class="desc">빛의 도시 파리의 여름 햇살. 포레스트 베리와 와일드 너트가 연인의 포옹처럼 어우러지는, 파리 거리를 거니는 듯한 한 잔.</p>
       <div class="meters">
         <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:40%"></div></div><span class="meter-val">2/5</span></div>
@@ -953,7 +945,7 @@ window.addEventListener('load', function() {
       <div class="card-header"><div><a class="card-detail-link" href="coffee/caramelo-morning.html" style="text-decoration:none;color:inherit" onclick="event.stopPropagation()"><span class="card-name">캐러멜로 모닝 <span class="card-name-en">Caramelo Morning</span></span></a></div><span class="roast-badge roast-medium">미디엄</span></div>
       <div class="price-tag"></div>
       <div class="origin-row"><span class="origin-unknown">베이스 원두 산지 비공개</span></div>
-      <div class="flavor-tags"><span class="tag tag-malty">캐러멜</span><span class="tag tag-malty">몰티</span></div>
+      <div class="flavor-tags"><span class="flavor-label">대표</span><span class="tag tag-malty">캐러멜</span><span class="tag tag-malty">몰티</span></div>
       <p class="desc">최고급 아라비카를 부드럽게 로스팅해 자연스러운 몰티 노트와 달콤한 캐러멜을 이끌어낸 아침용 커피.</p>
       <div class="meters">
         <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:40%"></div></div><span class="meter-val">2/5</span></div>
@@ -972,7 +964,7 @@ window.addEventListener('load', function() {
       <div class="card-header"><div><a class="card-detail-link" href="coffee/seville-orange.html" style="text-decoration:none;color:inherit" onclick="event.stopPropagation()"><span class="card-name">세빌 오렌지 <span class="card-name-en">Seville Orange</span></span></a></div><span class="roast-badge roast-medium">미디엄</span></div>
       <div class="price-tag"></div>
       <div class="origin-row"><span class="origin-unknown">베이스 원두 산지 비공개</span></div>
-      <div class="flavor-tags"><span class="tag tag-chocolate">코코아</span><span class="tag tag-citrus">오렌지 제스트</span><span class="tag tag-chocolate">초콜릿</span></div>
+      <div class="flavor-tags"><span class="flavor-label">대표</span><span class="tag tag-chocolate">코코아</span><span class="tag tag-citrus">오렌지 제스트</span><span class="tag tag-chocolate">초콜릿</span></div>
       <p class="desc">시트러스의 산미와 초콜릿의 달콤함이 완벽하게 결합. 크랙 코코아의 바디감에 세빌 오렌지의 생기있는 제스트가 더해진 오후의 커피.</p>
       <div class="meters">
         <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:20%"></div></div><span class="meter-val">1/5</span></div>
@@ -991,7 +983,7 @@ window.addEventListener('load', function() {
       <div class="card-header"><div><a class="card-detail-link" href="coffee/sweet-mexico.html" style="text-decoration:none;color:inherit" onclick="event.stopPropagation()"><span class="card-name">스위트 멕시코 <span class="card-name-en">Sweet Mexico</span></span></a></div><span class="roast-badge roast-medium">미디엄</span></div>
       <div class="price-tag"></div>
       <div class="origin-row"><span class="origin-unknown">베이스 원두 산지 비공개 (천연 바닐라빈 가향)</span></div>
-      <div class="flavor-tags"><span class="tag tag-malty">바닐라</span><span class="tag tag-spice">스파이스</span></div>
+      <div class="flavor-tags"><span class="flavor-label">대표</span><span class="tag tag-malty">바닐라</span><span class="tag tag-spice">스파이스</span></div>
       <p class="desc">희귀 바닐라빈의 섬세한 향이 아라비카와 어우러진 부드러운 커피. 식사 후나 오후에, 크림이나 우유와 함께하면 최고.</p>
       <div class="meters">
         <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:30%"></div></div><span class="meter-val">1.5/5</span></div>
@@ -1010,7 +1002,7 @@ window.addEventListener('load', function() {
       <div class="card-header"><div><a class="card-detail-link" href="coffee/tolteca-chocolate.html" style="text-decoration:none;color:inherit" onclick="event.stopPropagation()"><span class="card-name">톨테카 초콜릿 <span class="card-name-en">Tolteca Chocolate</span></span></a></div><span class="roast-badge roast-medium">미디엄</span></div>
       <div class="price-tag"></div>
       <div class="origin-row"><span class="origin-unknown">베이스 원두 산지 비공개</span></div>
-      <div class="flavor-tags"><span class="tag tag-chocolate">진한 코코아</span><span class="tag tag-chocolate">초콜릿</span></div>
+      <div class="flavor-tags"><span class="flavor-label">대표</span><span class="tag tag-chocolate">진한 코코아</span><span class="tag tag-chocolate">초콜릿</span></div>
       <p class="desc">열정적인 카카오의 향조로 가득하고 따뜻한, 완전한 한 잔. 달콤한 기억을 남기는 오후의 작은 기쁨.</p>
       <div class="meters">
         <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:40%"></div></div><span class="meter-val">2/5</span></div>
@@ -1029,7 +1021,7 @@ window.addEventListener('load', function() {
       <div class="card-header"><div><a class="card-detail-link" href="coffee/1910.html" style="text-decoration:none;color:inherit" onclick="event.stopPropagation()"><span class="card-name">1910 <span class="card-name-en">1910</span></span></a></div><span class="roast-badge roast-medium">미디엄</span></div>
       <div class="price-tag"></div>
       <div class="origin-row"><span class="origin-unknown">베이스 원두 산지 비공개</span></div>
-      <div class="flavor-tags"><span class="tag tag-fruity">야생 딸기</span><span class="tag tag-malty">헤비 크림</span></div>
+      <div class="flavor-tags"><span class="flavor-label">대표</span><span class="tag tag-fruity">야생 딸기</span><span class="tag tag-malty">헤비 크림</span></div>
       <p class="desc">마라케시 다르 엘 바샤 궁전 1910년을 기념하는 시그니처 커피. 갓 딴 야생 딸기와 진한 크림을 연상시키는 여름 소풍 같은 한 잔.</p>
       <div class="meters">
         <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:30%"></div></div><span class="meter-val">1.5/5</span></div>
@@ -1048,7 +1040,7 @@ window.addEventListener('load', function() {
       <div class="card-header"><div><a class="card-detail-link" href="coffee/blue-danube.html" style="text-decoration:none;color:inherit" onclick="event.stopPropagation()"><span class="card-name">블루다뉴브 <span class="card-name-en">Blue Danube</span></span></a></div><span class="roast-badge roast-medium">미디엄</span></div>
       <div class="price-tag"></div>
       <div class="origin-row"><span class="origin-unknown">베이스 원두 산지 비공개</span></div>
-      <div class="flavor-tags"><span class="tag tag-fruity">포레스트 베리</span><span class="tag tag-chocolate">밀크초콜릿</span></div>
+      <div class="flavor-tags"><span class="flavor-label">대표</span><span class="tag tag-fruity">포레스트 베리</span><span class="tag tag-chocolate">밀크초콜릿</span></div>
       <p class="desc">포레스트 베리의 물결이 밀크초콜릿의 부드러움과 균형을 이루고, 산뜻한 산미로 마무리. 샹티이 크림과 함께하면 완벽.</p>
       <div class="meters">
         <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:40%"></div></div><span class="meter-val">2/5</span></div>
@@ -1067,7 +1059,7 @@ window.addEventListener('load', function() {
       <div class="card-header"><div><a class="card-detail-link" href="coffee/singapore-morning.html" style="text-decoration:none;color:inherit" onclick="event.stopPropagation()"><span class="card-name">싱가포르 모닝 <span class="card-name-en">Singapore Morning</span></span></a></div><span class="roast-badge roast-medium">미디엄</span></div>
       <div class="price-tag"></div>
       <div class="origin-row"><span class="origin-unknown">베이스 원두 산지 비공개</span></div>
-      <div class="flavor-tags"><span class="tag tag-chocolate">초콜릿</span><span class="tag tag-spice">스파이스</span><span class="tag tag-citrus">시트러스</span></div>
+      <div class="flavor-tags"><span class="flavor-label">대표</span><span class="tag tag-chocolate">초콜릿</span><span class="tag tag-spice">스파이스</span><span class="tag tag-citrus">시트러스</span></div>
       <p class="desc">뻐꾸기 아침 울음과 함께 싱가포르가 깨어나는 순간. 초콜릿·스파이스·시트러스 산미의 달콤하고 복합적인 '재생의 커피'.</p>
       <div class="meters">
         <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:40%"></div></div><span class="meter-val">2/5</span></div>
@@ -1086,7 +1078,7 @@ window.addEventListener('load', function() {
       <div class="card-header"><div><a class="card-detail-link" href="coffee/magic-istanbul.html" style="text-decoration:none;color:inherit" onclick="event.stopPropagation()"><span class="card-name">매직 이스탄불 <span class="card-name-en">Magic Istanbul</span></span></a></div><span class="roast-badge roast-medium">미디엄</span></div>
       <div class="price-tag"></div>
       <div class="origin-row"><span class="origin-unknown">베이스 원두 산지 비공개</span></div>
-      <div class="flavor-tags"><span class="tag tag-malty">허니콤</span><span class="tag tag-nutty">그린 아몬드</span></div>
+      <div class="flavor-tags"><span class="flavor-label">대표</span><span class="tag tag-malty">허니콤</span><span class="tag tag-nutty">그린 아몬드</span></div>
       <p class="desc">신선한 허니콤의 달콤함과 그린 아몬드의 균형이 당신을 이스탄불로 데려가는 감각의 여정. 강도는 높지만 산미는 낮은 독특한 커피.</p>
       <div class="meters">
         <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:60%"></div></div><span class="meter-val">3/5</span></div>
@@ -1105,7 +1097,7 @@ window.addEventListener('load', function() {
       <div class="card-header"><div><a class="card-detail-link" href="coffee/birthday-wish.html" style="text-decoration:none;color:inherit" onclick="event.stopPropagation()"><span class="card-name">벌스데이 위시 <span class="card-name-en">Birthday Wish</span></span></a></div><span class="roast-badge roast-medium">미디엄</span></div>
       <div class="price-tag"></div>
       <div class="origin-row"><span class="origin-unknown">베이스 원두 산지 비공개</span></div>
-      <div class="flavor-tags"><span class="tag tag-chocolate">초콜릿</span><span class="tag tag-malty">버터스카치</span></div>
+      <div class="flavor-tags"><span class="flavor-label">대표</span><span class="tag tag-chocolate">초콜릿</span><span class="tag tag-malty">버터스카치</span></div>
       <p class="desc">진한 초콜릿과 버터스카치로 가득 찬 축하의 한 잔. 케이크나 쿠키와 함께 즐기기에 완벽. 모든 소원이 이루어지길!</p>
       <div class="meters">
         <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:40%"></div></div><span class="meter-val">2/5</span></div>
@@ -1124,7 +1116,7 @@ window.addEventListener('load', function() {
       <div class="card-header"><div><a class="card-detail-link" href="coffee/marocchissimo.html" style="text-decoration:none;color:inherit" onclick="event.stopPropagation()"><span class="card-name">마로키시모 <span class="card-name-en">Marocchissimo!</span></span></a></div><span class="roast-badge roast-medium">미디엄</span></div>
       <div class="price-tag"></div>
       <div class="origin-row"><span class="origin-unknown">베이스 원두 산지 비공개</span></div>
-      <div class="flavor-tags"><span class="tag tag-spice">스파이스</span><span class="tag tag-fruity">건조 과일</span><span class="tag tag-nutty">견과류</span></div>
+      <div class="flavor-tags"><span class="flavor-label">대표</span><span class="tag tag-spice">스파이스</span><span class="tag tag-fruity">건조 과일</span><span class="tag tag-nutty">견과류</span></div>
       <p class="desc">화가의 팔레트처럼 색채롭고, 향신료와 건조 과일·견과류의 향이 압도하는 모로코의 정수. 밤처럼 어두운 잔 속의 빛과 생명.</p>
       <div class="meters">
         <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:40%"></div></div><span class="meter-val">2/5</span></div>
@@ -1143,7 +1135,7 @@ window.addEventListener('load', function() {
       <div class="card-header"><div><a class="card-detail-link" href="coffee/moroccan-sahara.html" style="text-decoration:none;color:inherit" onclick="event.stopPropagation()"><span class="card-name">모로칸 사하라 <span class="card-name-en">Moroccan Sahara</span></span></a></div><span class="roast-badge roast-medium">미디엄</span></div>
       <div class="price-tag"></div>
       <div class="origin-row"><span class="origin-unknown">베이스 원두 산지 비공개</span></div>
-      <div class="flavor-tags"><span class="tag tag-malty">코코넛</span><span class="tag tag-malty">카라멜 너트</span><span class="tag tag-chocolate">핫 초콜릿</span></div>
+      <div class="flavor-tags"><span class="flavor-label">대표</span><span class="tag tag-malty">코코넛</span><span class="tag tag-malty">카라멜 너트</span><span class="tag tag-chocolate">핫 초콜릿</span></div>
       <p class="desc">타오르는 모래 언덕이 차가운 바다 물결을 향해 달려가는 모로코 사하라의 정경. 코코넛·카라멜라이즈드 너트·핫 초콜릿 향.</p>
       <div class="meters">
         <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:40%"></div></div><span class="meter-val">—</span></div>
@@ -1162,7 +1154,7 @@ window.addEventListener('load', function() {
       <div class="card-header"><div><a class="card-detail-link" href="coffee/king-of-africa.html" style="text-decoration:none;color:inherit" onclick="event.stopPropagation()"><span class="card-name">킹 오브 아프리카 <span class="card-name-en">King of Africa</span></span></a></div><span class="roast-badge roast-medium">미디엄</span></div>
       <div class="price-tag"></div>
       <div class="origin-row"><span class="origin-unknown">베이스 원두 산지 비공개 (아프리카 복수 산지 블렌드)</span></div>
-      <div class="flavor-tags"><span class="tag tag-nutty">와일드 헤이즐넛</span><span class="tag tag-chocolate">크랙 카카오</span><span class="tag tag-malty">허니드 바나나</span></div>
+      <div class="flavor-tags"><span class="flavor-label">대표</span><span class="tag tag-nutty">와일드 헤이즐넛</span><span class="tag tag-chocolate">크랙 카카오</span><span class="tag tag-malty">허니드 바나나</span></div>
       <p class="desc">아프리카 저지대 평원과 고원의 수확물을 블렌딩. 와일드 헤이즐넛·크랙 카카오·코코넛·허니드 바나나로 아프리카 대륙의 다양한 지형을 맛으로 표현.</p>
       <div class="meters">
         <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:40%"></div></div><span class="meter-val">—</span></div>
@@ -1181,7 +1173,7 @@ window.addEventListener('load', function() {
       <div class="card-header"><div><a class="card-detail-link" href="coffee/marrakech-morning.html" style="text-decoration:none;color:inherit" onclick="event.stopPropagation()"><span class="card-name">마라케시 모닝 <span class="card-name-en">Marrakech Morning</span></span></a></div><span class="roast-badge roast-medium">미디엄</span></div>
       <div class="price-tag"></div>
       <div class="origin-row"><span class="origin-unknown">베이스 원두 산지 비공개</span></div>
-      <div class="flavor-tags"><span class="tag tag-spice">시나몬</span><span class="tag tag-nutty">그린 아몬드</span><span class="tag tag-fruity">자두·체리</span></div>
+      <div class="flavor-tags"><span class="flavor-label">대표</span><span class="tag tag-spice">시나몬</span><span class="tag tag-nutty">그린 아몬드</span><span class="tag tag-fruity">자두·체리</span></div>
       <p class="desc">붉은 진흙 메디나의 좁은 골목, 달콤한 시나몬과 그린 아몬드 향이 실린 산들바람. 자두·와일드 체리의 탄지함이 마라케시 아침을 깨운다.</p>
       <div class="meters">
         <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:40%"></div></div><span class="meter-val">2/5</span></div>
@@ -1200,7 +1192,7 @@ window.addEventListener('load', function() {
       <div class="card-header"><div><a class="card-detail-link" href="coffee/happy-gianduja.html" style="text-decoration:none;color:inherit" onclick="event.stopPropagation()"><span class="card-name">해피잔두야 <span class="card-name-en">Happy Gianduja</span></span></a></div><span class="roast-badge roast-medium">미디엄</span></div>
       <div class="price-tag"></div>
       <div class="origin-row"><span class="origin-unknown">베이스 원두 산지 비공개</span></div>
-      <div class="flavor-tags"><span class="tag tag-nutty">이탈리안 헤이즐넛</span><span class="tag tag-malty">달콤함</span></div>
+      <div class="flavor-tags"><span class="flavor-label">대표</span><span class="tag tag-nutty">이탈리안 헤이즐넛</span><span class="tag tag-malty">달콤함</span></div>
       <p class="desc">따뜻하고 섬세하게 이탈리안 헤이즐넛(잔두야). 식사를 아름답게 마무리하기에 완벽한 순수한 기쁨의 한 잔.</p>
       <div class="meters">
         <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:40%"></div></div><span class="meter-val">—</span></div>
@@ -1227,7 +1219,7 @@ window.addEventListener('load', function() {
       <div class="card-header"><div><a class="card-detail-link" href="coffee/yirgacheffe-decaffeinated.html" style="text-decoration:none;color:inherit" onclick="event.stopPropagation()"><span class="card-name">예가체프 디카페인 <span class="card-name-en">Yirgacheffe Decaffeinated</span></span></a></div><span class="roast-badge roast-medium-dark">미디엄 다크</span></div>
       <div class="price-tag"></div>
       <div class="origin-row"><span class="origin-flag">🇪🇹</span><span class="origin-text">에티오피아</span><span class="origin-detail">— 예가체프 싱글 오리진 ✅</span></div>
-      <div class="flavor-tags"><span class="tag tag-fruity">블루베리</span><span class="tag tag-citrus">레몬 산미</span><span class="tag tag-malty">몰티</span></div>
+      <div class="flavor-tags"><span class="flavor-label">대표</span><span class="tag tag-fruity">블루베리</span><span class="tag tag-citrus">레몬 산미</span><span class="tag tag-malty">몰티</span></div>
       <p class="desc">건초와 블루베리의 놀라운 아로마. 은은한 레몬 산미와 지속되는 몰티 풍미가 복합적으로 어우러지는 카페인 없는 예가체프.</p>
       <div class="meters">
         <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:60%"></div></div><span class="meter-val">3/5</span></div>
@@ -1246,7 +1238,7 @@ window.addEventListener('load', function() {
       <div class="card-header"><div><a class="card-detail-link" href="coffee/magdalena-decaffeinated.html" style="text-decoration:none;color:inherit" onclick="event.stopPropagation()"><span class="card-name">막달레나 디카페인 <span class="card-name-en">Magdalena Decaffeinated</span></span></a></div><span class="roast-badge roast-medium-dark">미디엄 다크</span></div>
       <div class="price-tag"></div>
       <div class="origin-row"><span class="origin-flag">🇨🇴</span><span class="origin-text">콜롬비아</span><span class="origin-detail">— 우일라(Huila) 고원 싱글 오리진 ✅</span></div>
-      <div class="flavor-tags"><span class="tag tag-fruity">과일향</span><span class="tag tag-malty">몰티</span><span class="tag tag-nutty">견과류</span><span class="tag tag-spice">스파이스</span></div>
+      <div class="flavor-tags"><span class="flavor-label">대표</span><span class="tag tag-fruity">과일향</span><span class="tag tag-malty">몰티</span><span class="tag tag-nutty">견과류</span><span class="tag tag-spice">스파이스</span></div>
       <p class="desc">우일라 고원 워시드 가공의 디카페인. 예상 밖의 풀바디와 함께 과일향·몰티·견과·스파이스가 복합적으로 풍성하게 펼쳐진다.</p>
       <div class="meters">
         <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:30%"></div></div><span class="meter-val">1.5/5</span></div>
@@ -1265,7 +1257,7 @@ window.addEventListener('load', function() {
       <div class="card-header"><div><a class="card-detail-link" href="coffee/addis-ababa-decaffeinated.html" style="text-decoration:none;color:inherit" onclick="event.stopPropagation()"><span class="card-name">아디스아바바 디카페인 <span class="card-name-en">Addis Ababa Decaffeinated</span></span></a></div><span class="roast-badge roast-medium-dark">미디엄 다크</span></div>
       <div class="price-tag"></div>
       <div class="origin-row"><span class="origin-unknown">베이스 원두 산지 비공개 (에티오피아 계열 추정)</span></div>
-      <div class="flavor-tags"><span class="tag tag-malty">그래시</span><span class="tag tag-malty">부드러운 단맛</span></div>
+      <div class="flavor-tags"><span class="flavor-label">대표</span><span class="tag tag-malty">그래시</span><span class="tag tag-malty">부드러운 단맛</span></div>
       <p class="desc">신비로운 도시의 에너지가 담긴 천연 CO₂ 디카페인. 신선한 그래시 노트와 부드러운 단맛이 생기있고 활기찬 컵을 만든다.</p>
       <div class="meters">
         <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:50%"></div></div><span class="meter-val">2.5/5</span></div>
@@ -1284,7 +1276,7 @@ window.addEventListener('load', function() {
       <div class="card-header"><div><a class="card-detail-link" href="coffee/baraka-decaffeinated.html" style="text-decoration:none;color:inherit" onclick="event.stopPropagation()"><span class="card-name">바라카 디카페인 <span class="card-name-en">Baraka Decaffeinated</span></span></a></div><span class="roast-badge roast-medium">미디엄</span></div>
       <div class="price-tag"></div>
       <div class="origin-row"><span class="origin-unknown">베이스 원두 산지 비공개</span></div>
-      <div class="flavor-tags"><span class="tag tag-chocolate">다크초콜릿</span><span class="tag tag-citrus">스위트 오렌지</span></div>
+      <div class="flavor-tags"><span class="flavor-label">대표</span><span class="tag tag-chocolate">다크초콜릿</span><span class="tag tag-citrus">스위트 오렌지</span></div>
       <p class="desc">행운의 부적처럼 든든한 한 잔. 부드러운 다크초콜릿에 스위트 오렌지의 섬세한 시트러스 산미가 악센트를 이루는 디카페인.</p>
       <div class="meters">
         <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:30%"></div></div><span class="meter-val">1.5/5</span></div>
@@ -1308,7 +1300,7 @@ window.addEventListener('load', function() {
       <div class="card-header"><div><a class="card-detail-link" href="coffee/yirgacheffe-heirloom-wb.html" style="text-decoration:none;color:inherit" onclick="event.stopPropagation()"><span class="card-name">WB 예가체프 에얼룸 <span class="card-name-en">Yirgacheffe Heirloom</span></span></a></div><span class="roast-badge roast-medium">미디엄</span></div>
       <div class="price-tag"></div>
       <div class="origin-row"><span class="origin-flag">🇪🇹</span><span class="origin-text">에티오피아</span><span class="origin-detail">— 예가체프 · 에얼룸 패밀리 농장 싱글 오리진 ✅</span></div>
-      <div class="flavor-tags"><span class="tag tag-citrus">레몬그라스</span><span class="tag tag-malty">케인슈거</span><span class="tag tag-floral">베르가못</span></div>
+      <div class="flavor-tags"><span class="flavor-label">대표</span><span class="tag tag-citrus">레몬그라스</span><span class="tag tag-malty">케인슈거</span><span class="tag tag-floral">베르가못</span></div>
       <p class="desc">에티오피아 남부 최고 커피로 꼽히는 예가체프의 에얼룸 품종. 인상적인 향기로운 산미와 레몬그라스·케인슈거·베르가못이 조화로운 미디엄 바디.</p>
       <div class="meters">
         <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:40%"></div></div><span class="meter-val">2/5</span></div>
@@ -1327,7 +1319,7 @@ window.addEventListener('load', function() {
       <div class="card-header"><div><a class="card-detail-link" href="coffee/volcan-azul-wb.html" style="text-decoration:none;color:inherit" onclick="event.stopPropagation()"><span class="card-name">WB 불칸아줄 <span class="card-name-en">Volcán Azul</span></span></a></div><span class="roast-badge roast-medium">미디엄</span></div>
       <div class="price-tag"></div>
       <div class="origin-row"><span class="origin-flag">🇨🇷</span><span class="origin-text">코스타리카</span><span class="origin-detail">— 싱글 오리진 ✅</span></div>
-      <div class="flavor-tags"><span class="tag tag-fruity">향기로운 산미</span><span class="tag tag-malty">조화로운 바디</span></div>
+      <div class="flavor-tags"><span class="flavor-label">대표</span><span class="tag tag-fruity">향기로운 산미</span><span class="tag tag-malty">조화로운 바디</span></div>
       <p class="desc">국제적으로 인정받은 향기로운 산미, 부드러운 풍미, 조화로운 바디감. 레인포레스트를 품은 패밀리 농장의 엄격한 기준이 만든 세계 최고 커피 중 하나.</p>
       <div class="meters">
         <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:40%"></div></div><span class="meter-val">—</span></div>
@@ -1346,7 +1338,7 @@ window.addEventListener('load', function() {
       <div class="card-header"><div><a class="card-detail-link" href="coffee/rwanda-superior-wb.html" style="text-decoration:none;color:inherit" onclick="event.stopPropagation()"><span class="card-name">WB 르완다 슈페리어 <span class="card-name-en">Rwanda Superior</span></span></a></div><span class="roast-badge roast-medium-dark">미디엄 다크</span></div>
       <div class="price-tag"></div>
       <div class="origin-row"><span class="origin-flag">🇷🇼</span><span class="origin-text">르완다</span><span class="origin-detail">— 싱글 오리진 ✅</span></div>
-      <div class="flavor-tags"><span class="tag tag-floral">신선한 꽃향</span><span class="tag tag-nutty">땅콩 노트</span></div>
+      <div class="flavor-tags"><span class="flavor-label">대표</span><span class="tag tag-floral">신선한 꽃향</span><span class="tag tag-nutty">땅콩 노트</span></div>
       <p class="desc">약한 산미와 함께 신선하고 화사한 꽃향이 피어오르며 신선한 땅콩 노트로 마무리되는 개성 있는 르완다 싱글 오리진.</p>
       <div class="meters">
         <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:40%"></div></div><span class="meter-val">—</span></div>
@@ -1365,7 +1357,7 @@ window.addEventListener('load', function() {
       <div class="card-header"><div><a class="card-detail-link" href="coffee/sao-silvestre-wb.html" style="text-decoration:none;color:inherit" onclick="event.stopPropagation()"><span class="card-name">WB 상실베스트레 <span class="card-name-en">São Silvestre</span></span></a></div><span class="roast-badge roast-medium">미디엄</span></div>
       <div class="price-tag"></div>
       <div class="origin-row"><span class="origin-flag">🇧🇷</span><span class="origin-text">브라질</span><span class="origin-detail">— 미나스 제라이스 북부 세라도 · 내추럴 가공 ✅</span></div>
-      <div class="flavor-tags"><span class="tag tag-malty">캐러멜</span><span class="tag tag-chocolate">초콜릿</span><span class="tag tag-nutty">헤이즐넛</span></div>
+      <div class="flavor-tags"><span class="flavor-label">대표</span><span class="tag tag-malty">캐러멜</span><span class="tag tag-chocolate">초콜릿</span><span class="tag tag-nutty">헤이즐넛</span></div>
       <p class="desc">아침 햇살을 가득 받으며 늦게 익는 세라도 미네이루의 커피. 내추럴 가공으로 캐러멜·초콜릿·헤이즐넛의 균형잡힌 달콤함.</p>
       <div class="meters">
         <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:40%"></div></div><span class="meter-val">—</span></div>
@@ -1384,7 +1376,7 @@ window.addEventListener('load', function() {
       <div class="card-header"><div><a class="card-detail-link" href="coffee/el-flamingo-wb.html" style="text-decoration:none;color:inherit" onclick="event.stopPropagation()"><span class="card-name">WB 엘플라밍고 <span class="card-name-en">El Flamingo</span></span></a></div><span class="roast-badge roast-medium">미디엄</span></div>
       <div class="price-tag"></div>
       <div class="origin-row"><span class="origin-flag">🇲🇽</span><span class="origin-text">멕시코</span><span class="origin-detail">— 해발 1,200m+ SHG 싱글 오리진 ✅</span></div>
-      <div class="flavor-tags"><span class="tag tag-chocolate">로 카카오</span><span class="tag tag-malty">부드러움</span></div>
+      <div class="flavor-tags"><span class="flavor-label">대표</span><span class="tag tag-chocolate">로 카카오</span><span class="tag tag-malty">부드러움</span></div>
       <p class="desc">1,200m 이상 엄격한 고도 기준의 SHG 등급 멕시코 커피. 로 카카오(생 코코아)의 깔끔하고 부드러운 노트가 특징.</p>
       <div class="meters">
         <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:40%"></div></div><span class="meter-val">—</span></div>
@@ -1403,7 +1395,7 @@ window.addEventListener('load', function() {
       <div class="card-header"><div><a class="card-detail-link" href="coffee/magdalena-wb.html" style="text-decoration:none;color:inherit" onclick="event.stopPropagation()"><span class="card-name">WB 막달레나 <span class="card-name-en">Magdalena</span></span></a></div><span class="roast-badge roast-medium">미디엄</span></div>
       <div class="price-tag"></div>
       <div class="origin-row"><span class="origin-flag">🇨🇴</span><span class="origin-text">콜롬비아</span><span class="origin-detail">— 우일라(Huila) · 냉산수 워시드 싱글 오리진 ✅</span></div>
-      <div class="flavor-tags"><span class="tag tag-fruity">과일향</span><span class="tag tag-malty">부드러운 산미</span></div>
+      <div class="flavor-tags"><span class="flavor-label">대표</span><span class="tag tag-fruity">과일향</span><span class="tag tag-malty">부드러운 산미</span></div>
       <p class="desc">네바도 델 우일라 화산 자락의 홀빈. 균형잡힌 산미와 과일향 오버톤, 신선하고 깔끔한 풍미를 홀빈으로 즐기는 막달레나.</p>
       <div class="meters">
         <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:40%"></div></div><span class="meter-val">2/5</span></div>
@@ -1422,7 +1414,7 @@ window.addEventListener('load', function() {
       <div class="card-header"><div><a class="card-detail-link" href="coffee/blue-danube-wb.html" style="text-decoration:none;color:inherit" onclick="event.stopPropagation()"><span class="card-name">WB 블루다뉴브 <span class="card-name-en">Blue Danube</span></span></a></div><span class="roast-badge roast-medium">미디엄</span></div>
       <div class="price-tag"></div>
       <div class="origin-row"><span class="origin-unknown">베이스 원두 산지 비공개 (파인 플레이버드)</span></div>
-      <div class="flavor-tags"><span class="tag tag-fruity">포레스트 베리</span><span class="tag tag-chocolate">밀크초콜릿</span></div>
+      <div class="flavor-tags"><span class="flavor-label">대표</span><span class="tag tag-fruity">포레스트 베리</span><span class="tag tag-chocolate">밀크초콜릿</span></div>
       <p class="desc">포레스트 베리의 물결이 밀크초콜릿의 부드러움과 균형을 이루고, 산뜻한 산미로 마무리. 홀빈으로 즐기는 시그니처 노마드 컬렉션.</p>
       <div class="meters">
         <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:40%"></div></div><span class="meter-val">2/5</span></div>
@@ -1441,7 +1433,7 @@ window.addEventListener('load', function() {
       <div class="card-header"><div><a class="card-detail-link" href="coffee/i-love-paris-wb.html" style="text-decoration:none;color:inherit" onclick="event.stopPropagation()"><span class="card-name">WB 아이러브파리 <span class="card-name-en">I Love Paris</span></span></a></div><span class="roast-badge roast-medium">미디엄</span></div>
       <div class="price-tag"></div>
       <div class="origin-row"><span class="origin-unknown">베이스 원두 산지 비공개 (파인 플레이버드)</span></div>
-      <div class="flavor-tags"><span class="tag tag-fruity">포레스트 베리</span><span class="tag tag-nutty">와일드 너트</span></div>
+      <div class="flavor-tags"><span class="flavor-label">대표</span><span class="tag tag-fruity">포레스트 베리</span><span class="tag tag-nutty">와일드 너트</span></div>
       <p class="desc">빛의 도시 파리의 여름 햇살. 포레스트 베리와 와일드 너트가 연인의 포옹처럼 어우러지는 한 잔을 홀빈으로 즐기는 시그니처 노마드 컬렉션.</p>
       <div class="meters">
         <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:40%"></div></div><span class="meter-val">2/5</span></div>
@@ -1460,7 +1452,7 @@ window.addEventListener('load', function() {
       <div class="card-header"><div><a class="card-detail-link" href="coffee/seville-orange-wb.html" style="text-decoration:none;color:inherit" onclick="event.stopPropagation()"><span class="card-name">WB 세빌오렌지 <span class="card-name-en">Seville Orange</span></span></a></div><span class="roast-badge roast-medium">미디엄</span></div>
       <div class="price-tag"></div>
       <div class="origin-row"><span class="origin-unknown">베이스 원두 산지 비공개 (파인 플레이버드)</span></div>
-      <div class="flavor-tags"><span class="tag tag-chocolate">코코아</span><span class="tag tag-citrus">오렌지 제스트</span></div>
+      <div class="flavor-tags"><span class="flavor-label">대표</span><span class="tag tag-chocolate">코코아</span><span class="tag tag-citrus">오렌지 제스트</span></div>
       <p class="desc">시트러스의 산미와 초콜릿의 달콤함이 완벽하게 결합된 커피를 홀빈으로. 크랙 코코아에 세빌 오렌지의 생기있는 제스트가 더해진 오후의 커피.</p>
       <div class="meters">
         <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:20%"></div></div><span class="meter-val">1/5</span></div>
@@ -1479,7 +1471,7 @@ window.addEventListener('load', function() {
       <div class="card-header"><div><a class="card-detail-link" href="coffee/milano-morning-wb.html" style="text-decoration:none;color:inherit" onclick="event.stopPropagation()"><span class="card-name">WB 밀라노모닝 <span class="card-name-en">Milano Morning</span></span></a></div><span class="roast-badge roast-medium">미디엄</span></div>
       <div class="price-tag"></div>
       <div class="origin-row"><span class="origin-flag">🇺🇬</span><span class="origin-text">우간다</span><span class="origin-detail">— 싱글 오리진 97% + 천연 메이플 향료 3% ✅</span></div>
-      <div class="flavor-tags"><span class="tag tag-chocolate">쌉싸름한 초콜릿</span><span class="tag tag-malty">브리오슈</span></div>
+      <div class="flavor-tags"><span class="flavor-label">대표</span><span class="tag tag-chocolate">쌉싸름한 초콜릿</span><span class="tag tag-malty">브리오슈</span></div>
       <p class="desc">우간다 아라비카 97%에 천연 메이플 향료 3%로 가향. 이탈리아 밀라노 아침의 에너지를 담은 커피를 홀빈으로 즐기는 시그니처 노마드 컬렉션.</p>
       <div class="meters">
         <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:40%"></div></div><span class="meter-val">2/5</span></div>
@@ -1498,7 +1490,7 @@ window.addEventListener('load', function() {
       <div class="card-header"><div><a class="card-detail-link" href="coffee/1910-wb.html" style="text-decoration:none;color:inherit" onclick="event.stopPropagation()"><span class="card-name">WB 1910 <span class="card-name-en">1910</span></span></a></div><span class="roast-badge roast-medium">미디엄</span></div>
       <div class="price-tag"></div>
       <div class="origin-row"><span class="origin-unknown">베이스 원두 산지 비공개 (파인 플레이버드)</span></div>
-      <div class="flavor-tags"><span class="tag tag-fruity">야생 딸기</span><span class="tag tag-malty">헤비 크림</span></div>
+      <div class="flavor-tags"><span class="flavor-label">대표</span><span class="tag tag-fruity">야생 딸기</span><span class="tag tag-malty">헤비 크림</span></div>
       <p class="desc">마라케시 다르 엘 바샤 궁전 1910년을 기념하는 시그니처 커피. 갓 딴 야생 딸기와 진한 크림을 연상시키는 여름 소풍 같은 한 잔을 홀빈으로.</p>
       <div class="meters">
         <div class="meter-row"><span class="meter-label">강도</span><div class="meter-track"><div class="meter-fill fill-strength" style="width:30%"></div></div><span class="meter-val">1.5/5</span></div>
@@ -2635,7 +2627,7 @@ window.addEventListener('load', function() {
     <div style="padding:26px 28px 30px">
       <div id="detail-modal-header" style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;gap:10px"></div>
       <div id="detail-modal-origin" style="margin-bottom:14px"></div>
-      <div id="detail-modal-tags" class="flavor-tags" style="margin-bottom:20px"></div>
+      <div id="detail-modal-tags" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px"></div>
 
       <div id="detail-modal-story-block" style="margin-bottom:18px">
         <div style="font-family:'Noto Sans KR',sans-serif;font-size:11px;font-weight:700;color:var(--gold);letter-spacing:0.05em;margin-bottom:6px">📖 STORY</div>
