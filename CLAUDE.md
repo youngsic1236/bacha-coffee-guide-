@@ -1,53 +1,53 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+이 파일은 이 저장소에서 작업할 때 Claude Code(claude.ai/code)에게 제공하는 가이드입니다.
 
-## What this is
+## 이 저장소는 무엇인가
 
-A static, single-owner marketing/reference site (Korean, `lang="ko"`) cataloguing Bacha Coffee's bean lineup — not affiliated with Bacha Coffee (see the disclaimer notice on every detail page). It is a plain HTML/CSS/JS site with no build step, no package manager, and no test suite, deployed via GitHub Pages at `https://youngsic1236.github.io/bacha-coffee-guide-/`.
+바샤커피(Bacha Coffee) 원두 라인업을 소개하는 정적인 개인 운영 마케팅/참고용 사이트(한국어, `lang="ko"`)입니다. 바샤커피와는 아무런 제휴 관계가 없습니다(모든 상세 페이지 하단의 비공식 안내 문구 참고). 빌드 단계, 패키지 매니저, 테스트가 전혀 없는 순수 HTML/CSS/JS 사이트이며 `https://youngsic1236.github.io/bacha-coffee-guide-/` 로 GitHub Pages를 통해 배포됩니다.
 
-## Development workflow
+## 개발 워크플로우
 
-There is no build, lint, or test tooling in this repo (no `package.json`, no CI config). Development is:
+이 저장소에는 빌드/린트/테스트 도구가 없습니다(`package.json` 없음, CI 설정 없음). 개발 방식은 다음과 같습니다:
 
-- Edit the HTML files directly.
-- Preview locally by opening `index.html` in a browser, or serving the directory (e.g. `python3 -m http.server`) so relative links (`coffee/...`, `images/...`) resolve.
-- Commit and push; GitHub Pages serves directly from the repo.
+- HTML 파일을 직접 수정한다.
+- 브라우저에서 `index.html`을 직접 열거나, 상대경로(`coffee/...`, `images/...`)가 정상 동작하도록 디렉터리를 로컬 서버로 띄워서(`python3 -m http.server` 등) 미리 본다.
+- 커밋 후 푸시하면 GitHub Pages가 저장소에서 바로 서빙한다.
 
-When changing anything visual or interactive, actually open the page in a browser and click through it (filters, search, quiz, modal) — there's no automated test to catch regressions.
+시각적/상호작용 요소를 수정했다면 실제로 브라우저에서 열어 필터, 검색, 퀴즈, 모달 등을 직접 클릭해 확인해야 합니다 — 회귀를 잡아줄 자동 테스트가 없습니다.
 
-## Structure
+## 구조
 
-- `index.html` — the entire home page: inline `<style>`, all 46 coffee `<article class="card">` entries, and inline `<script>` blocks implementing every interactive feature. This one file is ~2,600 lines and is the primary surface for most changes.
-- `coffee/*.html` — one static detail page per coffee (46 files, matching the 46 cards in `index.html`), each a self-contained page with its own inline styles and JSON-LD structured data. Linked from each card via `coffee/<slug>.html`.
-- `images/` — product photos, organized into subfolders that mirror the product categories (`single origin/`, `Decaffeinated/`, `Nomad WB/`, `Fine Flavoured Coffee Drip bag (12p)/`, `Drip Bag Gift Box/`). Folder and file names contain spaces and are referenced with `%20`-encoded, full raw-GitHub URLs (`https://raw.githubusercontent.com/youngsic1236/bacha-coffee-guide-/main/images/...`) rather than relative paths — this is intentional so Open Graph/social-card scrapers (which don't run relative to the page) can resolve images.
-- `sitemap.xml`, `robots.txt` — SEO plumbing; `sitemap.xml` lists every `coffee/*.html` URL and must stay in sync with the `coffee/` directory.
+- `index.html` — 홈페이지 전체: 인라인 `<style>`, 46개 원두의 `<article class="card">` 전체, 그리고 모든 상호작용 기능을 구현하는 인라인 `<script>` 블록까지 한 파일에 들어 있습니다. 약 2,600줄짜리 단일 파일이며 대부분의 작업이 여기서 이루어집니다.
+- `coffee/*.html` — 원두별 정적 상세 페이지(46개 파일, `index.html`의 카드 46개와 1:1 대응). 각각 자체 인라인 스타일과 JSON-LD 구조화 데이터를 가진 독립적인 페이지이며, 각 카드에서 `coffee/<slug>.html`로 연결됩니다.
+- `images/` — 제품 사진. 제품 카테고리와 동일한 이름의 하위 폴더로 정리되어 있습니다(`single origin/`, `Decaffeinated/`, `Nomad WB/`, `Fine Flavoured Coffee Drip bag (12p)/`, `Drip Bag Gift Box/`). 폴더/파일명에 공백이 포함되어 있고, 상대경로가 아니라 `%20`으로 인코딩된 raw-GitHub 전체 URL(`https://raw.githubusercontent.com/youngsic1236/bacha-coffee-guide-/main/images/...`)로 참조합니다 — 이는 Open Graph/소셜 카드 스크래퍼가 페이지 상대경로를 해석하지 못하기 때문에 의도적으로 절대경로를 쓰는 것입니다.
+- `sitemap.xml`, `robots.txt` — SEO 관련 파일. `sitemap.xml`은 `coffee/*.html` URL을 전부 나열하므로 `coffee/` 디렉터리와 항상 동기화되어야 합니다.
 
-## Coffee data is triplicated — the key gotcha
+## 원두 데이터가 세 곳에 중복되어 있다는 점 (가장 중요한 함정)
 
-Each coffee's data exists in **three independent places** that must be kept in sync by hand whenever a coffee is added, removed, or edited:
+원두 하나의 데이터는 **서로 독립된 세 곳**에 존재하며, 원두를 추가/삭제/수정할 때마다 수동으로 동기화해야 합니다:
 
-1. The `<article class="card" data-cat="..." data-acidity="..." data-strength="...">` block in `index.html` (name, origin, roast badge, flavor tags, description, strength/acidity meters, image URL, link to the detail page).
-2. The corresponding `coffee/<slug>.html` detail page (same info restated in a full page with JSON-LD `additionalProperty` metadata).
-3. The `QUIZ_DATA` JS array inline in `index.html` (a JSON-like array of `{kr, en, origin, flag, tags, acidity, cat}` objects used to generate quiz questions).
+1. `index.html`의 `<article class="card" data-cat="..." data-acidity="..." data-strength="...">` 블록 (이름, 원산지, 로스팅 배지, 풍미 태그, 설명, 강도/산미 미터, 이미지 URL, 상세 페이지 링크).
+2. 해당 `coffee/<slug>.html` 상세 페이지 (동일 정보를 JSON-LD `additionalProperty` 메타데이터와 함께 전체 페이지로 재기술).
+3. `index.html` 내 인라인 `QUIZ_DATA` JS 배열 (퀴즈 문제 생성에 쓰이는 `{kr, en, origin, flag, tags, acidity, cat}` 형태의 JSON 유사 배열).
 
-There's also `sitemap.xml`, which needs a new `<url>` entry for any new detail page. There is no shared data source or generator script — treat any coffee-data edit as a 4-way find-and-replace across `index.html`'s card, `index.html`'s `QUIZ_DATA` entry, the matching `coffee/*.html` file, and `sitemap.xml`.
+여기에 더해 새 상세 페이지를 만들면 `sitemap.xml`에도 `<url>` 항목을 추가해야 합니다. 공용 데이터 소스나 생성 스크립트가 없으므로, 원두 데이터 수정은 `index.html`의 카드, `index.html`의 `QUIZ_DATA` 항목, 대응하는 `coffee/*.html` 파일, `sitemap.xml`까지 4곳을 함께 바꿔야 하는 작업으로 취급하세요.
 
-## `index.html` architecture (front page)
+## `index.html` 아키텍처 (홈페이지)
 
-All logic lives in inline `<script>` tags in a fairly linear, non-modular style (global functions and variables, no framework, no modules). Key pieces, in the order they appear:
+모든 로직은 인라인 `<script>` 태그 안에 전역 함수/변수 방식으로 비교적 선형적으로 작성되어 있습니다(프레임워크·모듈 없음). 등장 순서대로 주요 부분은 다음과 같습니다:
 
-- **Supabase-backed quiz leaderboard**: `SUPA_URL`/`SUPA_KEY` (anon key, intentionally public per Supabase's client-side model) hit a `quiz_rankings` table directly via REST (`submitRanking`, `loadLeaderboard`). Scores are grouped/averaged client-side.
-- **Filter bar + search** (`applyFilters`, `isNaturalLanguageQuery`, `parseTextInput`): cards are filtered by category (`data-cat`), acidity (`data-acidity`), and strength (`data-strength`) chips, plus a free-text search box that also tries to parse natural-language preference sentences (Korean signal words like "산미", "고소", "진한") into filter criteria.
-- **Recommendation flow** (`toggleRecommend`, `rec-*` elements): a short guided-choice quiz that scores cards against user answers and shows top matches.
-- **Trivia quiz** (`startQuiz`, `renderQuizQuestion`, `renderMatchQuestion`, `QUIZ_DATA`): multiple question types (multiple-choice, matching) generated from `QUIZ_DATA`; feeds into the Supabase leaderboard above.
-- **Detail modal** (`#detail-modal-overlay`, `closeDetailModal`): clicking a card opens an in-page modal with story/aroma/pairing/reviews sections, populated from the clicked card's DOM plus additional embedded content — an alternative to navigating to the `coffee/*.html` page.
-- **Price tags** (`renderPriceTags`, `getPriceInfo`, `PRICE_BY_CAT`, `PREMIUM_NAMES`): prices are derived at render time from category and a hardcoded premium-name list, not stored per-card.
+- **Supabase 기반 퀴즈 리더보드**: `SUPA_URL`/`SUPA_KEY`(anon key로, Supabase의 클라이언트 사이드 모델상 공개되어도 되는 키)가 `quiz_rankings` 테이블을 REST로 직접 호출합니다(`submitRanking`, `loadLeaderboard`). 점수 집계/평균 계산은 클라이언트에서 이루어집니다.
+- **필터 바 + 검색** (`applyFilters`, `isNaturalLanguageQuery`, `parseTextInput`): 카드는 카테고리(`data-cat`), 산미(`data-acidity`), 강도(`data-strength`) 칩으로 필터링되며, 자유 텍스트 검색창은 자연어 선호 문장("산미", "고소", "진한" 같은 한국어 신호어)도 필터 조건으로 파싱을 시도합니다.
+- **추천 플로우** (`toggleRecommend`, `rec-*` 요소들): 짧은 선택형 질문으로 사용자 답변에 맞춰 카드에 점수를 매겨 상위 매칭 결과를 보여줍니다.
+- **트리비아 퀴즈** (`startQuiz`, `renderQuizQuestion`, `renderMatchQuestion`, `QUIZ_DATA`): `QUIZ_DATA`로부터 객관식/짝맞추기 등 여러 유형의 문제를 생성하며, 결과는 위의 Supabase 리더보드로 이어집니다.
+- **상세 모달** (`#detail-modal-overlay`, `closeDetailModal`): 카드를 클릭하면 스토리/향·풍미/페어링/리뷰 섹션이 있는 인페이지 모달이 열리며, 클릭한 카드의 DOM과 추가로 내장된 콘텐츠로 채워집니다 — `coffee/*.html` 페이지로 이동하는 것의 대안입니다.
+- **가격 태그** (`renderPriceTags`, `getPriceInfo`, `PRICE_BY_CAT`, `PREMIUM_NAMES`): 가격은 카드마다 저장되어 있지 않고, 렌더링 시점에 카테고리와 하드코딩된 프리미엄 이름 목록으로부터 계산됩니다.
 
-## Conventions to follow when adding a coffee
+## 원두를 추가할 때 지킬 규칙
 
-- Pick a `data-cat` from the existing set: `single`, `flavoured`, `decaf`, `wb` (whole bean), `gift`.
-- `data-search` on each card is a hand-maintained space-separated bag of Korean/English keywords (name, origin, flavor notes) used by the search box — keep it populated for new cards.
-- Detail page filenames are kebab-case English slugs (e.g. `sidamo-mountain.html`); whole-bean variants of an existing coffee use a `-wb` suffix (e.g. `blue-danube-wb.html`) rather than a new slug.
-- Match the existing meta tag / Open Graph / JSON-LD boilerplate in other `coffee/*.html` files when creating a new one — canonical URL, `og:*`, `twitter:*`, and the breadcrumb `application/ld+json` block all follow the same template.
-- Every detail page ends with the non-affiliation disclaimer `<div class="notice">` — keep it on any new page.
+- `data-cat`은 기존 값 중 하나를 사용합니다: `single`, `flavoured`, `decaf`, `wb`(홀빈), `gift`.
+- 각 카드의 `data-search`는 검색창이 사용하는, 사람이 직접 관리하는 공백 구분 한글/영문 키워드 모음입니다(이름, 원산지, 풍미 노트) — 새 카드에도 반드시 채워 넣으세요.
+- 상세 페이지 파일명은 케밥 케이스 영문 슬러그입니다(예: `sidamo-mountain.html`). 기존 원두의 홀빈 버전은 새 슬러그가 아니라 `-wb` 접미사를 붙입니다(예: `blue-danube-wb.html`).
+- 새 `coffee/*.html`을 만들 때는 다른 파일들의 메타 태그/Open Graph/JSON-LD 상용구를 그대로 따르세요 — canonical URL, `og:*`, `twitter:*`, 브레드크럼 `application/ld+json` 블록 모두 동일한 템플릿을 사용합니다.
+- 모든 상세 페이지는 비제휴 안내 문구 `<div class="notice">`로 끝납니다 — 새 페이지에도 반드시 유지하세요.
